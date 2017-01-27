@@ -1,0 +1,32 @@
+-Targeting things to change on the page with innerHTML
+I.E. Panda
+
+-Handlebars template not working
+
+- multi page vim work
+
+
+
+Methods to explain 
+- reverse - loop backwards i = total length
+- sort- bubble sort
+- map - (kind of) loop through and return manual
+- filter - 
+- reduce
+- flatten
+- range
+
+
+Explain how…
+- to make twitter clone
+- to set up blog
+- box model
+- float and block methods
+- === and == - ==  coerces not of the same type, test equality of internal	 
+-  
+
+function
+- s
+
+
+what
