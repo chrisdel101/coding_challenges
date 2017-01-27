@@ -1,0 +1,17 @@
+At first I thought it would come to together, so I got to work and this was the approach I took:
+
+1. After getting the server to run I spent some time figuring out where the data was coming from and how to identify it in the dev tools.
+
+2. Being unable to work with/understand Angular at all I went back and did some Code School and Code Academy. 
+
+3. Tried to find a way to get a calendar to embed on the page. This was very difficult as I could not find clear instructions for newbies or any tutorials that were relevant.
+-Tried ui-calendar but left it for something simpler.
+-I tried to use the google calendar api but was also unsuccessful here as well
+-Copied an HTML calendar but this was useless.
+-Returned to ui-calendar since I could not find any simper ways to embed a calendar. Got it to render, but it was done very incorrectly which caused problems later. (docs are actually pretty good. For a professional this would have been a breeze but it was unclear where each section of the code was supposed to live ) http://angular-ui.github.io/ui-calendar/ 
+
+4. Tried to get calendar into it’s own controller file, but did this incorrectly from the get go, and moving it caused app to break. Was able to move half of the controller files into Main Controller since I knew this one was working for sure. Made some headway.
+
+5. Was able to get make some preloaded data to appear on the page, as per calendar docs, but unfortunately my methods got lost. I intended to try and get the json data to fit inside the parameters that come with the calendar, and was successful, but could not get these to render on the calendar. I just could not figure out how to structure the Angular on the page properly as every tweek made it break instantly.
+
+6. The present
