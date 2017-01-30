@@ -26,9 +26,9 @@
 // var hasOwn = Object.prototype.hasOwnProperty("hasOwnProperty");
 // console.log(hasOwn);
 
-var goose = 10
-var players = ["gary", "joe", "sam"]
-
-for (var i = 0;i < goose;i++){
-  console.log(players[i])
-}
+// var goose = 10
+// var players = ["gary", "joe", "sam"]
+//
+// for (var i = 0;i < goose;i++){
+//   console.log(players[i])
+// }
