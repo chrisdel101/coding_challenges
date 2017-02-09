@@ -99,8 +99,6 @@
 
 
 
- var val1 =1
- var val2 =2
 
 
 //  if (val2 > val1){
@@ -120,18 +118,72 @@
 
 
  /////////////A < B && both are positive////
-           // if b is greater and a
- if ((val2 > val1) && (val1 && val2 >= 0 )){
-     var sum = val1;
-     for(var i = val2; i <= val2; i++){
-      //  console.log(i)
+        // if b is greater and a
+// function GetSum(val1, val2){
+//     if ((val1 < val2) && (val1 >= 0) && (val2 >=0)){
+//      var sum = val1;
+//      for(var i = val2; i <= val2; i++){
+//        sum = sum + i
+//      }
+//      return `val2 is greater, both above zero with sum of ${sum}`
+//   //   if a is greater and b
+// } else if ((val1 > val2) && (val1 >=0) && (val2 >= 0 )){
+//        var sum = val2;
+//        for(var i = val1; i <= val1; i++){
+//        sum = sum + i;
+//       // if a is greater than b, and a negtive invloved
+//         }
+//       return `val1 is greater, above zero with sum of ${sum}`
+//     } else if ((val1 > val2) && ((val1 || val2) < 0)){
+//         var sum = val2
+//         for (var i = val2 +1;i <= val1;i++){
+//         sum = sum + i
+//   // if b is greater than b, and a negtive invloved
+//       }
+//       return `val1 is greater, below zero with sum of ${sum}`
+//     } else if ((val1 < val2) && ((val1 || val2) < 0)){
+//         var sum = val1
+//         for (var i = val1 +1;i <= val2;i++){
+//           sum = sum + i
+//         }
+//         return `val2 is greater, below zero with sum of ${sum}`
+//       } else {
+//         return val1
+//       }
+//   }
+
+
+/////////////////////////////////////////////////////
+function GetSum(a, b){
+    if ((a < b) && (a >= 0) && (b >=0)){
+     var sum = a;
+     for(var i = b; i <= b; i++){
        sum = sum + i
      }
-        // if a is greater and b
-   } else if ((val1 > val2) && (val1 && val2 >= 0 )){
-       var sum = val2;
-     for(var i = val1; i <= val1; i++){
+     return sum
+  //   if a is greater and b
+} else if ((a > b) && (a >=0) && (b >= 0 )){
+       var sum = b;
+       for(var i = a; i <= a; i++){
        sum = sum + i;
-     }
-   }
-console.log(sum)
+      // if a is greater than b, and a negtive invloved
+        }
+      return sum
+    } else if ((a > b) && ((a || b) < 0)){
+        var sum = b
+        for (var i = b +1;i <= a;i++){
+        sum = sum + i
+  // if b is greater than b, and a negtive invloved
+      }
+      return sum
+    } else if ((a < b) && ((a || b) < 0)){
+        var sum = a
+        for (var i = a +1;i <= b;i++){
+          sum = sum + i
+        }
+        return sum
+      } else {
+        return a
+      }
+  }
+console.log(GetSum(1,0))
