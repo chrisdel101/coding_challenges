@@ -1,8 +1,8 @@
 function countPositivesSumNegatives(input) {
-  if (input == null){
+  if (input.length === 0){
     return []
-  } else if (input == []){
-    return Array.lenght === 0
+  } else if (input == null){
+    return []
   }  else {
     var blankArray = [];
     var posCount = 0;
@@ -47,3 +47,9 @@ console.log(countPositivesSumNegatives([]))
 // }
 // Your comparison for empty (input == []) compares the pointer to the input array with the pointer to a new array. Since these references are always different, the result will be always false.
 // The property length is available only on Array instances. You can not get length of type Array. And the return value (Array.lenght === 0) is strange at all. You return an empty array after the check for null (return []), but why not the same here?
+
+
+// function test(input){
+//   return (input)
+// }
+// console.log(test([]))

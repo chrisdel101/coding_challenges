@@ -69,11 +69,11 @@
 
 # THIS WORKS FOR SOME REASON **WHERE DOES NAME COME FROM
 
-def duck_duck_goose(players, goose)
-  players[(goose % players.size) - 1].name
-end
-
-duck_duck_goose(["a","b", "c","d"],11)
+  # def duck_duck_goose(players, goose)
+  #   players[(goose % players.size) - 1].name
+  # end
+  #
+  # duck_duck_goose(["a","b", "c","d"],11)
 
 
 # ///////////////////Using two operators- no modulo//////////////////
@@ -98,39 +98,39 @@ duck_duck_goose(["a","b", "c","d"],11)
 # return k
 # end
 
-# def duck_duck_goose(players, goose)
-#   arr = []
-#   i = 0
-#   k = 0
-#   while i < goose do
-#     if k >= players.length
-#       k = 0
+def duck_duck_goose(players, goose)
+  arr = []
+  i = 0
+  k = 0
+  while i < goose do
+    if k >= players.length
+      k = 0
+    end
+      arr << players[k]
+      i += 1
+      k += 1
+  end
+  puts arr[arr.length]
+end
+
+duck_duck_goose(["gary", "joe", "sam", "sara", "tony"],7)
+duck_duck_goose(["gary", "joe"],2)
+
+#   def duck_duck_goose(players, goose)
+#     i = 0
+#     k = 0
+#     while i < goose do
+#       if k >= players.length
+#         k = 0
+#       end
+#         i += 1
+#         k += 1
 #     end
-#       arr << players[k]
-#       i += 1
-#       k += 1
+#    return players[k-1]
 #   end
-#   puts arr[arr.length]
-# end
 #
 # duck_duck_goose(["gary", "joe", "sam", "sara", "tony"],7)
-# duck_duck_goose(["gary", "joe"],2)
 
-  # def duck_duck_goose(players, goose)
-  #   i = 0
-  #   k = 0
-  #   while i < goose do
-  #     if k >= players.length
-  #       k = 0
-  #     end
-  #       i += 1
-  #       k += 1
-  #   end
-  #  return players[k-1]
-  # end
-  #
-  #
-  # duck_duck_goose([a, b, c, d], 11)
 
   # players= ["a","b", "c","d"]
   # goose = 10
