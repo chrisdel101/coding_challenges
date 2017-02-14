@@ -101,7 +101,7 @@
 // console.log(("palindrome").match(reg))
 
 
-// FOR LOOP BACKWARDS- no go
+// // FOR LOOP BACKWARDS- makes on giant number out of all numbers
 // function check(value){
 //     if (isNaN(value) === false){
 // //means it is a number
@@ -116,22 +116,41 @@
 // }
 // console.log(check(10))
 
-- if number, turn to string with split
- -another turn number to string, split to array, reverse
-- num_word.split().reverse()
--compare the two
 
+// NUMBER PART
+// 1. two numbers needed -take first and change it to value but a string toString()
+// 2. make second a string,oString().split('').reverse().join(''
+// 3. compare the two
+// another turn number to string, split to array, reverse
+// - num_word.split().reverse()
+// -compare the two
+// STRING PART
+// 1. set regex to remove a non-alphanumerics
+// 2. set line to lowercase
+// 3. make a new instance and reverse it
+// 4. comapare the two//
 
-function check(value){
-    if (isNaN(value) === false){
-//means it is a number
-  console.log(value)
-  var rev_number = [];
-  for(var i = value; i > 0;i--){
-    console.log(i)
-    rev_number.push(i)
+function isPalindrome(line){
+  //means it is a number
+  if (isNaN(line) === false){
+    // change first value to a string
+    var srt_val = line.toString() ;
+      // change number to reserved string;
+    var rev_str_val = line.toString().split('').reverse().join('');
+    // comapare to original
+    return (srt_val === rev_str_val ? true: false)
+      //means it is a NOT number
+  } else if (isNaN(line) === true){
+    // regex to move all weirdness
+    var re= (/[^0-9a-z]/gi);
+    // remove weirdness and make lowercase
+    var lower = line.replace(re,"").toLowerCase()
+      // console.log(lower)
+      // make a reversed version
+    var reversed = lower.split('').reverse().join('');
+      // console.log(reversed)
+    return (lower === reversed ? true: false)
+// }
   }
-    }
-    return rev_number.join('')
 }
-console.log(check(10))
+console.log(isPalindrome(123456))
