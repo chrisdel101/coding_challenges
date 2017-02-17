@@ -43,17 +43,86 @@
 //   }
 // }
 
-function duck_duck_goose(players, goose){
-  for (var i = 0; i <= goose; i++) {
-    console.log(i)
-    for (var j = 0; j < players.length; j++) {
-      if (j <= players.length){
-      console.log(players[j])
-        j = 0
+// function duck_duck_goose(players, goose){
+//   for (var i = 0; i <= goose; i++) {
+//     console.log(i)
+//     for (var j = 0; j < players.length; j++) {
+//       // if (j <= players.length){
+//       console.log(players[j])
+//         j = 0
+//
+//       // }
+//     }
+//   }
+// }
+//
+// console.log(duck_duck_goose(["gary", "joe", "sam", "sara", "tony"],7))
+//
+//
+//
+// goose.times do |i|
+// #   puts players[i % players.length]
+// # end
 
-      }
+
+// var goose = 8;
+// var players = ["gary", "joe", "sam", "sara", "tony"];
+
+////////best workin array version//////
+function duck_duck_goose(players,goose){
+  var arr = [];
+  var goose_index = 0;
+  var player_index = 0;
+  while(goose){
+    goose--
+    arr.push(players[player_index])
+    if (player_index >= players.length){
+      player_index = 0
     }
-  }
+    player_index++
+    goose_index++
+    // for (var i = 0; i < players.length; i++) {
+    //   console.log(players[i])
+    }
+    return arr[arr.length-1].name
 }
+//
+// console.log(duck_duck_goose(["gary", "joe", "sam", "sara", "tony"],10))
 
-console.log(duck_duck_goose(["gary", "joe", "sam", "sara", "tony"],7))
+
+ //
+ // return (arr[arr.length-1][name))
+
+// OBJECT VERSION
+
+
+// function duck_duck_goose(players,goose){
+//   var obj = {}
+//   var goose_index = 0;
+//   var player_index = 0;
+//   while(goose){
+//     goose--
+//     if (player_index >= players.length){
+//     //       player_index = 0
+//     }
+//     console.log(players[players_index])
+//     }
+//     }
+//     player_index++
+//     goose_index++
+//     // for (var i = 0; i < players.length; i++) {
+//     //   console.log(players[i])
+//
+//     }
+
+console.log(duck_duck_goose
+([{ name:"gary"},{name:"joe"},{name: "sam"}, {name:"sara"},{name:"tony"}],10))
+
+//
+// var tempData = {};
+// for ( var index in data ) {
+//   if ( data[index].Status == "Valid" ) {
+//     tempData[index] = data;
+//   }
+//  }
+// data = tempData;

@@ -159,11 +159,50 @@
 
 
 // these can be called in an html page like chris.speak
-var chris = (function(){
+// var chris = (function(){
+//
+//   return {
+//     speak:function(){
+//       console.log('test')
+//     }
+//   }
+// })();
 
-  return {
-    speak:function(){
-      console.log('test')
-    }
+//////////////REDUCE////////////////////////
+
+// EXAMPLE ONE- Adding up numbers
+//
+// // Need a reducer function and an intital value
+// var data = [20,13,54];
+//
+// // starts with 0, and adds item to the accumulator each time
+// var reducer = function(accumulator, item){
+//   return accumulator + item;
+// }
+//
+// var initialValue = 0;
+//
+// var total = data.reduce(reducer, initialValue)
+// console.log(total)
+//
+// EXAMPLE TWO- combing instances of items together
+//
+// In this case we need a blank object; for object we need tally[vote], for number accumulator we can use tally.vote
+
+var votes = ["angular","angular","angular","react","react","ember","vanilla"];
+
+var initialValue = {};
+
+var reducer = function(tally,vote){
+  if(!tally[vote]){
+    tally[vote] = 1;
+  } else {
+    tally[vote] = tally[vote] + 1;
   }
-})();
+  return tally;
+}
+var result = votes.reduce(reducer, initialValue);
+
+console.log(result);
+
+EXAMPLE TWO
