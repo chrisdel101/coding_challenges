@@ -1,15 +1,33 @@
 import React, { Component } from 'react';
 import './App.css';
+import  DropZone from 'react-dropzone';
 
 
+class ImageUploader extends Component{
+  uploadFile(files){
+    const image = files[0];
+    console.log(image)
+  }
+
+  render(){
+    return(
+      <DropZone onDrop={this.uploadFile.bind(this)}/>
 
 
+  //     <div className="ImageUploader">
+  //   <button className="upload-button">
+  //     {this.props.text}
+  //   </button>
+  // </div>
+  );
+  }
+}
 
 class ImageContainer extends Component{
   render(){
     return(
-    <div className="ImageContainer">
-      {this.props.text}
+    <div className="ImageContainer jumbotron col-sm-6 col-sm-3">
+      <ImageUploader />
     </div>
   );
   }
@@ -18,11 +36,9 @@ class ImageContainer extends Component{
 class App extends Component {
   render() {
     return (
-      <div className="App">
-          <div>
-            <ImageContainer text={"this is some text"}/>
-          </div>
-      </div>
+    <div>
+      <ImageContainer />
+    </div>
     );
   }
 }
