@@ -7,9 +7,9 @@ class ImageUploader extends Component{
   constructor(props){
     super(props)
     this.state = {
-      images: []
+      images: null
     }
-  }
+  } 
   uploadFile(files){
     const image = files[0];
     console.log(image)
