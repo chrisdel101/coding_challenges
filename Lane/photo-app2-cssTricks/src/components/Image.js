@@ -83,12 +83,12 @@ import React, { Component } from 'react';
 // import React from 'react';
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
-import './App.css';
+// import './App.css';
 
-const CLOUDINARY_UPLOAD_PRESET = 'bmzjbxoq';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/react-cloudinary/upload';
+const CLOUDINARY_UPLOAD_PRESET = 'lfbcitxy';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/chrisdelwebdev-herokuapp-com/upload';
 
-export default class App extends React.Component {
+export default class Image extends Component {
   constructor(props) {
     super(props);
 
@@ -135,6 +135,9 @@ export default class App extends React.Component {
             <div>Drop an image or click to select a file to upload.</div>
           </Dropzone>
         </div>
+
+          {/* -state is set to uploadedFile: null, and uploadedFileCloudinaryUrl: nothing
+          -if photo is not null, or nothing, then display */}
 
         <div>
           {this.state.uploadedFileCloudinaryUrl === '' ? null :
