@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import AvatarEditor from 'react-avatar-editor'
+import Image from './components/Image.js';
 
-class MyEditor extends React.Component {
+class ImageEditor extends React.Component {
   render () {
     return (
       <AvatarEditor
-        image="http://example.com/initialimage.jpg"
+        image="http://placekitten.com/200/300"
         width={250}
         height={250}
         border={50}
@@ -17,4 +18,4 @@ class MyEditor extends React.Component {
   }
 }
 
-export default MyEditor
+export default ImageEditor
