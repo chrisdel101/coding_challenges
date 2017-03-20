@@ -189,20 +189,72 @@
 //
 // In this case we need a blank object; for object we need tally[vote], for number accumulator we can use tally.vote
 
-var votes = ["angular","angular","angular","react","react","ember","vanilla"];
+// var votes = ["angular","angular","angular","react","react","ember","vanilla"];
+//
+// var initialValue = {};
+//
+// var reducer = function(tally,vote){
+//   if(!tally[vote]){
+//     tally[vote] = 1;
+//   } else {
+//     tally[vote] = tally[vote] + 1;
+//   }
+//   return tally;
+// }
+// var result = votes.reduce(reducer, initialValue);
+//
+// console.log(result);
+//
+// FILTER///////////////////////////
 
-var initialValue = {};
+// function listInStock(res){
+//   var inStock = data.filter(function(item){
+//       return item.avail === "In Stock;"
+//     });
+//   res.end(JSON.stringify(inStock))
+// }
+//
+// var data = "blah blah"
+// listInStock("text")
+//
+// function listInStock(res) {
+// 	var inStock = data.filter(function(item){
+// 	return item.avail === "In stock";
+// 	});
+//   res.end(JSON.stringify(inStock));
+//
+// }
 
-var reducer = function(tally,vote){
-  if(!tally[vote]){
-    tally[vote] = 1;
-  } else {
-    tally[vote] = tally[vote] + 1;
-  }
-  return tally;
-}
-var result = votes.reduce(reducer, initialValue);
 
-console.log(result);
+// PROMISES///////////////////////////
 
-EXAMPLE TWO
+var d = new Promise((resolve, reject) => {
+// Basic true of false to get back success/error
+//   // if (true){//success
+//   if (false) {//error
+//     resolve('hello world')
+//   } else {
+//     reject('rejected')
+//   }
+// });
+
+// 2 second delat before the promise will fire- setTimeout()
+  setTimeout(() => {
+    // if ( true){//success
+    if (false) {//error
+      resolve('hello world')
+    } else {
+      reject('rejected')
+    }
+  }, 2000);
+});
+
+// error can be passed into the .then()
+// d.then((data) => console.log('success: ', data), (error) => { console.error("new error msg")
+// });
+
+// error can be passed into thte .then
+// d.catch((error) => console.error('error: ', error));
+
+// both commands can be chained
+d.then((data) => console.log('success: ', data).catch((error) => console.error('error: ', error))

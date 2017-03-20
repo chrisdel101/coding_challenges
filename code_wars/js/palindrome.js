@@ -141,9 +141,13 @@ function isPalindrome(line){
     return (srt_val === rev_str_val ? true: false)
       //means it is a NOT number
   } else if (isNaN(line) === true){
-    // regex to move all weirdness
+    // REGEX to move all weirdness-
+    // -using this selects all alpha-numerics and, replaces everything else when used with .replace.
+    // ("a test _").replace(re, "") => "atest"
+    // ("a test _").replace(re, 6) => "a6test66"
     var re= (/[^0-9a-z]/gi);
-    // remove weirdness and make lowercase
+    // remove weirdness, with about regex all space removed, add quotes below, and make lowercase
+
     var lower = line.replace(re,"").toLowerCase()
       // console.log(lower)
       // make a reversed version
