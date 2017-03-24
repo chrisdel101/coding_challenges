@@ -78,33 +78,75 @@
 // }
 //
 // findOdd([5,2,3,1,5,6,1,2,3])
+ // function findOdd(A) {
+ //  // set up array loop
+ //  for (var i = 0; i < A.length; i++) {
+ //    var obj = {
+ //      key: value
+ //    };
+ //    A[i] = obj.key[i]
+ //    value =
+ //  }
+ //
+ //    // for(var key in obj){
+ //    //   if(obj[key] === A[i]){
+ //    //     obj[key] += 1
+ //    //   } else {
+ //    //     obj[i] = A[i]
+ //    //   }
+ //    console.log(obj)
+ //    }
+
+
+
+// findOdd([5,2,3,1,5,6,1,2,3])
 
 // -assign obj[0] to the first array digit
 // - after that
-// ------ATTEMPT 2-------------
- function findOdd(A) {
-  var obj = {
+// // ------ATTEMPT 2-------------
+//  function findOdd(A) {
+//   var obj = {
+//
+//   };
+//   obj[0] = A[0]
+//   for (var i = 0; i < A.length; i++) {
+//     var current = A[i]
+//   // set a bunch of keys
+//     obj[i] = current
+//     // check keys to remove doubles
+//     }
+//     A.map((item) =>{
+//     if
+//     })
+    // if (A.indexOf(current) != -1){
+    // // console.log(current)
+    // }
+    //
+    //   for(var key in obj){
+    //     var current_key = obj[key]
+    //     current_key
+    //      curret_key = current
+    //   console.log(current_key)
+    //   }
 
-  };
-  // assign first value
-  obj[0] = A[0]
-  // => 0 : 5
-  for (var i = 0; i < A.length; i++) {
-    var currentArray = A[i];
-
-    for(var key in obj){
-
-      if(obj[key] === A[i]){
-        obj[key] += 1
-      } else {
-        obj[i] = A[i]
-      }
-    }
-  }
-  console.log(obj)
-}
-
-findOdd([5,2,3,1,5,6,1,2,3])
+  // // assign first value
+  // obj[0] = A[0]
+  // // => 0 : 5
+  // for (var i = 0; i < A.length; i++) {
+  //   var currentArray = A[i];
+  //
+  //
+  //     if(obj[key] === A[i]){
+  //       obj[key] += 1
+  //     } else {
+  //       obj[i] = A[i]
+  //     }
+  //   }
+  //}
+//   console.log(obj)
+// }
+//
+// findOdd([5,2,3,1,5,6,1,2,3])
 
 
 // function toObject(arr) {
@@ -122,3 +164,19 @@ findOdd([5,2,3,1,5,6,1,2,3])
 // Each iteration will push into object
 // If in, the value will change from false/true, etc.
 // False at the end is odd
+// -----------ATTEMPT 3---------
+function findOdd(A) {
+  var countedNums = A.reduce(function (allNums, num) {
+    if (num in allNums) {
+      allNums[num]++;
+    }
+    else {
+      allNums[num] = 1;
+    }
+    return allNums;
+    return num;
+  }, {});
+}
+findOdd([5,2,3,1,5,6,1,2,3,7])
+//
+//

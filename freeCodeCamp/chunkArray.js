@@ -55,32 +55,48 @@
 // - IF the array length is less than step,
 //////////////////////////////////////
 
-function chunk(arr, step){
+// function chunk(arr, step){
+//
+//   var holder_arr = []
+//
+//
+//     for(var i=0;i<arr.length;i++){
+//       if (arr.length > step) {
+//       console.log(true)
+//
+//       console.log(arr + " arr at top of loop")
+//
+//       var spliced = arr.splice(0,step) //splice off arr and
+//       console.log(spliced + " spliced")
+//
+//       console.log(arr + " arr after splice")
+//
+//       holder_arr.push(spliced) //push slices
+//       console.log("spliced pushed")
+//       console.log(arr.length)
+//     } if (arr.length < step){
+//       // console.log(false)
+//       holder_arr.push(arr)
+//       // console.log("waka waka");
+//     }
+//     }
+//     return holder_arr
+//   }
+//
+// console.log(chunk([0, 1, 2, 3, 4, 5], 2))
 
-  var holder_arr = []
 
-
-    for(var i=0;i<arr.length;i++){
-      if (arr.length > step) {
-      console.log(true)
-
-      console.log(arr + " arr at top of loop")
-
-      var spliced = arr.splice(0,step) //splice off arr and
-      console.log(spliced + " spliced")
-
-      console.log(arr + " arr after splice")
-
-      holder_arr.push(spliced) //push slices
-      console.log("spliced pushed")
-      console.log(arr.length)
-    } if (arr.length < step){
-      // console.log(false)
-      holder_arr.push(arr)
-      // console.log("waka waka");
-    }
-    }
-    return holder_arr
+function chunkArrayInGroups(arr, size) {
+  var holder_arr = [];
+  for (var i = 0; i <= arr.length; i++) {
+    var spliced = arr.splice(0,size);
+     //splice off arr and
+    holder_arr.push(spliced); //push slices
   }
+  if ((arr.length < size) && (arr.length > 0)){
+    holder_arr.push(arr)
+  }
+  return holder_arr;
+}
 
-console.log(chunk([0, 1, 2, 3, 4, 5], 2))
+console.log(chunkArrayInGroups([0, 1, 2, 3, 5, 6],3 ))
