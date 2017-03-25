@@ -56,7 +56,7 @@
  // {
  //   var theName = x[i].name;
  //   theStatus[theName] = 'normal';
-// ---- ATTEMPT 1-- arrays are values--
+// // ---- ATTEMPT 1-- arrays are values--
 //  function findOdd(A) {
 //   var obj = {
 //
@@ -165,18 +165,55 @@
 // If in, the value will change from false/true, etc.
 // False at the end is odd
 // -----------ATTEMPT 3---------
-function findOdd(A) {
-  var countedNums = A.reduce(function (allNums, num) {
-    if (num in allNums) {
-      allNums[num]++;
+// function findOdd(A) {
+//   var countedNums = A.reduce(function (allNums, num) {
+//     if (num in allNums) {
+//       console.log("num: " + num)
+//       console.log("allNums: " + allNums)
+//       console.log(allNums[num])
+//       allNums[num]++;
+//     }
+//     else {
+//       allNums[num] = 1;
+//     }
+//     return allNums;
+//     return num;
+//   }, {});
+//   return countedNums
+// }
+//
+// console.log(findOdd([5,2,3,1,5,6,1,2,3,7]))
+//
+//
+//
+/// ---- ATTEMPT 4--
+ function findOdd(A) {
+  var obj = {
+
+  };
+  // assign first value
+  // obj[0] = A[0]
+  // set up array loop
+  for (var i = 0; i < A.length; i++) {
+    if (obj[A[i]]){
+      obj[A[i]]++
+    } else {
+      obj[A[i]] = 1
     }
-    else {
-      allNums[num] = 1;
+  }
+  console.log(obj)
+  for(var j in obj){
+    if (obj[j] % 2 === 0){
+      // console.log("even")
+    } else {
+      // console.log("odd")
+      // console.log(j)
+      var odd = parseInt(j)
     }
-    return allNums;
-    return num;
-  }, {});
+    // if(obj[j] % 2 != 0)
+    // console.log(obj[j])
+  }
+  return odd
 }
-findOdd([5,2,3,1,5,6,1,2,3,7])
-//
-//
+
+findOdd([20,1,-1,2,-2,3,3,5,5,1,2,4,20,4,-1,-2,5])
