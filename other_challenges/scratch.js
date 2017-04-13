@@ -228,7 +228,7 @@
 
 // PROMISES///////////////////////////
 
-var d = new Promise((resolve, reject) => {
+// var d = new Promise((resolve, reject) => {
 // Basic true of false to get back success/error
 //   // if (true){//success
 //   if (false) {//error
@@ -239,15 +239,15 @@ var d = new Promise((resolve, reject) => {
 // });
 
 // 2 second delat before the promise will fire- setTimeout()
-  setTimeout(() => {
-    // if ( true){//success
-    if (false) {//error
-      resolve('hello world')
-    } else {
-      reject('rejected')
-    }
-  }, 2000);
-});
+//   setTimeout(() => {
+//     // if ( true){//success
+//     if (false) {//error
+//       resolve('hello world')
+//     } else {
+//       reject('rejected')
+//     }
+//   }, 2000);
+// });
 
 // error can be passed into the .then()
 // d.then((data) => console.log('success: ', data), (error) => { console.error("new error msg")
@@ -257,4 +257,41 @@ var d = new Promise((resolve, reject) => {
 // d.catch((error) => console.error('error: ', error));
 
 // both commands can be chained
-d.then((data) => console.log('success: ', data).catch((error) => console.error('error: ', error))
+// d.then((data) => console.log('success: ', data).catch((error) => console.error('error: ', error))
+
+// CONACT ALL- takes in a nested array
+// To loop through nexted arrays with a single method
+
+// var arrs = [
+// [{
+//     price:2938,
+//     symbol:"xyz"
+//   },
+//   {
+//     price:4200,
+//     symbol:"zyx"
+//   }],
+// [{
+//     price:2938,
+//     symbol:"abd"
+//   },
+//   {
+//     price:4200,
+//     symbol:"cba"
+//   }]
+// ]
+
+// 
+// Array.prototype.concatAll = function(){
+// 	let results = []
+// 	this.forEach(function(subarray){
+// 	   subarray.forEach(function(item){
+// 	      results.push(item)
+//       });
+//     })
+// return results
+// }
+//
+// var flatten = arrs.concatAll();
+//
+// console.log(flatten)
