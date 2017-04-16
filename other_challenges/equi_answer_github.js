@@ -40,23 +40,22 @@ function eqIndexes(arr) {
 
 // THREE
 function solution(A) {
-    var arrLen = A.length;
-    var i = 0;
-    for(i = 0; i < arrLen; i++){
+
+    for(var i = 0; i < A.length; i++){
         var firstSum = 0;
         var secSum = 0;
+
         var currIndex = i + 1;
         //get first chunk
-        var j = 0;
         var lenJ = currIndex;
 
-          for(j = 0; j < lenJ; j++){
+          for(var j = 0; j < lenJ; j++){
             //console.log("firstChink: " + j);
             firstSum += A[j];
           }
           //get second chunk
             j = currIndex + 1;
-            lenJ = arrLen;
+            lenJ = A.length;
               for(j; j < lenJ; j++){
                 //console.log("secChunk: " + j);
                 secSum += A[j];
@@ -66,5 +65,5 @@ function solution(A) {
             return currIndex;
           }
         }
-        return arrLen;
+        return A.length;
 }

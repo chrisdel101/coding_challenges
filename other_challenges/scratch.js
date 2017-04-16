@@ -188,7 +188,7 @@
 // EXAMPLE TWO- combing instances of items together
 //
 // In this case we need a blank object; for object we need tally[vote], for number accumulator we can use tally.vote
-
+//
 // var votes = ["angular","angular","angular","react","react","ember","vanilla"];
 //
 // var initialValue = {};
@@ -281,7 +281,7 @@
 //   }]
 // ]
 
-// 
+//
 // Array.prototype.concatAll = function(){
 // 	let results = []
 // 	this.forEach(function(subarray){
@@ -295,3 +295,12 @@
 // var flatten = arrs.concatAll();
 //
 // console.log(flatten)
+var arr = [1,2,3,4,5]
+
+function test(){
+for (var i = 0; i < arr.length; i++) {
+  console.log(arr[i])
+}
+for (var  = i + 1; < array.length; i++) {
+  array[i]
+}}
