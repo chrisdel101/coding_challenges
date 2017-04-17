@@ -1,4 +1,3 @@
-
 // ----------ATTEMPT 1 - compare strings
 // function mutation(arr){
 //   var target = arr.splice(0,1);//first
@@ -10,8 +9,10 @@
 // }
  // ----------ATTEMPT 1 - VERSION 2
  function mutation(arr){
-   var target = arr.splice(0,1);//first
-   var test = arr;//second
+   var target = arr.splice(0,1);//first=hello
+   console.log(target)
+   var test = arr;//second=hey
+   console.log(test)
  // use sting methods, need [0]
    target = target[0].toLowerCase()
    test = test[0].toLowerCase()
@@ -47,6 +48,6 @@ console.log(mutation(["hello", "hey"]))
 // console.log(["Alien"].indexOf(["line"]))
 // ---------------ATTEMPT 3-------------
 
-function mutation(arr){
-
-}
+// function mutation(arr){
+//
+// }

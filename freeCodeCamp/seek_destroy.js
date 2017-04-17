@@ -57,16 +57,16 @@
 //////////////////////////////////////////
 
 
-function destroyer() {
-
-  var args = [] //second_part
-  for(var i = 0;i < arguments.length;i++){
-  args.push(arguments[i])
-  }
-  var first_part = args.splice(0,1)//arary of top
-
-  // console.log(first_part)
-  //
+// function destroyer() {
+//
+//   var args = [] //second_part
+//   for(var i = 0;i < arguments.length;i++){
+//   args.push(arguments[i])
+//   }
+//   var first_part = args.splice(0,1)//array of top
+//
+//   console.log(first_part)
+//   //
 
   var normal = [];
   console.log(args)
@@ -99,3 +99,8 @@ function destroyer() {
   // return args
 
 destroyer([1,2,3,4],2,3,4)
+// =============ATTEMPT---3
+
+// function destroyer(arr){
+//
+// }
