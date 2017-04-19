@@ -295,12 +295,14 @@
 // var flatten = arrs.concatAll();
 //
 // console.log(flatten)
-var arr = [1,2,3,4,5]
 
-function test(){
-for (var i = 0; i < arr.length; i++) {
-  console.log(arr[i])
+// -----------ADDING ARRAYS------
+// to start over at the beginning we need slice, then flatten, then sum
+
+var args = [1,2,3]
+var total = []
+for(var i = 0;i < args.length;i++){
+  var current = args.slice(0,i +1)
+  total.push(current)
 }
-for (var  = i + 1; < array.length; i++) {
-  array[i]
-}}
+console.log(total)
