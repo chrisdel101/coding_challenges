@@ -32,3 +32,17 @@
 # array.each do |x|
 #   puts x
 # end
+
+s = 'a string'
+
+l = s.length-1
+
+arr = []
+
+while l >= 0
+    arr << s[l]
+    l = l - 1
+
+end
+
+puts arr

@@ -25,7 +25,7 @@
 
 /////////FINAL ANSWER//////////////
 function confirmEnding(str, target){
-//find lenght of string
+//find length of string
   var num1 = str.length,
 //find length of ending
   num2 = target.length;

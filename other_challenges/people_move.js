@@ -1,11 +1,11 @@
   // Write a function that takes an array of objects with `age` and `name` properties e.g.
   //
-  // var people =[{ age: 30, name: "Peter" }, { age: 34, name: "Jon" }, { age: 30, name: "Catherine" }]
-  // q
+  var people =[{ age: 30, name: "Peter" }, { age: 34, name: "Jon" }, { age: 30, name: "Catherine" }]
+  q
   // and returns an object mapping from `age` to an array of corresponding `names`, e.g.
-  //
-  // { "30": ["Peter", "Catherine"], "34": ["Jon"] }
-  //
+
+  { "30": ["Peter", "Catherine"], "34": ["Jon"] }
+
   //   var object1 = {};
   //    for (var i = 0;i < people.length;i++){
   //      var obj = people[i]

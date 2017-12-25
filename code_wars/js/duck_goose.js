@@ -87,7 +87,7 @@ function duck_duck_goose(players,goose){
     return arr[arr.length-1].name
 }
 //
-// console.log(duck_duck_goose(["gary", "joe", "sam", "sara", "tony"],10))
+console.log(duck_duck_goose(["gary", "joe", "sam", "sara", "tony"],10))
 
 
  //

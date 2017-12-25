@@ -13,4 +13,4 @@ function truncateString(str, num) {
 }
 
 
-console.log(truncateString("Absolutely Longer", 2))
+console.log(truncateString("Absolutely Longer", 10))

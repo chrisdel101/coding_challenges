@@ -189,21 +189,21 @@
 //
 // In this case we need a blank object; for object we need tally[vote], for number accumulator we can use tally.vote
 //
-// var votes = ["angular","angular","angular","react","react","ember","vanilla"];
-//
-// var initialValue = {};
-//
-// var reducer = function(tally,vote){
-//   if(!tally[vote]){
-//     tally[vote] = 1;
-//   } else {
-//     tally[vote] = tally[vote] + 1;
-//   }
-//   return tally;
-// }
-// var result = votes.reduce(reducer, initialValue);
-//
-// console.log(result);
+var votes = ["angular","angular","angular","react","react","ember","vanilla"];
+
+var initialValue = {};
+
+var reducer = function(tally,vote){
+  if(!tally[vote]){
+    tally[vote] = 1;
+  } else {
+    tally[vote] = tally[vote] + 1;
+  }
+  return tally;
+}
+var result = votes.reduce(reducer, initialValue);
+
+console.log(result);
 //
 // FILTER///////////////////////////
 
@@ -299,10 +299,10 @@
 // -----------ADDING ARRAYS------
 // to start over at the beginning we need slice, then flatten, then sum
 
-var args = [1,2,3]
-var total = []
-for(var i = 0;i < args.length;i++){
-  var current = args.slice(0,i +1)
-  total.push(current)
-}
-console.log(total)
+// var args = [1,2,3]
+// var total = []
+// for(var i = 0;i < args.length;i++){
+//   var current = args.slice(0,i +1)
+//   total.push(current)
+// }
+// console.log(total)
