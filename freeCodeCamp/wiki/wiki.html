@@ -15,117 +15,117 @@
             <ul id='ul'></ul>
         </div>
         <script>
-        //cannot define outside
-        // var input = document.querySelector('#input').value;
-        var variable = "";
-        // get input
-        const submitButton = document.querySelector('#submit-button');
+//cannot define outside
+// var input = document.querySelector('#input').value;
+var variable = "";
+// get input
+const submitButton = document.querySelector('#submit-button');
 
-        submitButton.addEventListener('click', (e) => {
-          var input = document.querySelector('#input').value;
-        console.log(input)
-          if((input === "") || (input === undefined)){
-            console.log('empty')
-            makeTextNode("Input is Empty", "p", "#error-message")
-          } else if(input !== "") {
-            console.log('blue')
-          variable = input;
-          if(variable == input){
-          makeAjax(`${endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
-          //     console.log(variable)
-        }
-        }
-        })
-        var results = [];
-        function makeAjax(url){
-        return fetch(url,{
-          method: 'GET',
-          headers: new Headers( {
-              'Api-User-Agent': 'Chris Del'
-          } )
-        })
-          .then(blob => blob.json ())
-          .then((data) => {
-            var pages = data.query.pages
-            pages.forEach(i=> results.push(i))
-            var results = loopResults(results)
-            document.querySelector('#results').innerHTML = results;
-            console.log(results)
+submitButton.addEventListener('click', (e) => {
+  var input = document.querySelector('#input').value;
+  if((input === "") || (input === undefined)){
+    console.log('empty')
+    makeTextNode("Input is Empty", "p", "#error-message")
+  } else if(input !== "") {
+    console.log('blue')
+  variable = input;
+  // console.log(variable === input)
+  if(variable == input){
+  makeAjax(`${endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
+  //     console.log(variable)
+}
+}
+})
+var results = [];
+function makeAjax(url){
+    return fetch(url,{
+      method: 'GET',
+      headers: new Headers( {
+          'Api-User-Agent': 'Chris Del'
+      } )
+})
+  .then(blob => blob.json ())
+  .then((data) => {
+    var pages = data.query.pages
+    pages.forEach(i=> results.push(i))
+    loopResults(results)
+    // document.querySelector('#results').innerHTML = results;
+    // console.log(results)
 
-           })
-        }
-        function loopResults(arr,nodeType){
-        return arr.forEach((i) => {
-          // console.log(i)
-          // makeTextNode(i.title,'li','#ul')
-          // makeTextNode(i.title, 'a', '#ul')
-          return `<div class="results">
-                  <span class="title">${i.title}</span>
-                  <a href="https://en.wikipedia.org/wiki/${i.title}"</a>
-                  </div>`
-        })
-        }
-        function makeTextNode(text, element, toAppend){
-          var elem = document.createElement(element);
-          var node = document.createTextNode(text)
-            elem.appendChild(node)
+   })
+}
+function loopResults(arr,nodeType){
+    return arr.forEach((i) => {
+      console.log(i)
+      makeTextNode(i.title,'li','#ul')
+      makeTextNode(i.title, 'a', '#ul')
+      // return `<div class="results">
+      //         <span class="title">${i.title}</span>
+      //         <a href="https://en.wikipedia.org/wiki/${i.title}"</a>
+              // </div>`
+    })
+}
+function makeTextNode(text, element, toAppend){
+  var elem = document.createElement(element);
+  var node = document.createTextNode(text)
+    elem.appendChild(node)
 
-        document.querySelector(toAppend).appendChild(elem)
+document.querySelector(toAppend).appendChild(elem)
 
-        }
-        function makeURL(result){
+}
+function makeURL(result){
 
-        }
+}
 
-        // const myHeaders = new Headers();
-        // const init = {
-        //   method: 'GET',
-        //   header: myHeaders,
-        //   mode:'no-cors'
-        // };
+// const myHeaders = new Headers();
+// const init = {
+//   method: 'GET',
+//   header: myHeaders,
+//   mode:'no-cors'
+// };
 
 
-        // fetch( endpoint, {
-        //     method: 'GET',
-        //     // Other init settings such as 'credentials'
-        // } ).then( function ( response ) {
-        //     if ( response.ok ) {
-        //         return response.json();
-        //     }
-        //     throw new Error( 'Network response was not ok: ' + response.statusText );
-        // } ).then( function ( data ) {
-        //     console.log(data)
-        // })
-        //   const arr = [];
-        //     fetch(endpoint)
-        //     .then(blob => blob.json())
-        //     .then((data) => {
-        //       var pageId = data.query.pages
-        //       for (pageId in pages) {
-        //       if (pages.hasOwnProperty(pageId)) {
-        //         console.log(pages[pageId]);
-        //       }
-        //      }
-        //     })
-          var results = []
-        //     fetch(endpoint+generator,{
-        //     method: 'GET',
-        //     headers: new Headers( {
-        //         'Api-User-Agent': 'Chris Del'
-        //     } )
-        // })
-        //     .then(blob => blob.json ())
-        //     .then((data) => {
-        //      //  var pages = data.query.pages
-        //      //  pages.forEach(i=> results.push(i))
-        //       console.log(data)
-        //      })
-        // console.log(results)
-                 const endpoint  = "https://en.wikipedia.org/w/api.php?"
-        const pageterms = "api.php?action=query&formatversion=2&prop=pageimages|pageterms&titles=Albert%20Einstein"
-        const search = "api.php?action=query&list=search&srsearch=Albert%20Einstein&utf8="
-        var generator = `action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`
-        </script>
-    </body>
+// fetch( endpoint, {
+//     method: 'GET',
+//     // Other init settings such as 'credentials'
+// } ).then( function ( response ) {
+//     if ( response.ok ) {
+//         return response.json();
+//     }
+//     throw new Error( 'Network response was not ok: ' + response.statusText );
+// } ).then( function ( data ) {
+//     console.log(data)
+// })
+//   const arr = [];
+//     fetch(endpoint)
+//     .then(blob => blob.json())
+//     .then((data) => {
+//       var pageId = data.query.pages
+//       for (pageId in pages) {
+//       if (pages.hasOwnProperty(pageId)) {
+//         console.log(pages[pageId]);
+//       }
+//      }
+//     })
+  var results = []
+//     fetch(endpoint+generator,{
+//     method: 'GET',
+//     headers: new Headers( {
+//         'Api-User-Agent': 'Chris Del'
+//     } )
+// })
+//     .then(blob => blob.json ())
+//     .then((data) => {
+//      //  var pages = data.query.pages
+//      //  pages.forEach(i=> results.push(i))
+//       console.log(data)
+//      })
+// console.log(results)
+         const endpoint  = "https://en.wikipedia.org/w/api.php?"
+const pageterms = "api.php?action=query&formatversion=2&prop=pageimages|pageterms&titles=Albert%20Einstein"
+const search = "api.php?action=query&list=search&srsearch=Albert%20Einstein&utf8="
+var generator = `action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`
+</script>
+</body>
 
 </html>
