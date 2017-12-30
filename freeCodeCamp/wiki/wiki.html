@@ -3,23 +3,78 @@
     <head>
         <meta charset="utf-8">
         <title>wikipedia Viewer</title>
+        <style media="screen">
+            body{
+                box-sizing: border-box;
+            }
+            #main {
+                background-color: violet;
+                height:100%;
+                width: 100%;
+            }
+            #search-bar {
+                max-width: 30%;
+                margin:auto;
+                padding-top: 20%;
+            }
+            .inactive {
+                display: none;
+            }
+            .active {
+                display: block;
+            }
+            #X {
+                position:relative;
+                right:1.4em;
+            }
+        </style>
+        <!-- <script src="https://use.fontawesome.com/8f6adc7e15.js">
+        </script> -->
+        <script src="https://use.fontawesome.com/3978b5ff97.js"></script>
     </head>
     <body>
-        <div id='search-bar'>
-            <span>Enter search here:</span>
-            <input id='input' type='text' placeholder='enter text'/>
-            <input id='submit-button' type='submit' value='submit'/>
-        </div>
-        <div id='error-message'></div>
-        <div id='results'>
-            <ul id='ul'></ul>
-        </div>
+        <main id="main">
+            <div id='search-bar'>
+                <span>Enter search here:</span>
+                <div class="active mag-container">
+                    <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
+                </div>
+                <div id="input-container" class="inactive">
+                    <input id='input' type='text' placeholder='enter text' />
+                    <span id='X'><i class="fa fa-window-close" aria-hidden="true"></i></span>
+
+                </div>
+                <input id='submit-button' type='submit' value='submit'/>
+            </div>
+            <div id='error-message'></div>
+            <div id='results'>
+                <ul id='ul'></ul>
+            </div>
+        </main>
         <script>
 //cannot define outside
 // var input = document.querySelector('#input').value;
 var variable = "";
 // get input
 const submitButton = document.querySelector('#submit-button');
+const magContainer = document.querySelector('.mag-container')
+const input = document.querySelector('#input-container');
+const x_button = document.querySelector('#X')
+
+
+magContainer.addEventListener('click',function(){
+    // e.stopPropagation()
+    // console.log(this.classList.value)
+    // console.log(e.currentTarget)
+    toggle_visibility(magContainer)
+    toggle_visibility(input)
+})
+x_button.addEventListener('click', function(e){
+
+    toggle_visibility(input);
+    toggle_visibility(magContainer)
+})
+
 
 submitButton.addEventListener('click', (e) => {
   var input = document.querySelector('#input').value;
@@ -36,6 +91,24 @@ submitButton.addEventListener('click', (e) => {
 }
 }
 })
+// function toggle_visibility() {
+//     if(elem.style.display == 'block')
+//         elem.style.display = 'none';
+//     else
+//         elem.style.display = 'block';
+// }
+function toggle_visibility(elem) {
+
+  if(elem.classList.contains('active')){
+     elem.classList.remove('active')
+     elem.classList.add('inactive')
+
+ } else if(elem.classList.contains('inactive')){
+     elem.classList.remove('inactive')
+     elem.classList.add('active')
+ }
+}
+
 var results = [];
 function makeAjax(url){
     return fetch(url,{
@@ -43,37 +116,38 @@ function makeAjax(url){
       headers: new Headers( {
           'Api-User-Agent': 'Chris Del'
       } )
-})
+    })
   .then(blob => blob.json ())
   .then((data) => {
     var pages = data.query.pages
     pages.forEach(i=> results.push(i))
-    loopResults(results)
+    displayResults(results,'title','#ul')
     // document.querySelector('#results').innerHTML = results;
     // console.log(results)
-
    })
 }
-function loopResults(arr,nodeType){
-    return arr.forEach((i) => {
-      console.log(i)
-      makeTextNode(i.title,'li','#ul')
-      makeTextNode(i.title, 'a', '#ul')
-      // return `<div class="results">
-      //         <span class="title">${i.title}</span>
-      //         <a href="https://en.wikipedia.org/wiki/${i.title}"</a>
-              // </div>`
-    })
+function displayResults(input,attr,node){
+    var html = input.map((i) => {
+    console.log(i[attr])
+    var title = i[attr]
+      // makeTextNode(i.title,'li','#ul')
+      // makeTextNode(i.title, 'a', '#ul')
+      return `
+      <li class="title">${title}</li>
+      <a href="https://en.wikipedia.org/wiki/${title}">https://en.wikipedia.org/wiki/${title}</a>
+      `
+  }).join('')
+    console.log(html)
+    var node = document.querySelector(node);
+    node.innerHTML = html;
 }
+
 function makeTextNode(text, element, toAppend){
   var elem = document.createElement(element);
   var node = document.createTextNode(text)
     elem.appendChild(node)
 
 document.querySelector(toAppend).appendChild(elem)
-
-}
-function makeURL(result){
 
 }
 
