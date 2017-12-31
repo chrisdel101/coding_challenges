@@ -27,6 +27,26 @@
                 position:relative;
                 right:1.4em;
             }
+            #results {
+                min-height: 500px;
+                max-width:500px;
+                margin: auto;
+            }
+            #input{
+                width:70px;
+                transition: width 1s;
+            }
+            #input:focus{
+                width:200px;
+            }
+            #ul {
+                list-style-type: none;
+            }
+            .results-container {
+                border:2px black solid;
+                border-radius: 5px;
+                padding: 10px;
+            }
         </style>
         <!-- <script src="https://use.fontawesome.com/8f6adc7e15.js">
         </script> -->
@@ -40,9 +60,10 @@
                     <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
                 </div>
                 <div id="input-container" class="inactive">
-                    <input id='input' type='text' placeholder='enter text' />
-                    <span id='X'><i class="fa fa-window-close" aria-hidden="true"></i></span>
-
+                    <div id="input-flex">
+                        <input id='input' type='text' placeholder='enter text' />
+                        <span id='X'><i class="fa fa-window-close" aria-hidden="true"></i></span>
+                    </div>
                 </div>
                 <input id='submit-button' type='submit' value='submit'/>
             </div>
@@ -61,20 +82,15 @@ const magContainer = document.querySelector('.mag-container')
 const input = document.querySelector('#input-container');
 const x_button = document.querySelector('#X')
 
-
 magContainer.addEventListener('click',function(){
-    // e.stopPropagation()
-    // console.log(this.classList.value)
-    // console.log(e.currentTarget)
     toggle_visibility(magContainer)
     toggle_visibility(input)
 })
-x_button.addEventListener('click', function(e){
-
+x_button.addEventListener('click', function(){
     toggle_visibility(input);
     toggle_visibility(magContainer)
+    removeNodes('.node')
 })
-
 
 submitButton.addEventListener('click', (e) => {
   var input = document.querySelector('#input').value;
@@ -82,31 +98,26 @@ submitButton.addEventListener('click', (e) => {
     console.log('empty')
     makeTextNode("Input is Empty", "p", "#error-message")
   } else if(input !== "") {
-    console.log('blue')
-  variable = input;
-  // console.log(variable === input)
-  if(variable == input){
-  makeAjax(`${endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
-  //     console.log(variable)
-}
-}
+    variable = input;
+    // check that input is working
+      if(variable == input){
+          makeAjax(`${endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
+      }
+  }
 })
-// function toggle_visibility() {
-//     if(elem.style.display == 'block')
-//         elem.style.display = 'none';
-//     else
-//         elem.style.display = 'block';
-// }
+function removeNodes(className){
+    var nodes = document.querySelectorAll(className)
+    nodes.forEach(node => node.remove())
+}
+
 function toggle_visibility(elem) {
-
-  if(elem.classList.contains('active')){
-     elem.classList.remove('active')
-     elem.classList.add('inactive')
-
- } else if(elem.classList.contains('inactive')){
-     elem.classList.remove('inactive')
-     elem.classList.add('active')
- }
+    if(elem.classList.contains('active')){
+        elem.classList.remove('active')
+        elem.classList.add('inactive')
+    } else if(elem.classList.contains('inactive')){
+        elem.classList.remove('inactive')
+        elem.classList.add('active')
+    }
 }
 
 var results = [];
@@ -121,81 +132,61 @@ function makeAjax(url){
   .then((data) => {
     var pages = data.query.pages
     pages.forEach(i=> results.push(i))
-    displayResults(results,'title','#ul')
-    // document.querySelector('#results').innerHTML = results;
-    // console.log(results)
+
+        results.forEach((i) => {
+            setTimeout(function(){
+            console.log(i)
+            var html = makeHTML(i,'title')
+            console.log(html)
+            var node = document.querySelector('#ul');
+            var newNode = document.createElement('li')
+            newNode.innerHTML = html;
+            node.appendChild(newNode)
+        },1000)
+    })
+
+    // var html = displayResults(results,'title','#ul')
+    // html = Array.from(html)
+    // console.log(html)
    })
 }
-function displayResults(input,attr,node){
-    var html = input.map((i) => {
-    console.log(i[attr])
-    var title = i[attr]
-      // makeTextNode(i.title,'li','#ul')
-      // makeTextNode(i.title, 'a', '#ul')
+// function displayResults(input,attr,node){
+//     var html = input.map((i) => {
+//     // console.log(i[attr])
+//     var i = i[attr]
+//       return `
+//       <div class="results-container">
+//       <li class="title node">${i}</li>
+//       <a class="link node" href="https://en.wikipedia.org/wiki/${i}">https://en.wikipedia.org/wiki/${i}</a>
+//       </div>
+//       `
+//   }).join('');
+//     return html
+//     console.log(html)
+//     var node = document.querySelector(node);
+//     node.innerHTML = html;
+// }
+
+function makeHTML(input,attr){
+    // console.log(i[attr])
+    var input = input[attr]
       return `
-      <li class="title">${title}</li>
-      <a href="https://en.wikipedia.org/wiki/${title}">https://en.wikipedia.org/wiki/${title}</a>
+      <div class="results-container">
+      <li class="title node">${input}</li>
+      <a class="link node" href="https://en.wikipedia.org/wiki/${input}">https://en.wikipedia.org/wiki/${input}</a>
+      </div>
       `
-  }).join('')
-    console.log(html)
-    var node = document.querySelector(node);
-    node.innerHTML = html;
 }
 
 function makeTextNode(text, element, toAppend){
-  var elem = document.createElement(element);
-  var node = document.createTextNode(text)
+    var elem = document.createElement(element);
+    var node = document.createTextNode(text)
     elem.appendChild(node)
-
-document.querySelector(toAppend).appendChild(elem)
+    document.querySelector(toAppend).appendChild(elem)
 
 }
 
-// const myHeaders = new Headers();
-// const init = {
-//   method: 'GET',
-//   header: myHeaders,
-//   mode:'no-cors'
-// };
-
-
-// fetch( endpoint, {
-//     method: 'GET',
-//     // Other init settings such as 'credentials'
-// } ).then( function ( response ) {
-//     if ( response.ok ) {
-//         return response.json();
-//     }
-//     throw new Error( 'Network response was not ok: ' + response.statusText );
-// } ).then( function ( data ) {
-//     console.log(data)
-// })
-//   const arr = [];
-//     fetch(endpoint)
-//     .then(blob => blob.json())
-//     .then((data) => {
-//       var pageId = data.query.pages
-//       for (pageId in pages) {
-//       if (pages.hasOwnProperty(pageId)) {
-//         console.log(pages[pageId]);
-//       }
-//      }
-//     })
-  var results = []
-//     fetch(endpoint+generator,{
-//     method: 'GET',
-//     headers: new Headers( {
-//         'Api-User-Agent': 'Chris Del'
-//     } )
-// })
-//     .then(blob => blob.json ())
-//     .then((data) => {
-//      //  var pages = data.query.pages
-//      //  pages.forEach(i=> results.push(i))
-//       console.log(data)
-//      })
-// console.log(results)
-         const endpoint  = "https://en.wikipedia.org/w/api.php?"
+const endpoint  = "https://en.wikipedia.org/w/api.php?"
 const pageterms = "api.php?action=query&formatversion=2&prop=pageimages|pageterms&titles=Albert%20Einstein"
 const search = "api.php?action=query&list=search&srsearch=Albert%20Einstein&utf8="
 var generator = `action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`
