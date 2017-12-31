@@ -133,21 +133,33 @@ function makeAjax(url){
     var pages = data.query.pages
     pages.forEach(i=> results.push(i))
 
-        results.forEach((i) => {
-            setTimeout(function(){
-            console.log(i)
-            var html = makeHTML(i,'title')
-            console.log(html)
-            var node = document.querySelector('#ul');
-            var newNode = document.createElement('li')
-            newNode.innerHTML = html;
-            node.appendChild(newNode)
-        },1000)
-    })
+    for (var i = 0; i < 10; i++) {
+        (function(i) {
+            setTimeout(function() {
+                var html = makeHTML(results[i],'title')
+                console.log(i)
+                displayResults(html,'#ul')
+            }, 100 * i);
+        })(i);
+}
 
-    // var html = displayResults(results,'title','#ul')
-    // html = Array.from(html)
-    // console.log(html)
+        // results.forEach((j) => {
+        //     // console.log(j)
+        //     var i = 1;                     //  set your counter to 1
+        //     function myLoop () {           //  create a loop function
+        //         setTimeout(function () {
+        //             var html = makeHTML(j,'title')
+        //             console.log(j)
+        //             displayResults(html,'#ul')
+        //             i++;                     //  increment the counter
+        //             if (i < 10) {            //  if the counter < 10, call the loop function
+        //                 myLoop();             //  ..  again which will trigger another
+        //             }                        //  ..  setTimeout()
+        //         }, 1000)
+        //     }
+        //     myLoop();
+        // })
+    // })
    })
 }
 // function displayResults(input,attr,node){
@@ -161,12 +173,15 @@ function makeAjax(url){
 //       </div>
 //       `
 //   }).join('');
-//     return html
+//     // return html
 //     console.log(html)
 //     var node = document.querySelector(node);
 //     node.innerHTML = html;
 // }
-
+function displayResults(html,domNode){
+    var domNode = document.querySelector(domNode);
+    domNode.innerHTML = html;
+}
 function makeHTML(input,attr){
     // console.log(i[attr])
     var input = input[attr]
