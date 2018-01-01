@@ -47,6 +47,15 @@
                 border-radius: 5px;
                 padding: 10px;
             }
+            .results-container.hidden {
+                transition: all 1s ease-out;
+                opacity: 0;
+            }
+            .results-container.show {
+                opacity: 1;
+                /* background-color: green; */
+            }
+
         </style>
         <!-- <script src="https://use.fontawesome.com/8f6adc7e15.js">
         </script> -->
@@ -133,15 +142,8 @@ function makeAjax(url){
     var pages = data.query.pages
     pages.forEach(i=> results.push(i))
 
-    for (var i = 0; i < 10; i++) {
-        (function(i) {
-            setTimeout(function() {
-                var html = makeHTML(results[i],'title')
-                console.log(i)
-                displayResults(html,'#ul')
-            }, 100 * i);
-        })(i);
-}
+    // try to loop with delay- lag on first element
+    timedDisplay()
 
         // results.forEach((j) => {
         //     // console.log(j)
@@ -178,15 +180,31 @@ function makeAjax(url){
 //     var node = document.querySelector(node);
 //     node.innerHTML = html;
 // }
+function timedDisplay() {
+    for (var i = 0; i < 10; i++) {
+        (function(i) {
+            setTimeout(function() {
+                var html = makeHTML(results[i],'title')
+                displayResults(html,'#ul')
+            },i*100);
+        })(i);
+    }
+}
+
 function displayResults(html,domNode){
     var domNode = document.querySelector(domNode);
-    domNode.innerHTML = html;
+    var div = document.querySelectorAll('.results-container');
+    //
+    if(div != null){
+        div.forEach(i => i.classList.add('show'))
+    }
+    domNode.insertAdjacentHTML('beforeend',html);
 }
 function makeHTML(input,attr){
     // console.log(i[attr])
     var input = input[attr]
       return `
-      <div class="results-container">
+      <div class="results-container hidden">
       <li class="title node">${input}</li>
       <a class="link node" href="https://en.wikipedia.org/wiki/${input}">https://en.wikipedia.org/wiki/${input}</a>
       </div>
