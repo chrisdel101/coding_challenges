@@ -55,7 +55,26 @@
                 opacity: 1;
                 /* background-color: green; */
             }
-
+            #click-span {
+                text-align: center;
+            }
+            .mag-container {
+                position: relative;
+                left: 6.5em;
+                padding: 10px 0;
+            }
+            button {
+                border-radius: 30px;
+                background-color: black; /* Green */
+                border: none;
+                color: white;
+                padding: 15px 14px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin-left:5.4em;
+            }
         </style>
         <!-- <script src="https://use.fontawesome.com/8f6adc7e15.js">
         </script> -->
@@ -64,7 +83,7 @@
     <body>
         <main id="main">
             <div id='search-bar'>
-                <span id='click-span' class='active'>Click to Search:</span>
+                <span id='click-span' class='active'>Click Search Glass:</span>
                 <div class="active mag-container">
                     <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
                 </div>
@@ -74,7 +93,7 @@
                         <span id='X'><i class="fa fa-window-close" aria-hidden="true"></i></span>
                     </div>
                 </div>
-                <input id='submit-button' type='submit' value='submit'/>
+                <button id='submit-button'class='btn btn2' type='button'>Search</button>
             </div>
             <div id='error-message'></div>
             <div id='results'>
@@ -112,6 +131,7 @@ x_button.addEventListener('click', function(){
     } else {
         toggle_visibility(inputContainer);
         toggle_visibility(magContainer);
+        toggle_visibility(span);
     }
 })
 
