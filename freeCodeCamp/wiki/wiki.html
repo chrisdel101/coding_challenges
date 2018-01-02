@@ -48,7 +48,7 @@
                 padding: 10px;
             }
             .results-container.hidden {
-                transition: all 1s ease-out;
+                transition: all 0.4s ease-out;
                 opacity: 0;
             }
             .results-container.show {
@@ -64,7 +64,7 @@
     <body>
         <main id="main">
             <div id='search-bar'>
-                <span>Enter search here:</span>
+                <span id='click-span' class='active'>Click to Search:</span>
                 <div class="active mag-container">
                     <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
                 </div>
@@ -88,28 +88,43 @@ var variable = "";
 // get input
 const submitButton = document.querySelector('#submit-button');
 const magContainer = document.querySelector('.mag-container')
-const input = document.querySelector('#input-container');
+const inputContainer = document.querySelector('#input-container');
 const x_button = document.querySelector('#X')
+const error_message = document.querySelector('#error-message');
+let input = document.querySelector('#input');
+const span = document.querySelector('#click-span')
 
+
+input.addEventListener('transitionend', () => {
+    input.style.width = '200px'
+})
 magContainer.addEventListener('click',function(){
     toggle_visibility(magContainer)
-    toggle_visibility(input)
+    toggle_visibility(inputContainer)
+    toggle_visibility(span)
 })
 x_button.addEventListener('click', function(){
-    toggle_visibility(input);
-    toggle_visibility(magContainer)
-    removeNodes('.node')
+    // if not blank, delete
+    if(input.value != ""){
+        removeNodes('.results-container')
+        input.value = "";
+    // if blank, return mag
+    } else {
+        toggle_visibility(inputContainer);
+        toggle_visibility(magContainer);
+    }
 })
 
 submitButton.addEventListener('click', (e) => {
-  var input = document.querySelector('#input').value;
-  if((input === "") || (input === undefined)){
-    console.log('empty')
-    makeTextNode("Input is Empty", "p", "#error-message")
-  } else if(input !== "") {
-    variable = input;
+  if((input.value === "") || (input.value === undefined)){
+      // if zero messages on page, display message
+    if(error_message.children.length <= 0)
+        makeTextNode("Input is Empty", "p", "#error-message")
+  } else if(input.value !== "") {
+    variable = input.value;
     // check that input is working
-      if(variable == input){
+      if(variable == input.value){
+          // console.log('c')
           makeAjax(`${endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
       }
   }
@@ -118,7 +133,6 @@ function removeNodes(className){
     var nodes = document.querySelectorAll(className)
     nodes.forEach(node => node.remove())
 }
-
 function toggle_visibility(elem) {
     if(elem.classList.contains('active')){
         elem.classList.remove('active')
@@ -128,7 +142,6 @@ function toggle_visibility(elem) {
         elem.classList.add('active')
     }
 }
-
 var results = [];
 function makeAjax(url){
     return fetch(url,{
@@ -186,7 +199,7 @@ function timedDisplay() {
             setTimeout(function() {
                 var html = makeHTML(results[i],'title')
                 displayResults(html,'#ul')
-            },i*100);
+            },0);
         })(i);
     }
 }
@@ -196,8 +209,10 @@ function displayResults(html,domNode){
     var div = document.querySelectorAll('.results-container');
     //
     if(div != null){
+        // since first is null
         div.forEach(i => i.classList.add('show'))
     }
+    // insertAdjacentHTML new api works - innerHTML does not
     domNode.insertAdjacentHTML('beforeend',html);
 }
 function makeHTML(input,attr){
