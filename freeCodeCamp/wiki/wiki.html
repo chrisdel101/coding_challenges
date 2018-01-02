@@ -23,16 +23,23 @@
             .active {
                 display: block;
             }
-            #X {
-                position:relative;
-                right:1.4em;
+            .X {
+                float: right;
             }
             #results {
                 min-height: 500px;
                 max-width:500px;
                 margin: auto;
             }
-            #input{
+            #input-container {
+                width:70px;
+                border:2px black solid;
+                transition:width 2s;
+            }
+            #input-container.clicked{
+                width:200px;
+            }
+             #input{
                 width:70px;
                 transition: width 1s;
             }
@@ -89,8 +96,8 @@
                 </div>
                 <div id="input-container" class="inactive">
                     <div id="input-flex">
-                        <input id='input' type='text' placeholder='enter text' />
-                        <span id='X'><i class="fa fa-window-close" aria-hidden="true"></i></span>
+                        <input id='input' type='text' placeholder="enter text" />
+                        <span class="fa fa-window-close X" aria-hidden="true"></span>
                     </div>
                 </div>
                 <button id='submit-button'class='btn btn2' type='button'>Search</button>
@@ -121,6 +128,10 @@ magContainer.addEventListener('click',function(){
     toggle_visibility(magContainer)
     toggle_visibility(inputContainer)
     toggle_visibility(span)
+
+    if(window.getComputedStyle(inputContainer, null).getPropertyValue("display") === 'block')
+        inputContainer.classList.add('clicked')
+
 })
 x_button.addEventListener('click', function(){
     // if not blank, delete
