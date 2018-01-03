@@ -23,8 +23,13 @@
             .active {
                 display: block;
             }
+            #search-bar {
+                height:100px;
+            }
             .X {
                 float: right;
+                margin-right: 10px;
+                margin-top: 5px;
             }
             #results {
                 min-height: 500px;
@@ -34,17 +39,22 @@
             #input-container {
                 width:70px;
                 border:2px black solid;
+                background-color: #18A8E2;
                 transition: width 2s;
+                margin-top: 10px;
             }
             #input-container.clicked{
                 width:200px;
             }
              #input{
-                width:70px;
+                background-color: #18A8E2;
+                padding: 10px;
+                border:none;
+                width:10px;
                 transition: width 1s;
             }
             #input:focus{
-                width:200px;
+                width:60%;
             }
             #ul {
                 list-style-type: none;
@@ -67,7 +77,7 @@
             }
             .mag-container {
                 position: relative;
-                left: 6.5em;
+                left: 2.5em;
                 padding: 10px 0;
             }
             button {
@@ -80,8 +90,23 @@
                 text-decoration: none;
                 display: inline-block;
                 font-size: 16px;
-                margin-left:5.4em;
+                margin-left:1.4em;
             }
+            .button-container{
+                max-width: 30%;
+                margin: auto;
+            }
+            #error-message{
+                height:30px;
+                max-width: 30%;
+                margin: auto;
+                /* border:white 1px solid; */
+            }
+            #error-message > p{
+                text-align: center;
+                margin-top: 5px;
+            }
+
         </style>
         <!-- <script src="https://use.fontawesome.com/8f6adc7e15.js">
         </script> -->
@@ -96,13 +121,15 @@
                 </div>
                 <div id="input-container" class="inactive">
                     <div id="input-flex">
-                        <input id='input' type='text' placeholder="enter text" />
-                        <span id="X" class="fa fa-window-close X" aria-hidden="true"></span>
+                        <input id='input' type='text' />
+                        <span id="X" class="fa fa-window-close fa-lg X" aria-hidden="true"></span>
                     </div>
                 </div>
-                <button id='submit-button'class='btn btn2' type='button'>Search</button>
             </div>
             <div id='error-message'></div>
+            <div class="button-container">
+                <button id='submit-button'class='btn btn2' type='button'>Search</button>
+            </div>
             <div id='results'>
                 <ul id='ul'></ul>
             </div>
@@ -121,13 +148,14 @@ let input = document.querySelector('#input');
 const span = document.querySelector('#click-span')
 
 
-input.addEventListener('transitionend', () => {
-    input.style.width = '200px'
-})
+// transitionend keeps the hover state after hover leaves
+// input.addEventListener('transitionend', () => {
+//     input.style.width = '50%'
+// })
 magContainer.addEventListener('click',function(){
     toggle_visibility(magContainer)
     toggle_visibility(inputContainer)
-    toggle_visibility(span)
+    // toggle_visibility(span)
 
     if(window.getComputedStyle(inputContainer, null).getPropertyValue("display") === 'block')
         toggle_clicked(inputContainer)
@@ -142,7 +170,7 @@ x_button.addEventListener('click', function(){
     } else {
         toggle_visibility(inputContainer);
         toggle_visibility(magContainer);
-        toggle_visibility(span);
+        // toggle_visibility(span);
     }
     if(window.getComputedStyle(inputContainer, null).getPropertyValue("display") === 'none')
         toggle_clicked(inputContainer)
