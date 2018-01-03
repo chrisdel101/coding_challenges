@@ -34,7 +34,7 @@
             #input-container {
                 width:70px;
                 border:2px black solid;
-                transition:width 2s;
+                transition: width 2s;
             }
             #input-container.clicked{
                 width:200px;
@@ -97,7 +97,7 @@
                 <div id="input-container" class="inactive">
                     <div id="input-flex">
                         <input id='input' type='text' placeholder="enter text" />
-                        <span class="fa fa-window-close X" aria-hidden="true"></span>
+                        <span id="X" class="fa fa-window-close X" aria-hidden="true"></span>
                     </div>
                 </div>
                 <button id='submit-button'class='btn btn2' type='button'>Search</button>
@@ -130,7 +130,7 @@ magContainer.addEventListener('click',function(){
     toggle_visibility(span)
 
     if(window.getComputedStyle(inputContainer, null).getPropertyValue("display") === 'block')
-        inputContainer.classList.add('clicked')
+        toggle_clicked(inputContainer)
 
 })
 x_button.addEventListener('click', function(){
@@ -144,6 +144,8 @@ x_button.addEventListener('click', function(){
         toggle_visibility(magContainer);
         toggle_visibility(span);
     }
+    if(window.getComputedStyle(inputContainer, null).getPropertyValue("display") === 'none')
+        toggle_clicked(inputContainer)
 })
 
 submitButton.addEventListener('click', (e) => {
@@ -160,9 +162,19 @@ submitButton.addEventListener('click', (e) => {
       }
   }
 })
+function clicked(elem){
+    elem.classList.add('clicked')
+}
 function removeNodes(className){
     var nodes = document.querySelectorAll(className)
     nodes.forEach(node => node.remove())
+}
+function toggle_clicked(elem) {
+    if(elem.classList.contains('clicked')){
+        elem.classList.remove('clicked')
+    } else {
+        elem.classList.add('clicked')
+    }
 }
 function toggle_visibility(elem) {
     if(elem.classList.contains('active')){
