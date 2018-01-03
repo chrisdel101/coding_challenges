@@ -106,6 +106,19 @@
                 text-align: center;
                 margin-top: 5px;
             }
+            i{
+                display: inline-block;
+                width:48%;
+            }
+            .click-span {
+                display:inline-block;
+
+            }
+            .search-text {
+                position: relative;
+                top:165px;
+                left:275px;
+            }
 
         </style>
         <!-- <script src="https://use.fontawesome.com/8f6adc7e15.js">
@@ -114,10 +127,14 @@
     </head>
     <body>
         <main id="main">
+            <div class="search-text">
+                <div class='click-span' class='active'>Click Glass to Search</div>
+                <div class='click-span' class='active'>Click Arrow for Random</div>
+            </div>
             <div id='search-bar'>
-                <span id='click-span' class='active'>Click Search Glass:</span>
                 <div class="active mag-container">
                     <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-random fa-3x" aria-hidden="true"></i>
                 </div>
                 <div id="input-container" class="inactive">
                     <div id="input-flex">
