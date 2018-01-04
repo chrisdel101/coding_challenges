@@ -12,16 +12,27 @@
                 height:100%;
                 width: 100%;
             }
+            .wrapper{
+                width:400px;
+                margin: auto;
+                border:solid black;
+            }
             #search-bar {
-                max-width: 30%;
+                /* max-width: 30%;
                 margin:auto;
-                padding-top: 20%;
+                padding-top: 20%; */
+            }
+            .icon {
+                display: inline-block;
+                border:black solid;
+                margin-left:100px;
+
             }
             .inactive {
                 display: none;
             }
             .active {
-                display: block;
+                display: inline-block;
             }
             #search-bar {
                 height:100px;
@@ -76,9 +87,9 @@
                 text-align: center;
             }
             .mag-container {
-                position: relative;
+                /* position: relative;
                 left: 2.5em;
-                padding: 10px 0;
+                padding: 10px 0; */
             }
             button {
                 border-radius: 30px;
@@ -115,9 +126,9 @@
 
             }
             .search-text {
-                position: relative;
+                /* position: relative;
                 top:165px;
-                left:275px;
+                left:275px; */
             }
 
         </style>
@@ -127,28 +138,32 @@
     </head>
     <body>
         <main id="main">
-            <div class="search-text">
-                <div class='click-span' class='active'>Click Glass to Search</div>
-                <div class='click-span' class='active'>Click Arrow for Random</div>
-            </div>
-            <div id='search-bar'>
-                <div class="active mag-container">
-                    <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
-                    <i class="fa fa-random fa-3x" aria-hidden="true"></i>
+            <div class="wrapper">
+                <div class="search-text">
+                    <div class='click-span' class='active'>Click Glass to Search</div>
+                    <div class='click-span' class='active'>Click Arrow for Random</div>
                 </div>
-                <div id="input-container" class="inactive">
-                    <div id="input-flex">
-                        <input id='input' type='text' />
-                        <span id="X" class="fa fa-window-close fa-lg X" aria-hidden="true"></span>
+                <div id='search-bar'>
+                    <div class="active mag-container icon">
+                        <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-random fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div id="input-container" class="inactive">
+                        <div id="input-flex">
+                            <input id='input' type='text' />
+                            <span id="X" class="fa fa-window-close fa-lg X" aria-hidden="true"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id='error-message'></div>
-            <div class="button-container">
-                <button id='submit-button'class='btn btn2' type='button'>Search</button>
-            </div>
-            <div id='results'>
-                <ul id='ul'></ul>
+                <div id='error-message'></div>
+                <div class="button-container">
+                    <button id='submit-button'class='btn btn2' type='button'>Search</button>
+                </div>
+                <div id='results'>
+                    <ul id='ul'></ul>
+                </div>
             </div>
         </main>
         <script>
