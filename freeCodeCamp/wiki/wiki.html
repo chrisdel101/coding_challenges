@@ -64,9 +64,9 @@
                 width:10px;
                 transition: width 1s;
             }
-            /* #input:focus{
-                width:60%;
-            } */
+            #input.focus{
+                width:70%;
+            }
             #ul {
                 list-style-type: none;
             }
@@ -154,7 +154,7 @@
                         <i class="fa fa-random fa-3x" aria-hidden="true"></i>
                     </div>
                     <div id="input-container" class="inactive">
-                        <div id="input-flex">
+                        <div id="input-wrapper">
                             <input id='input' type='text' />
                             <span id="X" class="fa fa-window-close fa-lg X" aria-hidden="true"></span>
                         </div>
@@ -178,8 +178,9 @@ const submitButton = document.querySelector('#submit-button');
 const magContainer = document.querySelector('.mag-container')
 const magClicker = document.querySelector('#mag-container > i')
 const inputContainer = document.querySelector('#input-container');
-const inputFlex = document.querySelector('#input-flex');
-const x_button = document.querySelector('#X');
+const inputWrapper = document.querySelector('#input-wrapper');
+// const x_button = document.querySelector('#X');
+const x_button = document.querySelector('#input-wrapper > span')
 const error_message = document.querySelector('#error-message');
 let input = document.querySelector('#input');
 const span = document.querySelector('.click-span');
@@ -189,6 +190,16 @@ const mag = document.querySelector('#mag');
 // inputContainer.addEventListener('transitionend', () => {
 //     input.style.width = '50%'
 // })
+
+
+
+// OVERALL
+// 1- click magClicker and inputContainer becomes visible
+// 2- Click on magClicker also adds class 'clicked',- transition width of inputContainer
+// 3- Click on inputWrapper (outer) and add focus class- toggle width of input (inner)
+// 4-
+
+
 
 // click the mag to search
 magClicker.addEventListener('click',() => {
@@ -209,6 +220,15 @@ magClicker.addEventListener('click',() => {
     // }
 
 })
+
+inputWrapper.addEventListener('click', () => {
+    toggle_focus(input)
+    // make_width('70%',input)
+})
+input.addEventListener('blur', () => {
+    console.log('blur')
+    toggle_focus(input);
+})
 x_button.addEventListener('click',() => {
     // if not blank, delete
     if(input.value != ""){
@@ -216,6 +236,7 @@ x_button.addEventListener('click',() => {
         input.value = "";
     // if blank, return mag
     } else {
+// Once text is delete and nodes are deleted
         // make input dissapear
         toggle_visibility(inputContainer);
         // toggle width transition- make small
@@ -223,14 +244,13 @@ x_button.addEventListener('click',() => {
 
         // make inner input small
         toggle_focus(input);
-        make_width('10px',input);
+        // make_width('10px',input);
     }
 })
-// click the input wrapper, focus and add width
-inputFlex.addEventListener('click', () => {
-    toggle_focus(input)
-    make_width('70%',input)
-})
+// First try
+// click the input-wrapper, focus and add width
+// Second try
+// Cannot use click clicking the X also clicks this. Had to make focus
 
 submitButton.addEventListener('click', (e) => {
   if((input.value === "") || (input.value === undefined)){
@@ -246,13 +266,22 @@ submitButton.addEventListener('click', (e) => {
       }
   }
 })
+// function toggle_focus(elem){
+//     // if element is focused, blur it
+//     if(document.activeElement === elem){
+//         elem.blur()
+//     } else {
+//         // otherwise focus
+//         elem.focus()
+//     }
+// }
 function toggle_focus(elem){
-    // if element is focused, blur it
-    if(document.activeElement === elem){
-        elem.blur()
+    if(elem.classList.contains('focus')){
+        elem.classList.remove('focus')
+        elem.blur();
     } else {
-        // otherwise focus
-        elem.focus()
+        elem.classList.add('focus')
+        elem.focus();
     }
 }
 function clicked(elem){
