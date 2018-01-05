@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>wikipedia Viewer</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
         <style media="screen">
             body{
                 box-sizing: border-box;
@@ -13,7 +14,7 @@
                 width: 100%;
             }
             .wrapper{
-                width:400px;
+                width:450px;
                 margin: auto;
                 border:solid black;
             }
@@ -26,13 +27,12 @@
                 display: inline-block;
                 border:black solid;
                 margin-left:100px;
-
             }
             .inactive {
-                display: none;
+                visibility: hidden;
             }
             .active {
-                display: inline-block;
+                visibility: visible;
             }
             #search-bar {
                 height:100px;
@@ -51,7 +51,7 @@
                 width:70px;
                 border:2px black solid;
                 background-color: #18A8E2;
-                transition: width 2s;
+                transition: width 1s;
                 margin-top: 10px;
             }
             #input-container.clicked{
@@ -64,9 +64,9 @@
                 width:10px;
                 transition: width 1s;
             }
-            #input:focus{
+            /* #input:focus{
                 width:60%;
-            }
+            } */
             #ul {
                 list-style-type: none;
             }
@@ -83,8 +83,15 @@
                 opacity: 1;
                 /* background-color: green; */
             }
-            #click-span {
+            .click-span {
                 text-align: center;
+                font-family: 'Open Sans', sans-serif;
+                display:inline-block;
+                margin-left: 40px;
+            }
+            .click-span:nth-child(2){
+                /* background-color: green; */
+                /* float:right; */
             }
             .mag-container {
                 /* position: relative;
@@ -121,10 +128,6 @@
                 display: inline-block;
                 width:48%;
             }
-            .click-span {
-                display:inline-block;
-
-            }
             .search-text {
                 /* position: relative;
                 top:165px;
@@ -144,10 +147,10 @@
                     <div class='click-span' class='active'>Click Arrow for Random</div>
                 </div>
                 <div id='search-bar'>
-                    <div class="active mag-container icon">
+                    <div id="mag-container" class="active icon">
                         <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
                     </div>
-                    <div class="icon">
+                    <div id="random-container" class="icon">
                         <i class="fa fa-random fa-3x" aria-hidden="true"></i>
                     </div>
                     <div id="input-container" class="inactive">
@@ -173,39 +176,60 @@ var variable = "";
 // get input
 const submitButton = document.querySelector('#submit-button');
 const magContainer = document.querySelector('.mag-container')
+const magClicker = document.querySelector('#mag-container > i')
 const inputContainer = document.querySelector('#input-container');
-const x_button = document.querySelector('#X')
+const inputFlex = document.querySelector('#input-flex');
+const x_button = document.querySelector('#X');
 const error_message = document.querySelector('#error-message');
 let input = document.querySelector('#input');
-const span = document.querySelector('#click-span')
-
+const span = document.querySelector('.click-span');
+const mag = document.querySelector('#mag');
 
 // transitionend keeps the hover state after hover leaves
-// input.addEventListener('transitionend', () => {
+// inputContainer.addEventListener('transitionend', () => {
 //     input.style.width = '50%'
 // })
-magContainer.addEventListener('click',function(){
-    toggle_visibility(magContainer)
-    toggle_visibility(inputContainer)
-    // toggle_visibility(span)
 
-    if(window.getComputedStyle(inputContainer, null).getPropertyValue("display") === 'block')
+// click the mag to search
+magClicker.addEventListener('click',() => {
+    // if input is hidden, make visible
+    if(window.getComputedStyle(inputContainer, null).getPropertyValue('visibility') === 'hidden')
+        toggle_visibility(inputContainer)
+
+    // getComputedStyle checks dom element for display
+
+    // if visible, add transition to width
+    if(window.getComputedStyle(inputContainer, null).getPropertyValue('visibility') === 'visible')
         toggle_clicked(inputContainer)
 
+    // if inner width is expanded, shorten for transition
+    // if(input.style.width > '10px'){
+    //     // input.style.width = '10px';
+    //     make_width('10px',input);
+    // }
+
 })
-x_button.addEventListener('click', function(){
+x_button.addEventListener('click',() => {
     // if not blank, delete
     if(input.value != ""){
         removeNodes('.results-container')
         input.value = "";
     // if blank, return mag
     } else {
+        // make input dissapear
         toggle_visibility(inputContainer);
-        toggle_visibility(magContainer);
-        // toggle_visibility(span);
+        // toggle width transition- make small
+        toggle_clicked(inputContainer);
+
+        // make inner input small
+        toggle_focus(input);
+        make_width('10px',input);
     }
-    if(window.getComputedStyle(inputContainer, null).getPropertyValue("display") === 'none')
-        toggle_clicked(inputContainer)
+})
+// click the input wrapper, focus and add width
+inputFlex.addEventListener('click', () => {
+    toggle_focus(input)
+    make_width('70%',input)
 })
 
 submitButton.addEventListener('click', (e) => {
@@ -222,12 +246,24 @@ submitButton.addEventListener('click', (e) => {
       }
   }
 })
+function toggle_focus(elem){
+    // if element is focused, blur it
+    if(document.activeElement === elem){
+        elem.blur()
+    } else {
+        // otherwise focus
+        elem.focus()
+    }
+}
 function clicked(elem){
     elem.classList.add('clicked')
 }
 function removeNodes(className){
     var nodes = document.querySelectorAll(className)
     nodes.forEach(node => node.remove())
+}
+function make_width(makeWidth,elem) {
+    elem.style.width = makeWidth
 }
 function toggle_clicked(elem) {
     if(elem.classList.contains('clicked')){
