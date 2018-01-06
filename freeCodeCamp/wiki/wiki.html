@@ -151,7 +151,7 @@
                         <i id='mag'class="fa fa-search fa-3x" aria-hidden="true"></i>
                     </div>
                     <div id="random-container" class="icon">
-                        <i class="fa fa-random fa-3x" aria-hidden="true"></i>
+                        <i id="random" class="fa fa-random fa-3x" aria-hidden="true"></i>
                     </div>
                     <div id="input-container" class="inactive">
                         <div id="input-wrapper">
@@ -185,6 +185,7 @@ const error_message = document.querySelector('#error-message');
 let input = document.querySelector('#input');
 const span = document.querySelector('.click-span');
 const mag = document.querySelector('#mag');
+const random = document.querySelector('#random');
 
 // transitionend keeps the hover state after hover leaves
 // inputContainer.addEventListener('transitionend', () => {
@@ -197,7 +198,8 @@ const mag = document.querySelector('#mag');
 // 1- click magClicker and inputContainer becomes visible
 // 2- Click on magClicker also adds class 'clicked',- transition width of inputContainer
 // 3- Click on inputWrapper (outer) and add focus class- toggle width of input (inner)
-// 4-
+// 4- Click anywhere to remove with blur event - input shrinks
+// 5 - Click on X to remove clear input, text nodes, and to make input dissapear
 
 
 
@@ -220,6 +222,10 @@ magClicker.addEventListener('click',() => {
     // }
 
 })
+
+// random.addEventListener('click' () => {
+//     fetch
+// })
 
 inputWrapper.addEventListener('click', () => {
     toggle_focus(input)
@@ -262,7 +268,8 @@ submitButton.addEventListener('click', (e) => {
     // check that input is working
       if(variable == input.value){
           // console.log('c')
-          makeAjax(`${endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
+          var ajax =  makeAjax(`${api_endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
+          console.log(ajax)
       }
   }
 })
@@ -310,62 +317,79 @@ function toggle_visibility(elem) {
         elem.classList.add('active')
     }
 }
-var results = [];
+// var results = [];
+// function makeAjax(url){
+//     return fetch(url,{
+//       method: 'GET',
+//       headers: new Headers( {
+//           'Api-User-Agent': 'Chris Del'
+//       } )
+//     })
+//   .then(blob => blob.json ())
+//   .then((data) => {
+//     var pages = data.query.pages
+//     pages.forEach(i=> results.push(i))
+//     console.log(results)
+//     // try to loop with delay- lag on first element
+//     timedDisplay()
+//
+//         // results.forEach((j) => {
+//         //     // console.log(j)
+//         //     var i = 1;                     //  set your counter to 1
+//         //     function myLoop () {           //  create a loop function
+//         //         setTimeout(function () {
+//         //             var html = makeHTML(j,'title')
+//         //             console.log(j)
+//         //             displayResults(html,'#ul')
+//         //             i++;                     //  increment the counter
+//         //             if (i < 10) {            //  if the counter < 10, call the loop function
+//         //                 myLoop();             //  ..  again which will trigger another
+//         //             }                        //  ..  setTimeout()
+//         //         }, 1000)
+//         //     }
+//         //     myLoop();
+//         // })
+//     // })
+//    })
+// }
 function makeAjax(url){
-    return fetch(url,{
-      method: 'GET',
-      headers: new Headers( {
-          'Api-User-Agent': 'Chris Del'
-      } )
-    })
+    let results = [];
+    let myHeaders = new Headers();
+    myHeaders.append('Api-User-Agent','Chris Del')
+    let options = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+    fetch(url,options)
   .then(blob => blob.json ())
   .then((data) => {
-    var pages = data.query.pages
+    let pages = data.query.pages
     pages.forEach(i=> results.push(i))
-
-    // try to loop with delay- lag on first element
-    timedDisplay()
-
-        // results.forEach((j) => {
-        //     // console.log(j)
-        //     var i = 1;                     //  set your counter to 1
-        //     function myLoop () {           //  create a loop function
-        //         setTimeout(function () {
-        //             var html = makeHTML(j,'title')
-        //             console.log(j)
-        //             displayResults(html,'#ul')
-        //             i++;                     //  increment the counter
-        //             if (i < 10) {            //  if the counter < 10, call the loop function
-        //                 myLoop();             //  ..  again which will trigger another
-        //             }                        //  ..  setTimeout()
-        //         }, 1000)
-        //     }
-        //     myLoop();
-        // })
-    // })
    })
+   return results
 }
-// function displayResults(input,attr,node){
-//     var html = input.map((i) => {
-//     // console.log(i[attr])
-//     var i = i[attr]
-//       return `
-//       <div class="results-container">
-//       <li class="title node">${i}</li>
-//       <a class="link node" href="https://en.wikipedia.org/wiki/${i}">https://en.wikipedia.org/wiki/${i}</a>
-//       </div>
-//       `
-//   }).join('');
-//     // return html
-//     console.log(html)
-//     var node = document.querySelector(node);
-//     node.innerHTML = html;
-// }
-function timedDisplay() {
+// timedDisplay(results)
+function displayResults(input,attr,node){
+    var html = input.map((i) => {
+    // console.log(i[attr])
+    var i = i[attr]
+      return `
+      <div class="results-container">
+      <li class="title node">${i}</li>
+      <a class="link node" href="https://en.wikipedia.org/wiki/${i}">https://en.wikipedia.org/wiki/${i}</a>
+      </div>
+      `
+  }).join('');
+    // return html
+    console.log(html)
+    var node = document.querySelector(node);
+    node.innerHTML = html;
+}
+function timedDisplay(arr) {
     for (var i = 0; i < 10; i++) {
         (function(i) {
             setTimeout(function() {
-                var html = makeHTML(results[i],'title')
+                var html = makeHTML(arr[i],'title')
                 displayResults(html,'#ul')
             },0);
         })(i);
@@ -401,11 +425,11 @@ function makeTextNode(text, element, toAppend){
     document.querySelector(toAppend).appendChild(elem)
 
 }
-
-const endpoint  = "https://en.wikipedia.org/w/api.php?"
-const pageterms = "api.php?action=query&formatversion=2&prop=pageimages|pageterms&titles=Albert%20Einstein"
-const search = "api.php?action=query&list=search&srsearch=Albert%20Einstein&utf8="
-var generator = `action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`
+const mainpage_endpoint = "https://en.wikipedia.org/wiki";
+const api_endpoint  = "https://en.wikipedia.org/w/api.php?";
+const pageterms = "api.php?action=query&formatversion=2&prop=pageimages|pageterms&titles=Albert%20Einstein";
+const search = "api.php?action=query&list=search&srsearch=Albert%20Einstein&utf8=";
+var generator = `action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`;
 </script>
 </body>
 
