@@ -268,11 +268,47 @@ submitButton.addEventListener('click', (e) => {
     // check that input is working
       if(variable == input.value){
           // console.log('c')
-          var ajax =  makeAjax(`${api_endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`)
-          console.log(ajax)
+          makeAjax(`${api_endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`,function(res){
+              timedDisplay(res)
+              // timedDisplay(res);
+          })
+          // console.log(ajax[0])
       }
   }
 })
+random.addEventListener('click',() => {
+    window.location.href = `${mainpage_endpoint}/Special:Random`;
+})
+function timedDisplay(arr) {
+    // console.log(arr.length)
+    // arr.forEach(i => console.log(i))
+    for (var i = 0; i < 10; i++) {
+            (function(i) {
+                setTimeout(function() {
+                    var html = makeHTML(arr[i],'title')
+                    displayResults(html,'#ul')
+                },i*100);
+            })(i);
+    }
+}
+function makeAjax(url, callback){
+    let results = [];
+    let myHeaders = new Headers();
+    myHeaders.append('Api-User-Agent','Chris Del')
+    let options = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+    fetch(url,options)
+    .then(blob => blob.json ())
+    .then((data) => {
+        let pages = data.query.pages
+        pages.forEach(i=> results.push(i))
+    })
+    setTimeout(function(){
+        callback(results)
+    },1000)
+}
 // function toggle_focus(elem){
 //     // if element is focused, blur it
 //     if(document.activeElement === elem){
@@ -352,23 +388,6 @@ function toggle_visibility(elem) {
 //     // })
 //    })
 // }
-function makeAjax(url){
-    let results = [];
-    let myHeaders = new Headers();
-    myHeaders.append('Api-User-Agent','Chris Del')
-    let options = {
-        method: 'GET',
-        headers: myHeaders,
-    }
-    fetch(url,options)
-  .then(blob => blob.json ())
-  .then((data) => {
-    let pages = data.query.pages
-    pages.forEach(i=> results.push(i))
-   })
-   return results
-}
-// timedDisplay(results)
 function displayResults(input,attr,node){
     var html = input.map((i) => {
     // console.log(i[attr])
@@ -384,16 +403,6 @@ function displayResults(input,attr,node){
     console.log(html)
     var node = document.querySelector(node);
     node.innerHTML = html;
-}
-function timedDisplay(arr) {
-    for (var i = 0; i < 10; i++) {
-        (function(i) {
-            setTimeout(function() {
-                var html = makeHTML(arr[i],'title')
-                displayResults(html,'#ul')
-            },0);
-        })(i);
-    }
 }
 
 function displayResults(html,domNode){
