@@ -14,6 +14,7 @@
                 width: 100%;
             }
             .wrapper{
+                border-radius:16px;
                 width:450px;
                 margin: auto;
                 border:solid black;
@@ -25,8 +26,7 @@
             }
             .icon {
                 display: inline-block;
-                border:black solid;
-                margin-left:100px;
+                margin-left:110px;
             }
             .inactive {
                 visibility: hidden;
@@ -47,6 +47,10 @@
                 max-width:500px;
                 margin: auto;
             }
+            .input-container-wrapper{
+                max-width: 100%;
+                margin-left: 97px;
+            }
             #input-container {
                 width:70px;
                 border:2px black solid;
@@ -55,7 +59,7 @@
                 margin-top: 10px;
             }
             #input-container.clicked{
-                width:200px;
+                width:210px;
             }
              #input{
                 background-color: #18A8E2;
@@ -81,7 +85,7 @@
             }
             .results-container.show {
                 opacity: 1;
-                /* background-color: green; */
+                margin-right:30px;
             }
             .click-span {
                 text-align: center;
@@ -129,9 +133,7 @@
                 width:48%;
             }
             .search-text {
-                /* position: relative;
-                top:165px;
-                left:275px; */
+                margin: 20px 0;
             }
 
         </style>
@@ -153,10 +155,12 @@
                     <div id="random-container" class="icon">
                         <i id="random" class="fa fa-random fa-3x" aria-hidden="true"></i>
                     </div>
-                    <div id="input-container" class="inactive">
-                        <div id="input-wrapper">
-                            <input id='input' type='text' />
-                            <span id="X" class="fa fa-window-close fa-lg X" aria-hidden="true"></span>
+                    <div class="input-container-wrapper">
+                        <div id="input-container" class="inactive">
+                            <div id="input-wrapper">
+                                <input id='input' type='text' />
+                                <span id="X" class="fa fa-window-close fa-lg X" aria-hidden="true"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -267,7 +271,9 @@ submitButton.addEventListener('click', (e) => {
     variable = input.value;
     // check that input is working
       if(variable == input.value){
-          // console.log('c')
+    // lock input in place with focus class
+          input.classList.add('focus');
+         // call ajax
           makeAjax(`${api_endpoint}action=query&formatversion=2&generator=prefixsearch&gpssearch=${variable}&gpslimit=10&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=50&pilimit=10&redirects=&wbptterms=description&origin=*&format=json`,function(res){
               timedDisplay(res)
               // timedDisplay(res);
