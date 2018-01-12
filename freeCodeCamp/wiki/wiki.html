@@ -120,7 +120,7 @@
             }
             #error-message{
                 height:30px;
-                max-width: 30%;
+                /* max-width: 30%; */
                 margin: auto;
                 border:transparent 1px solid;
             }
@@ -206,9 +206,13 @@ const random = document.querySelector('#random');
 // 5 - Click on X to remove clear input, text nodes, and to make input dissapear
 
 
-
 // click the mag to search
 magClicker.addEventListener('click',() => {
+    // check if input empty is visible
+    let p = document.querySelector('#error-message > p');
+ // remove any error messages from before
+    checkErrorMessage(p,"Input is Empty");
+    checkErrorMessage(p,"Input not visible. Click Glass Icon");
     // if input is hidden, make visible
     if(window.getComputedStyle(inputContainer, null).getPropertyValue('visibility') === 'hidden')
         toggle_visibility(inputContainer)
@@ -232,11 +236,20 @@ magClicker.addEventListener('click',() => {
 // })
 
 inputWrapper.addEventListener('click', () => {
-    toggle_focus(input)
-    // make_width('70%',input)
+// makes inside large to cotain text, after expansion- so X stays in
+    toggle_focus(input)//makes inner width
+
+    let p = document.querySelector('#error-message > p');
+ // remove any error messages from before
+    checkErrorMessage(p,"Input is Empty");
+    checkErrorMessage(p,"Input not visible. Click Glass Icon");
+})
+input.addEventListener('focus',() => {
+// make inputContainer big on focus to keep X inside
+    addClass(inputContainer,'clicked')
 })
 input.addEventListener('blur', () => {
-    console.log('blur')
+// when blur, remove inner width, so when shrunk, the X stays in
     toggle_focus(input);
 })
 x_button.addEventListener('click',() => {
@@ -249,8 +262,8 @@ x_button.addEventListener('click',() => {
 // Once text is delete and nodes are deleted
         // make input dissapear
         toggle_visibility(inputContainer);
-        // toggle width transition- make small
-        toggle_clicked(inputContainer);
+        // toggle width transition- make small-remove clicked class
+        removeClass(inputContainer,'clicked')
 
         // make inner input small
         toggle_focus(input);
@@ -263,10 +276,23 @@ x_button.addEventListener('click',() => {
 // Cannot use click clicking the X also clicks this. Had to make focus
 
 submitButton.addEventListener('click', (e) => {
-  if((input.value === "") || (input.value === undefined)){
-      // if zero messages on page, display message
-    if(error_message.children.length <= 0)
-        makeTextNode("Input is Empty", "p", "#error-message")
+// if input is visible
+    if(window.getComputedStyle(inputContainer, null).getPropertyValue('visibility') === 'hidden'){
+        if(error_message.children.length <= 0){
+            makeTextNode("Input not visible. Click Glass Icon", "p", "#error-message")
+        } else {
+            let p = document.querySelector('#error-message > p');
+            p.textContent = "Input not visible";
+        }
+    } else if((input.value === "") || (input.value === undefined)){
+      // if zero messages on page, make nodes and display message
+        if(error_message.children.length <= 0){
+            makeTextNode("Input is Empty", "p", "#error-message")
+        } else {
+            // node already there, just add new message
+            let p = document.querySelector('#error-message > p');
+            p.textContent = "Input is Empty";
+        }
   } else if(input.value !== "") {
     variable = input.value;
     // check that input is working
@@ -285,6 +311,18 @@ submitButton.addEventListener('click', (e) => {
 random.addEventListener('click',() => {
     window.location.href = `${mainpage_endpoint}/Special:Random`;
 })
+
+function checkErrorMessage(node,message){
+    // if node exists
+    if(node){
+        // if equal to message
+        if(node.textContent === message){
+            // make node empty string
+            node.textContent = "";
+        }
+    }
+}
+
 function timedDisplay(arr) {
     // console.log(arr.length)
     // arr.forEach(i => console.log(i))
@@ -335,6 +373,16 @@ function toggle_focus(elem){
 }
 function clicked(elem){
     elem.classList.add('clicked')
+}
+function removeClass(node,className){
+    if(node.classList.contains(className)){
+        node.classList.remove(className);
+    }
+}
+function addClass(node,className){
+    if(!node.classList.contains(className)){
+        node.classList.add(className);
+    }
 }
 function removeNodes(className){
     var nodes = document.querySelectorAll(className)
