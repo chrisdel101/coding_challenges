@@ -276,7 +276,7 @@ x_button.addEventListener('click',() => {
 // Cannot use click clicking the X also clicks this. Had to make focus
 
 submitButton.addEventListener('click', (e) => {
-// if input is visible
+// if input is is hidden
     if(window.getComputedStyle(inputContainer, null).getPropertyValue('visibility') === 'hidden'){
         if(error_message.children.length <= 0){
             makeTextNode("Input not visible. Click Glass Icon", "p", "#error-message")
@@ -284,6 +284,7 @@ submitButton.addEventListener('click', (e) => {
             let p = document.querySelector('#error-message > p');
             p.textContent = "Input not visible";
         }
+        // if input is visible
     } else if((input.value === "") || (input.value === undefined)){
       // if zero messages on page, make nodes and display message
         if(error_message.children.length <= 0){
@@ -309,7 +310,10 @@ submitButton.addEventListener('click', (e) => {
   }
 })
 random.addEventListener('click',() => {
-    window.location.href = `${mainpage_endpoint}/Special:Random`;
+    // open in same tab
+    // window.location.href = `${mainpage_endpoint}/Special:Random`;
+    // open in new tab
+    window.open(`${mainpage_endpoint}/Special:Random`,`_blank`)
 })
 
 function checkErrorMessage(node,message){
