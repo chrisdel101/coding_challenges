@@ -54,29 +54,37 @@ makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
 })
 
 makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
-        res.forEach((userObj) => {
-            // console.log(userObj)
-            let userData = {}
-            // check user is active
-            if(userObj.status != null){
-                let userName = userObj.display_name;
-                let status = userObj.status;
-                let feed = userObj.url;
-                let logo = userObj.logo;
-                userData = {
-                    'username':userName,
-                    'status':status,
-                    'feed': feed,
-                    'logo':logo
+        function setOnlineStatus(response,callback){
+            res.forEach((userObj) => {
+                // console.log(userObj)
+                let userData = {}
+                // check user is active
+                if(userObj.status != null){
+                    let userName = userObj.display_name;
+                    let status = userObj.status;
+                    let feed = userObj.url;
+                    let logo = userObj.logo;
+                    userData = {
+                        'username':userName,
+                        'status':status,
+                        'feed': feed,
+                        'logo':logo
+                    }
+                } else {
+                    // stop if value is null
+                    return
                 }
-            } else {
-                // stop if value is null
-                return
-            }
-            // push to global array
-            globalUserChannelData.push(userData)
+                // push to global array
+                globalUserChannelData.push(userData)
+            })
+            setTimeout(function(){
+                callback(displayLogic(globalUserChannelData))
+            },0010)
+        }
+        setOnlineStatus(res,(callback) => {
+            let html = makeHTML(globalUserChannelData)
+            displayResults(html, "#results")
         })
-
 
 })
 function makeAjax(url, arr, callback){
@@ -111,7 +119,6 @@ function displayLogic(){
         if(stream.online === true){
         // if online, add attr to channel data
             var sameUser = globalUserChannelData.find((val) => {
-                console.log(val)
                 // make toLowerCase, check for undefined
                 if(val != undefined){
                     return val.username.toLowerCase() == stream.username.toLowerCase()
@@ -151,16 +158,19 @@ function displayResults(html,domNode){
     // insertAdjacentHTML new api works - innerHTML does not
     domNode.insertAdjacentHTML('beforeend',html);
 }
-function makeHTML(inputObj){
-    console.log(inputObj.logo)
-    // var input = input[attr]
-      return `
-      <div class="results-container hidden">
-      <li class="title node">${inputObj.username}</li>
-      <a class="feed online" href=${inputObj.feed}>feed</a>
-      <img class="logo online offline" src=${inputObj.logo}>
-      </div>
-      `
+function makeHTML(arr){
+    var markup = arr.map((user) => {
+        console.log(user.username)
+        return `
+        <div class="results-container hidden">
+            <li class="title node">${user.username}</li>
+            <li class="status">${user.status}</li>
+            <a class="feed online" href=${user.feed}>feed</a>
+            <img class="logo online offline" src=${user.logo}>
+            </div>
+            `
+    })
+    return markup
 }
 
 
