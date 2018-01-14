@@ -21,13 +21,47 @@ function makeAjax(url, arr, callback){
 
 
 makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
-    res.forEach((objs) => {
-        console.log(objs)
+    res.forEach((userObj) => {
+        // console.log(userObj)
+        // create blank object to put all user data
+        var userData = {}
+
         // get user name in url
-        let user = objs._links.self
+        let user = userObj._links.self
         // seperate to get username alone
         let userName = getUserName(user)
-        var html = makeHTML(userName)
+        // push to blank object
+        userData['username'] = userName
+
+        // check if useronline
+        if(userObj.stream != null){
+            userData['online'] = true;
+        } else {
+            userData['online'] = false
+        }
+
+        // get user live feed
+        if(userObj.stream != null){
+            let feed = userObj.stream.channel.url
+            userData['feed'] = feed;
+        } else {
+            userData['feed'] = "offline";
+        }
+        if(userObj.stream != null){
+            let game = userObj.stream.channel.game
+            userData['game'] = game;
+        } else {
+            userData['feed'] = null;
+        }
+        if(userObj.stream != null){
+            let logo = userObj.stream.channel.logo
+            userData['logo'] = logo;
+        } else  {
+            userData['logo'] = "offline"
+        }
+
+        console.log(userData)
+        var html = makeHTML(userData)
         displayResults(html,"#results")
 
     })
@@ -50,12 +84,14 @@ function displayResults(html,domNode){
     // insertAdjacentHTML new api works - innerHTML does not
     domNode.insertAdjacentHTML('beforeend',html);
 }
-function makeHTML(input){
-    // console.log(i[attr])
+function makeHTML(inputObj){
+    console.log(inputObj.logo)
     // var input = input[attr]
       return `
       <div class="results-container hidden">
-      <li class="title node">${input}</li>
+      <li class="title node">${inputObj.username}</li>
+      <a class="feed" href=${inputObj.feed}>feed</a>
+      <img src=${inputObj.logo}>
       </div>
       `
 }
