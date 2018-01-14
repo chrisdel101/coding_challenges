@@ -20,56 +20,81 @@ function makeAjax(url, arr, callback){
 }
 
 
-makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
-    res.forEach((userObj) => {
-        // console.log(userObj)
-        // create blank object to put all user data
-        var userData = {}
+//makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
+//     res.forEach((userObj) => {
+//         // console.log(userObj)
+//         // create blank object to put all user data
+//         var userData = {}
+//
+//         // get user name in url
+//         let user = userObj._links.self
+//         // seperate to get username alone
+//         let userName = getUserName(user)
+//         // push to blank object
+//         userData['username'] = userName
+//
+//         // check if useronline
+//         if(userObj.stream != null){
+//             userData['online'] = true;
+//         } else {
+//             userData['online'] = false
+//         }
+//
+//         // get user live feed
+//         if(userObj.stream != null){
+//             let feed = userObj.stream.channel.url
+//             userData['feed'] = feed;
+//         } else {
+//             userData['feed'] = "offline";
+//         }
+//         if(userObj.stream != null){
+//             let game = userObj.stream.channel.game
+//             userData['game'] = game;
+//         } else {
+//             userData['feed'] = null;
+//         }
+//         if(userObj.stream != null){
+//             let logo = userObj.stream.channel.logo
+//             userData['logo'] = logo;
+//         } else  {
+//             userData['logo'] = "offline"
+//         }
+//
+//         console.log(userData)
+//         var html = makeHTML(userData)
+//         displayResults(html,"#results")
+//
+//     })
+// })
+// function getUserName(str){
+//     str = str.match(/([^/]*)$/)[1]
+//     return str
+// }
 
-        // get user name in url
-        let user = userObj._links.self
-        // seperate to get username alone
-        let userName = getUserName(user)
-        // push to blank object
-        userData['username'] = userName
+makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
+        res.forEach((userObj) => {
 
-        // check if useronline
-        if(userObj.stream != null){
-            userData['online'] = true;
-        } else {
-            userData['online'] = false
-        }
+            // get user name in url
+            let user = userObj.displayName
+            // seperate to get username alone
+            console.log(user)
 
-        // get user live feed
-        if(userObj.stream != null){
-            let feed = userObj.stream.channel.url
-            userData['feed'] = feed;
-        } else {
-            userData['feed'] = "offline";
-        }
-        if(userObj.stream != null){
-            let game = userObj.stream.channel.game
-            userData['game'] = game;
-        } else {
-            userData['feed'] = null;
-        }
-        if(userObj.stream != null){
-            let logo = userObj.stream.channel.logo
-            userData['logo'] = logo;
-        } else  {
-            userData['logo'] = "offline"
-        }
+            // check if useronline
+            // if(userObj.stream != null){
+            //     userData['online'] = true;
+            // } else {
+            //     userData['online'] = false
+            // }
 
-        console.log(userData)
-        var html = makeHTML(userData)
-        displayResults(html,"#results")
+            // get user live feed
+            let userFeed = userObj.url
+            console.log(userFeed);
+            let userLogo = userObj.logo
+            console.log(userLogo)
+        })
 
-    })
+
 })
-function getUserName(str){
-    str = str.match(/([^/]*)$/)[1]
-    return str
-}
 
 function displayResults(html,domNode){
     // make id a selectable node
@@ -90,8 +115,8 @@ function makeHTML(inputObj){
       return `
       <div class="results-container hidden">
       <li class="title node">${inputObj.username}</li>
-      <a class="feed" href=${inputObj.feed}>feed</a>
-      <img src=${inputObj.logo}>
+      <a class="feed online" href=${inputObj.feed}>feed</a>
+      <img class="logo online offline" src=${inputObj.logo}>
       </div>
       `
 }
