@@ -21,9 +21,54 @@ function makeAjax(url, arr, callback){
 
 
 makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
-        res.forEach((i) => console.log(i    ))
-})
+    res.forEach((objs) => {
+        console.log(objs)
+        // get user name in url
+        let user = objs._links.self
+        // seperate to get username alone
+        let userName = getUserName(user)
+        var html = makeHTML(userName)
+        displayResults(html,"#results")
 
+    })
+})
+function getUserName(str){
+    str = str.match(/([^/]*)$/)[1]
+    return str
+}
+
+function displayResults(html,domNode){
+    // make id a selectable node
+    var domNode = document.querySelector(domNode);
+    // select container
+    var div = document.querySelectorAll('.results-container');
+    //
+    if(div != null){
+        // since first is null
+        div.forEach(i => i.classList.add('show'))
+    }
+    // insertAdjacentHTML new api works - innerHTML does not
+    domNode.insertAdjacentHTML('beforeend',html);
+}
+function makeHTML(input){
+    // console.log(i[attr])
+    // var input = input[attr]
+      return `
+      <div class="results-container hidden">
+      <li class="title node">${input}</li>
+      </div>
+      `
+}
+
+
+
+
+
+
+
+
+
+// Old ajax function
 // })
 // function makeAjax(url, callback){
 //     let results = [];
