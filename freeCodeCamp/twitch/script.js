@@ -69,7 +69,11 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
                     'feed': feed,
                     'logo':logo
                 }
+            } else {
+                // stop if value is null
+                return
             }
+            // push to global array
             globalUserChannelData.push(userData)
         })
 
@@ -106,25 +110,22 @@ function displayLogic(){
         // console.log(stream.online)
         if(stream.online === true){
         // if online, add attr to channel data
-            // var sameUser = globalUserChannelData.find((val) => {
-            //     // make toLowerCase, check for undefined
-            //     if(val != undefined){
-            //         return val.username.toLowerCase() === stream.username.toLowerCase()
-            //     }
-            //     // check for undefined again
-            //     if(sameUser != undefined){
-            //         sameUser['online'] = true;
-            //     }
-            // })
-        } else if(stream.online === false){
-        // if offline, add attr to channel data
             var sameUser = globalUserChannelData.find((val) => {
                 console.log(val)
-                console.log(val.length)
-                if(Object.keys(val).length === 0){
-                    console.log(val)
-                    // return val.username.toLowerCase() === stream.username.toLowerCase()
-                    }
+                // make toLowerCase, check for undefined
+                if(val != undefined){
+                    return val.username.toLowerCase() == stream.username.toLowerCase()
+                }
+            })
+            if(sameUser != undefined){
+                sameUser['online'] = true;
+            }
+        } else {
+        // if offline, add attr to channel data
+            var sameUser = globalUserChannelData.find((val) => {
+                if(val != undefined){
+                    return val.username.toLowerCase() === stream.username.toLowerCase()
+                }
             })
             if(sameUser != undefined){
                 sameUser['online'] = false;
