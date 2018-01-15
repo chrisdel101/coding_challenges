@@ -1,0 +1,24 @@
+/* if offline, don't display feed
+if offline make pic grayed out */
+
+ * {
+   box-sizing: border-box;
+ }
+#main {
+  max-width: 500px;
+  margin: auto;
+}
+#results {
+  list-style: none;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+}
+.feed {
+  visibility: hidden;
+  width: 100%;
+}
+.feed.online {
+  visibility: visible;
+}

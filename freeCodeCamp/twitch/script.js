@@ -54,39 +54,47 @@ makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
 })
 
 makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
-        function setOnlineStatus(response,callback){
-            res.forEach((userObj) => {
-                // console.log(userObj)
-                let userData = {}
-                // check user is active
-                if(userObj.status != null){
-                    let userName = userObj.display_name;
-                    let status = userObj.status;
-                    let feed = userObj.url;
-                    let logo = userObj.logo;
-                    userData = {
-                        'username':userName,
-                        'status':status,
-                        'feed': feed,
-                        'logo':logo
-                    }
-                } else {
-                    // stop if value is null
-                    return
-                }
-                // push to global array
-                globalUserChannelData.push(userData)
-            })
-            setTimeout(function(){
-                callback(displayLogic(globalUserChannelData))
-            },0010)
-        }
+
         setOnlineStatus(res,(callback) => {
+          // make html out of user data
             let html = makeHTML(globalUserChannelData)
+            // put html into display logic
             displayResults(html, "#results")
+            // loop through results and add class
+            globalUserChannelData.forEach((user) => {
+              // add cladd if user online
+              checkOnline(user)
+            })
         })
 
 })
+function setOnlineStatus(response,callback){
+    response.forEach((userObj) => {
+        // console.log(userObj)
+        let userData = {}
+        // check user is active
+        if(userObj.status != null){
+            let userName = userObj.display_name;
+            let status = userObj.status;
+            let feed = userObj.url;
+            let logo = userObj.logo;
+            userData = {
+                'username':userName,
+                'status':status,
+                'feed': feed,
+                'logo':logo
+            }
+        } else {
+            // stop if value is null
+            return
+        }
+        // push to global array
+        globalUserChannelData.push(userData)
+    })
+    setTimeout(function(){
+        callback(displayLogic(globalUserChannelData))
+    },0010)
+}
 function makeAjax(url, arr, callback){
     let results = [];
     arr.forEach((i) => {
@@ -141,6 +149,11 @@ function displayLogic(){
     })
 
 }
+function checkOnline(user){
+  if(user.online === true){
+    document.querySelector('.feed').classList.add('online')
+  }
+}
 
 
 // takes block of html and appends to css id
@@ -165,11 +178,11 @@ function makeHTML(arr){
         <div class="results-container hidden">
             <li class="title node">${user.username}</li>
             <li class="status">${user.status}</li>
-            <a class="feed online" href=${user.feed}>feed</a>
-            <img class="logo online offline" src=${user.logo}>
+            <a class="feed" href=${user.feed}>feed</a>
+            <img class="logo" src=${user.logo}>
             </div>
             `
-    })
+    }).join('')
     return markup
 }
 
