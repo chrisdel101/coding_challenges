@@ -61,9 +61,11 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
             let html = makeHTML(globalUserChannelData)
             // // put html into display logic
             displayResults(html, "#results")
-            // loop through results and add class
+            // select all classes in nodelist
             let feeds = document.querySelectorAll('.feed')
+            // loop through json
             globalUserChannelData.forEach((user,index) => {
+                // if true, use index to set that one to addclass
                 if(user.online === true){
                     console.log(user)
                     feeds[index].classList.add('online')
