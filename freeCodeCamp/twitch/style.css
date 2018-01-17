@@ -22,3 +22,6 @@ if offline make pic grayed out */
 .feed.online {
   visibility: visible;
 }
+.results-container {
+    border:black solid;
+}
