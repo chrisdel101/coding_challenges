@@ -63,12 +63,18 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
             displayResults(html, "#results")
             // select all classes in nodelist
             let feeds = document.querySelectorAll('.feed')
+            let resultsContainers = document.querySelectorAll('.results-container')
             // loop through json
             globalUserChannelData.forEach((user,index) => {
                 // if true, use index to set that one to addclass
                 if(user.online === true){
-                    console.log(user)
                     feeds[index].classList.add('online')
+                }
+                if(user.online === true){
+                    resultsContainers[index].classList.add('alert-success')
+                } else {
+                    resultsContainers[index].classList.add('alert-info')
+
                 }
 
             })
