@@ -55,19 +55,34 @@ makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
 
 makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
 
-        setOnlineStatus(res,(callback) => {
+        // callback does not return a value here
+        setOnlineStatus(res,() => {
+            console.log(res)
           // make html out of user data
             let html = makeHTML(globalUserChannelData)
-            // put html into display logic
+            // // put html into display logic
             displayResults(html, "#results")
             // loop through results and add class
             globalUserChannelData.forEach((user) => {
+
               // add cladd if user online
-              checkOnline(user)
+              // checkOnline(user)
+
+
             })
         })
 
 })
+
+function checkOnline(user){
+    let feed = document.querySelectorAll('.feed')
+    if(user.online === true){
+        feed.classList.add('online')
+        console.log(`${user.username} is online`)
+    }
+}
+
+// on call to /channel make userObj, and call array merge logic
 function setOnlineStatus(response,callback){
     response.forEach((userObj) => {
         // console.log(userObj)
@@ -91,6 +106,7 @@ function setOnlineStatus(response,callback){
         // push to global array
         globalUserChannelData.push(userData)
     })
+    // settimeout before calling running displayLogic
     setTimeout(function(){
         callback(displayLogic(globalUserChannelData))
     },0010)
@@ -115,11 +131,14 @@ function makeAjax(url, arr, callback){
     },1000)
 }
 
+
+
 function getUserName(str){
     str = str.match(/([^/]*)$/)[1]
     return str
 }
 
+// checks each array for user and adds online status- leaving one main array
 function displayLogic(){
     // loop streams to check if online
     globalUserStreamData.forEach((stream) => {
@@ -149,18 +168,13 @@ function displayLogic(){
     })
 
 }
-function checkOnline(user){
-  if(user.online === true){
-    document.querySelector('.feed').classList.add('online')
-  }
-}
 
 
 // takes block of html and appends to css id
 function displayResults(html,domNode){
     // make id a selectable node
     var domNode = document.querySelector(domNode);
-    // select container
+    // select all containers
     var div = document.querySelectorAll('.results-container');
     //
     // add class to all divs in block
@@ -168,18 +182,18 @@ function displayResults(html,domNode){
         // since first is null
         div.forEach(i => i.classList.add('show'))
     }
-    // insertAdjacentHTML new api works - innerHTML does not
+    // insertAdjacentHTML new api works - innerHTML does not- before end is part of api
     domNode.insertAdjacentHTML('beforeend',html);
 }
 function makeHTML(arr){
     var markup = arr.map((user) => {
-        console.log(user.username)
+        // console.log(user.username)
         return `
         <div class="results-container hidden">
-            <li class="title node">${user.username}</li>
-            <li class="status">${user.status}</li>
-            <a class="feed" href=${user.feed}>feed</a>
-            <img class="logo" src=${user.logo}>
+            <li class="list-item title node">${user.username}</li>
+            <li class="list-item status">${user.status}</li>
+            <li class="list-item"><a class="feed" href=${user.feed}>feed</a></li>
+            <li class="list-item"><img class="logo" src=${user.logo}></li>
             </div>
             `
     }).join('')
