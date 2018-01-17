@@ -57,30 +57,23 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
 
         // callback does not return a value here
         setOnlineStatus(res,() => {
-            console.log(res)
           // make html out of user data
             let html = makeHTML(globalUserChannelData)
             // // put html into display logic
             displayResults(html, "#results")
             // loop through results and add class
-            globalUserChannelData.forEach((user) => {
-
-              // add cladd if user online
-              // checkOnline(user)
-
+            let feeds = document.querySelectorAll('.feed')
+            globalUserChannelData.forEach((user,index) => {
+                if(user.online === true){
+                    console.log(user)
+                    feeds[index].classList.add('online')
+                }
 
             })
         })
 
 })
 
-function checkOnline(user){
-    let feed = document.querySelectorAll('.feed')
-    if(user.online === true){
-        feed.classList.add('online')
-        console.log(`${user.username} is online`)
-    }
-}
 
 // on call to /channel make userObj, and call array merge logic
 function setOnlineStatus(response,callback){
