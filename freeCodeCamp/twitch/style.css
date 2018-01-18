@@ -4,6 +4,9 @@ if offline make pic grayed out */
  * {
    box-sizing: border-box;
  }
+body {
+    font-family: 'Roboto Slab', serif !important;
+}
 #main {
   max-width: 500px;
   margin: auto;
@@ -16,12 +19,31 @@ if offline make pic grayed out */
   height: 50px;
 }
 .feed {
-  visibility: hidden;
   width: 100%;
 }
-.feed.online {
-  visibility: visible;
+.feed.offline::after {
+    content: "       OFFLINE";
+    font-family: monospace;
+    color: #8ea7c2;
+}
+.feed.online::after {
+    content: "       online";
+    font-family: 'Sedgwick Ave Display', cursive;
+    color: #5c5457;
 }
 .results-container {
     border:black solid;
+    min-height: 130px;
+}
+.results-container > li {
+    min-height: 20px;
+}
+.results-container.online {
+    background-color: #b8cca6;
+    color: #5c5457;
+}
+.results-container.offline {
+    background-color: #4a5e82;
+    color: #b8cca6;
+}
 }

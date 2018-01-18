@@ -68,12 +68,14 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
             globalUserChannelData.forEach((user,index) => {
                 // if true, use index to set that one to addclass
                 if(user.online === true){
-                    feeds[index].classList.add('online')
+                    feeds[index].classList.add('online');
+                } else {
+                    feeds[index].classList.add('offline');
                 }
                 if(user.online === true){
-                    resultsContainers[index].classList.add('alert-success')
+                    resultsContainers[index].classList.add('online')
                 } else {
-                    resultsContainers[index].classList.add('alert-info')
+                    resultsContainers[index].classList.add('offline')
 
                 }
 
@@ -192,7 +194,6 @@ function makeHTML(arr){
         return `
         <div class="results-container hidden">
             <li class="list-item title node">${user.username}</li>
-            <li class="list-item status">${user.status}</li>
             <li class="list-item"><a class="feed" href=${user.feed}>feed</a></li>
             <li class="list-item"><img class="logo" src=${user.logo}></li>
             </div>
