@@ -7,6 +7,12 @@ if offline make pic grayed out */
 body {
     font-family: 'Roboto Slab', serif !important;
 }
+#input-container {
+    max-width: 165px;
+    margin: auto;
+    padding-bottom: 15px;
+    text-align: center;
+}
 #main {
   max-width: 500px;
   margin: auto;
@@ -21,12 +27,12 @@ body {
 .feed {
   width: 100%;
 }
-.feed.offline::after {
+.online-status.offline::after {
     content: "       OFFLINE";
     font-family: monospace;
     color: #8ea7c2;
 }
-.feed.online::after {
+.online-status.online::after {
     content: "       online";
     font-family: 'Sedgwick Ave Display', cursive;
     color: #5c5457;
@@ -37,6 +43,7 @@ body {
 }
 .results-container > li {
     min-height: 20px;
+    text-align: center;
 }
 .results-container.online {
     background-color: #b8cca6;
@@ -46,4 +53,12 @@ body {
     background-color: #4a5e82;
     color: #b8cca6;
 }
+.results-container.online .list-item a{
+      color:#328332;
+}
+.results-container.offline .list-item a{
+      color:#7EC0EE;
+}
+.title {
+    text-transform: capitalize;
 }
