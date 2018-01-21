@@ -4,8 +4,13 @@ const globalUserStreamData    = [];//online and username
 const globalUserChannelData   = [];//all other info
 const input = document.querySelector("#search-input")
 
+
 // make ajax call to find out if user is online- function should pass true or false
 //make ajax call with userdata to get logo, url stream, and if account exists
+//merge the arrays with displayLogic => now two arrays
+// take all array data and dispay it
+// have event listener, if change, delete all HTML and add new
+//once blank add all again
 
 makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
   res.forEach((userObj) => {
@@ -62,31 +67,39 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
     let html = fillHTMLtemplate(globalUserChannelData)
     // // put html into display logic
     displayResults(html, "#results")
+
+    addClassToElems(globalUserChannelData,".results-container","online", "offline");
     // select all classes in nodelist
-    let feeds = document.querySelectorAll('.feed')
-    let resultsContainers = document.querySelectorAll('.results-container')
-    let onlineStatus = document.querySelectorAll('.online-status')
-    console.log(onlineStatus)
     // loop through json
-    globalUserChannelData.forEach((user,index) => {
-      // if true, use index to set that one to addclass
-      if(user.online === true){
-        onlineStatus[index].classList.add('online');
-      } else {
-        onlineStatus[index].classList.add('offline');
-      }
-      if(user.online === true){
-        resultsContainers[index].classList.add('online')
-      } else {
-        resultsContainers[index].classList.add('offline')
-
-      }
-
-    })
+    // globalUserChannelData.forEach((user,index) => {
+    //   // if true, use index to set that one to addclass
+    //   if(user.online === true){
+    //     onlineStatus[index].classList.add('online');
+    //   } else {
+    //     onlineStatus[index].classList.add('offline');
+    //   }
+    //   if(user.online === true){
+    //     resultsContainers[index].classList.add('online')
+    //   } else {
+    //     resultsContainers[index].classList.add('offline')
+    //
+    //   }
+    //
+    // })
   })
 
 })
+function addClassToElems(data_arr, domNodes, class1, class2){
+    var domNodes = document.querySelectorAll(domNodes);
+    data_arr.forEach((user, index) => {
+        if(user.online === true){
+          domNodes[index].classList.add(class1)
+        } else {
+          domNodes[index].classList.add(class2)
 
+        }
+    })
+}
 // on call to /channel make userObj, and call array merge logic
 function setOnlineStatus(response,callback){
   response.forEach((userObj) => {
@@ -191,16 +204,35 @@ function displayResults(html,domNode){
   domNode.insertAdjacentHTML('beforeend',html);
 
 }
-function makeHTML(arr){
+function makeSearchHTML(arr){
   // if input is empty, display all
-  if(input.value === ""){
-    fillHTMLtemplate(arr)
+  if(input.value == ""){
+     var results = document.querySelectorAll('.results-container')
+     results.forEach((domNode) => domNode.remove())
+    var html = fillHTMLtemplate(arr)
+    displayResults(html,"#results")
+    addClassToElems(arr,".results-container",'online','offline')
+
   } else {
-    let matches = findMatches(arr,input.value)
-    fillHTMLtemplate(matches)
+    let matches = findMatches(input.value,arr)
+    var results = document.querySelectorAll('.results-container')
+    results.forEach((domNode) => domNode.remove())
+    let html = fillHTMLtemplate(matches)
+    var display = displayResults(html,"#results")
+    addClassToElems(matches,".results-container",'online','offline')
   }
 
 }
+// function addClassToElems(data_arr, domNodes, class1, class2){
+
+input.addEventListener('keyup', () => {
+    console.log(input.value)
+    makeSearchHTML(globalUserChannelData)
+})
+input.addEventListener('input', () => {
+    console.log(input.value)
+    makeSearchHTML(globalUserChannelData)
+})
 
 function fillHTMLtemplate(arr){
   var markup = arr.map((user) => {
