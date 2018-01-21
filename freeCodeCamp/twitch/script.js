@@ -69,6 +69,8 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
     displayResults(html, "#results")
 
     addClassToElems(globalUserChannelData,".results-container","online", "offline");
+    addClassToElems(globalUserChannelData,".online-status","online", "offline");
+
     // select all classes in nodelist
     // loop through json
     // globalUserChannelData.forEach((user,index) => {
@@ -207,19 +209,23 @@ function displayResults(html,domNode){
 function makeSearchHTML(arr){
   // if input is empty, display all
   if(input.value == ""){
-     var results = document.querySelectorAll('.results-container')
-     results.forEach((domNode) => domNode.remove())
-    var html = fillHTMLtemplate(arr)
-    displayResults(html,"#results")
-    addClassToElems(arr,".results-container",'online','offline')
-
-  } else {
-    let matches = findMatches(input.value,arr)
     var results = document.querySelectorAll('.results-container')
     results.forEach((domNode) => domNode.remove())
-    let html = fillHTMLtemplate(matches)
+    var html = fillHTMLtemplate(arr)
+    displayResults(html,"#results")
+    addClassToElems(arr,".results-container","online","offline")
+    addClassToElems(arr,".online-status","online","offline")
+
+
+  } else {
+    var matches = findMatches(input.value,arr)
+    var results = document.querySelectorAll('.results-container')
+    results.forEach((domNode) => domNode.remove())
+    var html = fillHTMLtemplate(matches)
     var display = displayResults(html,"#results")
-    addClassToElems(matches,".results-container",'online','offline')
+    addClassToElems(matches,".results-container","online","offline")
+    addClassToElems(matches,".online-status","online","offline")
+
   }
 
 }
