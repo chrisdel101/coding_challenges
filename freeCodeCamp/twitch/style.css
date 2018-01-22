@@ -8,13 +8,14 @@ body {
     font-family: 'Roboto Slab', serif !important;
 }
 #main{
-    border: brown solid 3px;
+    /* border: brown solid 3px; */
     background-color: #84b484;
 }
 #user-status{
     position: relative;
-    left:13.6em;
+    left: 13.5em;
     min-height: 100px;
+    direction: ltr;
 }
 #input-container {
     max-width: 165px;
@@ -78,4 +79,16 @@ li.online-status {
 .user-status {
     background-color: red;
     border: black 1px solid;
+    width: 30px;
+    transition: all, 0.5s;
+    display: block;
+    float:right;
+    clear:both;
+}
+.user-status:hover {
+    width:100px;
+    cursor: pointer;
+}
+#user-status > * {
+    direction: ltr;
 }

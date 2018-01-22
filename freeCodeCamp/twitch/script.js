@@ -58,86 +58,94 @@ offline.addEventListener('click', () => {
 // take all array data and dispay it
 // have event listener, if change, delete all HTML and add new
 //once blank add all again
+try {
+  console.log('make ajax 1')
+  makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
+    res.forEach((userObj) => {
+      var userData = {}
+      // console.log(userObj)
 
-makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
-  res.forEach((userObj) => {
-    var userData = {}
-    // console.log(userObj)
+      // get user name in url
+      let user = userObj._links.self
+      // seperate to get username alone
+      let userName = getUserName(user)
+      // push to blank object
+      userData['username'] = userName
 
-    // get user name in url
-    let user = userObj._links.self
-    // seperate to get username alone
-    let userName = getUserName(user)
-    // push to blank object
-    userData['username'] = userName
+      // check if useronline
+      if(userObj.stream != null){
+        userData['online'] = true;
+      } else {
+        userData['online'] = false
+      }
 
-    // check if useronline
-    if(userObj.stream != null){
-      userData['online'] = true;
-    } else {
-      userData['online'] = false
-    }
+      // get user live feed
+      // if(userObj.stream != null){
+      //     let feed = userObj.stream.channel.url
+      //     userData['feed'] = feed;
+      // } else {
+      //     userData['feed'] = "offline";
+      // }
+      // if(userObj.stream != null){
+      //     let game = userObj.stream.channel.game
+      //     userData['game'] = game;
+      // } else {
+      //     userData['feed'] = null;
+      // }
+      // if(userObj.stream != null){
+      //     let logo = userObj.stream.channel.logo
+      //     userData['logo'] = logo;
+      // } else  {
+      //     userData['logo'] = "offline"
+      // }
+      //
+      // console.log(userData)
+      // var html = fillHTMLtemplate(userData)
+      // displayResults(html,"#results")
 
-    // get user live feed
-    // if(userObj.stream != null){
-    //     let feed = userObj.stream.channel.url
-    //     userData['feed'] = feed;
-    // } else {
-    //     userData['feed'] = "offline";
-    // }
-    // if(userObj.stream != null){
-    //     let game = userObj.stream.channel.game
-    //     userData['game'] = game;
-    // } else {
-    //     userData['feed'] = null;
-    // }
-    // if(userObj.stream != null){
-    //     let logo = userObj.stream.channel.logo
-    //     userData['logo'] = logo;
-    // } else  {
-    //     userData['logo'] = "offline"
-    // }
-    //
-    // console.log(userData)
-    // var html = fillHTMLtemplate(userData)
-    // displayResults(html,"#results")
-
-    globalUserStreamData.push(userData)
+      globalUserStreamData.push(userData)
+    })
   })
-})
+} catch(err) {
+  throw(err);
+}
+try {
+  console.log('make ajax 2')
+  makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
 
-makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
+    // callback does not return a value here
+    setOnlineStatus(res,() => {
+      // make html out of user data
+      let html = fillHTMLtemplate(globalUserChannelData)
+      // // put html into display logic
+      displayResults(html, "#results")
 
-  // callback does not return a value here
-  setOnlineStatus(res,() => {
-    // make html out of user data
-    let html = fillHTMLtemplate(globalUserChannelData)
-    // // put html into display logic
-    displayResults(html, "#results")
+      addClassToElems(globalUserChannelData,".results-container","online", "offline");
+      addClassToElems(globalUserChannelData,".online-status","online", "offline");
 
-    addClassToElems(globalUserChannelData,".results-container","online", "offline");
-    addClassToElems(globalUserChannelData,".online-status","online", "offline");
+      // select all classes in nodelist
+      // loop through json
+      // globalUserChannelData.forEach((user,index) => {
+      //   // if true, use index to set that one to addclass
+      //   if(user.online === true){
+      //     onlineStatus[index].classList.add('online');
+      //   } else {
+      //     onlineStatus[index].classList.add('offline');
+      //   }
+      //   if(user.online === true){
+      //     resultsContainers[index].classList.add('online')
+      //   } else {
+      //     resultsContainers[index].classList.add('offline')
+      //
+      //   }
+      //
+      // })
+    })
 
-    // select all classes in nodelist
-    // loop through json
-    // globalUserChannelData.forEach((user,index) => {
-    //   // if true, use index to set that one to addclass
-    //   if(user.online === true){
-    //     onlineStatus[index].classList.add('online');
-    //   } else {
-    //     onlineStatus[index].classList.add('offline');
-    //   }
-    //   if(user.online === true){
-    //     resultsContainers[index].classList.add('online')
-    //   } else {
-    //     resultsContainers[index].classList.add('offline')
-    //
-    //   }
-    //
-    // })
   })
-
-})
+} catch(err){
+  throw(err);
+}
 // adds classes to toggle colors
 function addClassToElems(data_arr, domNodes, class1, class2){
     var domNodes = document.querySelectorAll(domNodes);
