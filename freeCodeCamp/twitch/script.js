@@ -8,27 +8,47 @@ const online = document.querySelector("#online");
 const offline = document.querySelector("#offline");
 
 all.addEventListener('click', () => {
-    let html = fillHTMLtemplate(globalUserChannelData)
-    // // put html into display logic
-    displayResults(html, "#results")
+   var results = document.querySelectorAll('.results-container')
+   // if nuber of divs is equal to number of user in response, do nothing
+   if(results.length === globalUserChannelData.length){
+     return
+   } else {
+     // remove old nodes
+      results.forEach((domNode) => domNode.remove())
+      // make html out of data
+     let html = fillHTMLtemplate(globalUserChannelData)
+     // // put html into display logic
+     displayResults(html, "#results")
+     addClassToElems(globalUserChannelData,".results-container","online","offline")
+   }
+
 })
+
 online.addEventListener('click', () => {
+    // filter out online uses
     var data = globalUserChannelData.filter((user) => {
-        return user.online
+      return user.online
     })
+    // select all current divs, and remove them
     var results = document.querySelectorAll('.results-container')
     results.forEach((domNode) => domNode.remove())
+      // make html out of online user data
     let html = fillHTMLtemplate(data);
+    // template the html
     displayResults(html, "#results")
+    // add css to results
+    addClassToElems(data,".results-container","online")
 })
+
 offline.addEventListener('click', () => {
     var data = globalUserChannelData.filter((user) => {
-        return !user.online
+      return !user.online
     })
     var results = document.querySelectorAll('.results-container')
     results.forEach((domNode) => domNode.remove())
     let html = fillHTMLtemplate(data);
     displayResults(html, "#results")
+    addClassToElems(data,".results-container","","offline")
 })
 
 
