@@ -9,10 +9,11 @@ body {
 }
 #main{
     border: brown solid 3px;
+    background-color: #84b484;
 }
 #user-status{
     position: relative;
-    left:190px;
+    left:13.6em;
     min-height: 100px;
 }
 #input-container {
@@ -22,7 +23,7 @@ body {
     text-align: center;
 }
 #main {
-  max-width: 500px;
+  max-width: 600px;
   margin: auto;
 }
 #results {
@@ -31,6 +32,7 @@ body {
 .logo {
   width: 50px;
   height: 50px;
+  border-radius: 10px;
 }
 .feed {
   width: 100%;
@@ -48,9 +50,9 @@ body {
 .results-container {
     border:black solid;
     min-height: 130px;
+    margin: 10px 0;
 }
 .results-container > li {
-    min-height: 20px;
     text-align: center;
 }
 .results-container.online {
@@ -69,4 +71,11 @@ body {
 }
 .title {
     text-transform: capitalize;
+}
+li.online-status {
+    margin-bottom: 6px;
+}
+.user-status {
+    background-color: red;
+    border: black 1px solid;
 }
