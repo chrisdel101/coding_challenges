@@ -7,6 +7,14 @@ if offline make pic grayed out */
 body {
     font-family: 'Roboto Slab', serif !important;
 }
+#main{
+    border: brown solid 3px;
+}
+#user-status{
+    position: relative;
+    left:190px;
+    min-height: 100px;
+}
 #input-container {
     max-width: 165px;
     margin: auto;

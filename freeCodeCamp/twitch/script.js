@@ -2,7 +2,34 @@
 const users = ["freecodecamp","ESL_SC2", "OgamingSC2", "cretetion", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
 const globalUserStreamData    = [];//online and username
 const globalUserChannelData   = [];//all other info
-const input = document.querySelector("#search-input")
+const input = document.querySelector("#search-input");
+const all = document.querySelector("#all");
+const online = document.querySelector("#online");
+const offline = document.querySelector("#offline");
+
+all.addEventListener('click', () => {
+    let html = fillHTMLtemplate(globalUserChannelData)
+    // // put html into display logic
+    displayResults(html, "#results")
+})
+online.addEventListener('click', () => {
+    var data = globalUserChannelData.filter((user) => {
+        return user.online
+    })
+    var results = document.querySelectorAll('.results-container')
+    results.forEach((domNode) => domNode.remove())
+    let html = fillHTMLtemplate(data);
+    displayResults(html, "#results")
+})
+offline.addEventListener('click', () => {
+    var data = globalUserChannelData.filter((user) => {
+        return !user.online
+    })
+    var results = document.querySelectorAll('.results-container')
+    results.forEach((domNode) => domNode.remove())
+    let html = fillHTMLtemplate(data);
+    displayResults(html, "#results")
+})
 
 
 // make ajax call to find out if user is online- function should pass true or false
@@ -91,6 +118,7 @@ makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
   })
 
 })
+// adds classes to toggle colors
 function addClassToElems(data_arr, domNodes, class1, class2){
     var domNodes = document.querySelectorAll(domNodes);
     data_arr.forEach((user, index) => {
@@ -152,7 +180,7 @@ function makeAjax(url, arr, callback){
 }
 
 
-
+// gets username out of url
 function getUserName(str){
   str = str.match(/([^/]*)$/)[1]
   return str
@@ -239,6 +267,7 @@ input.addEventListener('input', () => {
     console.log(input.value)
     makeSearchHTML(globalUserChannelData)
 })
+
 
 function fillHTMLtemplate(arr){
   var markup = arr.map((user) => {
