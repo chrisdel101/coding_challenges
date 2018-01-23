@@ -47,6 +47,7 @@ offline.addEventListener('click', () => {
     var results = document.querySelectorAll('.results-container')
     results.forEach((domNode) => domNode.remove())
     let html = fillHTMLtemplate(data);
+    console.log(html)
     displayResults(html, "#results")
     addClassToElems(data,".results-container","","offline")
 })
