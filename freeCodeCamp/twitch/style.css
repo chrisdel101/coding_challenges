@@ -1,12 +1,9 @@
 /* if offline, don't display feed
 if offline make pic grayed out */
 
- * {
-   box-sizing: border-box;
- }
-
 body {
     font-family: 'Roboto Slab', serif !important;
+    background-color: #f0ead6 !important;
 }
 #main{
     /* border: brown solid 3px; */
@@ -17,6 +14,12 @@ body {
     left: 13.5em;
     min-height: 120px;
     direction: ltr;
+}
+.page-header {
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    font-weight: bold;
+    te
 }
 #input-container {
     max-width: 165px;
@@ -30,6 +33,9 @@ body {
 }
 #results {
   list-style: none;
+}
+#display-box {
+    min-height: 1000px
 }
 .logo {
   width: 50px;
@@ -53,6 +59,7 @@ body {
     border:black solid;
     min-height: 130px;
     margin: 10px 0;
+    border-radius: 10px;
 }
 .results-container > li {
     text-align: center;
