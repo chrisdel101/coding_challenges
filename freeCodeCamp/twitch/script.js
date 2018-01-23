@@ -20,6 +20,7 @@ all.addEventListener('click', () => {
      // // put html into display logic
      displayResults(html, "#results")
      addClassToElems(globalUserChannelData,".results-container","online","offline")
+     addClassToElems(globalUserChannelData,".online-status","online","offline")
    }
 
 })
@@ -29,6 +30,7 @@ online.addEventListener('click', () => {
     var data = globalUserChannelData.filter((user) => {
       return user.online
     })
+    console.log(data)
     // select all current divs, and remove them
     var results = document.querySelectorAll('.results-container')
     results.forEach((domNode) => domNode.remove())
@@ -37,7 +39,9 @@ online.addEventListener('click', () => {
     // template the html
     displayResults(html, "#results")
     // add css to results
-    addClassToElems(data,".results-container","online")
+    addClassToElems(data,".results-container","online","offline")
+    addClassToElems(data,".online-status","online","offline")
+
 })
 
 offline.addEventListener('click', () => {
@@ -50,6 +54,8 @@ offline.addEventListener('click', () => {
     console.log(html)
     displayResults(html, "#results")
     addClassToElems(data,".results-container","","offline")
+    addClassToElems(data,".online-status","online","offline")
+
 })
 
 
@@ -261,7 +267,6 @@ function displayResults(html,domNode){
 
   // insertAdjacentHTML new api works - innerHTML does not- before end is part of api
   domNode.insertAdjacentHTML('beforeend',html);
-
 }
 function makeSearchHTML(arr){
   // if input is empty, display all
