@@ -1,6 +1,5 @@
 /* if offline, don't display feed
 if offline make pic grayed out */
-
 body {
     font-family: 'Roboto Slab', serif !important;
     background-color: #f0ead6 !important;
@@ -15,11 +14,13 @@ body {
     min-height: 120px;
     direction: ltr;
 }
-.page-header {
+.page-header h1{
     font-family: 'Oswald', sans-serif;
     text-align: center;
     font-weight: bold;
-    te
+    text-transform: uppercase;
+    font-size: 3em;
+    color: #e1e1e6
 }
 #input-container {
     max-width: 165px;
@@ -33,6 +34,8 @@ body {
 }
 #results {
   list-style: none;
+  padding-left: 0;
+  margin:0 10px;
 }
 #display-box {
     min-height: 1000px
