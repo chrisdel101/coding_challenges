@@ -212,6 +212,7 @@ function makeAjax(url, arr, callback){
   setTimeout(function(){
     callback(results)
   },1000)
+  console.log(results)
 }
 
 

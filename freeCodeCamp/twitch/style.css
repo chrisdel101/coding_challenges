@@ -5,6 +5,9 @@ body {
     font-family: 'Roboto Slab', serif !important;
     background-color: #f0ead6 !important;
 }
+* {
+    margin:0;
+}
 #main{
     /* border: brown solid 3px; */
     background-color: #84b484;
