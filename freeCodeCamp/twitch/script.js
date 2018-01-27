@@ -2,13 +2,13 @@
 const users = ["freecodecamp","ESL_SC2", "OgamingSC2", "cretetion", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
 const globalUserStreamData    = [];//online and username
 const globalUserChannelData   = [];//all other info
-const input = document.querySelector("#search-input");
+const input  = document.querySelector("#search-input");
 const all = document.querySelector("#all");
 const online = document.querySelector("#online");
 const offline = document.querySelector("#offline");
 
-all.addEventListener('click', () => {
-   var results = document.querySelectorAll('.results-container')
+all.addEventListener('click', (e) => {
+   var results = document.querySelectorAll('.results-container');
    // if nuber of divs is equal to number of user in response, do nothing
    if(results.length === globalUserChannelData.length){
      return
@@ -16,13 +16,12 @@ all.addEventListener('click', () => {
      // remove old nodes
       results.forEach((domNode) => domNode.remove())
       // make html out of data
-     let html = fillHTMLtemplate(globalUserChannelData)
+     let html = fillHTMLtemplate(globalUserChannelData);
      // // put html into display logic
-     displayResults(html, "#results")
-     addClassToElems(globalUserChannelData,".results-container","online","offline")
-     addClassToElems(globalUserChannelData,".online-status","online","offline")
+     displayResults(html, "#results");
+     addClassToElems(globalUserChannelData,".results-container","online","offline");
+     addClassToElems(globalUserChannelData,".online-status","online","offline");
    }
-
 })
 
 online.addEventListener('click', () => {
@@ -30,17 +29,16 @@ online.addEventListener('click', () => {
     var data = globalUserChannelData.filter((user) => {
       return user.online
     })
-    console.log(data)
     // select all current divs, and remove them
     var results = document.querySelectorAll('.results-container')
-    results.forEach((domNode) => domNode.remove())
+    results.forEach((domNode) => domNode.remove());
       // make html out of online user data
     let html = fillHTMLtemplate(data);
     // template the html
-    displayResults(html, "#results")
+    displayResults(html, "#results");
     // add css to results
-    addClassToElems(data,".results-container","online","offline")
-    addClassToElems(data,".online-status","online","offline")
+    addClassToElems(data,".results-container","online","offline");
+    addClassToElems(data,".online-status","online","offline");
 
 })
 
@@ -48,13 +46,12 @@ offline.addEventListener('click', () => {
     var data = globalUserChannelData.filter((user) => {
       return !user.online
     })
-    var results = document.querySelectorAll('.results-container')
-    results.forEach((domNode) => domNode.remove())
+    var results = document.querySelectorAll('.results-container');
+    results.forEach((domNode) => domNode.remove());
     let html = fillHTMLtemplate(data);
-    console.log(html)
-    displayResults(html, "#results")
-    addClassToElems(data,".results-container","","offline")
-    addClassToElems(data,".online-status","online","offline")
+    displayResults(html, "#results");
+    addClassToElems(data,".results-container","","offline");
+    addClassToElems(data,".online-status","online","offline");
 
 })
 
@@ -67,23 +64,21 @@ offline.addEventListener('click', () => {
 //once blank add all again
 
 makeAjax(`https://wind-bow.glitch.me/twitch-api/streams`, users,(res) => {
-    makeStreamUsers(res)
+    makeStreamUsers(res);
  })
 
 makeAjax(`https://wind-bow.glitch.me/twitch-api/channels`, users,(res) => {
     // callback calls the displayLogic inside itself
-    setOnlineStatus(res,() => {
-        // make html out of user data
-        let html = fillHTMLtemplate(globalUserChannelData)
-        // // put html into display logic
-        displayResults(html, "#results")
-
-
-    })
-
-      // addClassToElems(globalUserChannelData,".results-container","online", "offline");
-      // addClassToElems(globalUserChannelData,".online-status","online", "offline");
+    setOnlineStatus(res,() => {});
  })
+
+setTimeout (function(){
+     let html = fillHTMLtemplate(globalUserChannelData);
+     // // put html into display logic
+     displayResults(html, "#results")
+     addClassToElems(globalUserChannelData,".results-container","online", "offline");
+     addClassToElems(globalUserChannelData,".online-status","online", "offline");
+},1000)
 
 
 function setOnlineStatus(obj,callback){
@@ -106,7 +101,7 @@ function setOnlineStatus(obj,callback){
             return
         }
         // push to global array
-        globalUserChannelData.push(tempUserStore)
+        globalUserChannelData.push(tempUserStore);
 
         callback(displayLogic(globalUserStreamData,globalUserChannelData)
 )
@@ -117,9 +112,9 @@ function addClassToElems(data_arr, domNodes, class1, class2){
     var domNodes = document.querySelectorAll(domNodes);
     data_arr.forEach((user, index) => {
         if(user.online === true){
-          domNodes[index].classList.add(class1)
+          domNodes[index].classList.add(class1);
         } else {
-          domNodes[index].classList.add(class2)
+          domNodes[index].classList.add(class2);
 
         }
     })
@@ -128,7 +123,7 @@ function makeStreamUsers(obj){
     var tempUserStore = {}
     let user = obj._links.self
     // seperate to get username alone
-    let userName = getUserName(user)
+    let userName = getUserName(user);
     // push to blank object
     tempUserStore['username'] = userName
 
@@ -138,7 +133,7 @@ function makeStreamUsers(obj){
     } else {
         tempUserStore['online'] = false
     }
-    globalUserStreamData.push(tempUserStore)
+    globalUserStreamData.push(tempUserStore);
 }
 // on call to /channel make userObj, and call array merge logic
 // on call to /channel make res, and call array merge logic
@@ -147,15 +142,15 @@ function makeAjax(url, arr, callback){
   arr.forEach((i) => {
     fetch(`${url}/${i}`)
     .then(blob => blob.json ())
-    .then(callback)
+    .then(callback);
   });
 }
 
 
 // gets username out of url
 function getUserName(str){
-  str = str.match(/([^/]*)$/)[1]
-  return str
+  str = str.match(/([^/]*)$/)[1];
+  return str;
 }
 
 // checks each array for user and adds online status- leaving one main array
@@ -169,7 +164,7 @@ function displayLogic(streamArr, channelArr){
       var sameUser = channelArr.find((val) => {
         // make toLowerCase, check for undefined
         if(val != undefined){
-          return val.username.toLowerCase() == stream.username.toLowerCase()
+          return val.username.toLowerCase() == stream.username.toLowerCase();
         }
       })
       if(sameUser != undefined){
@@ -179,7 +174,7 @@ function displayLogic(streamArr, channelArr){
       // if offline, add attr to channel data
       var sameUser = channelArr.find((val) => {
         if(val != undefined){
-          return val.username.toLowerCase() === stream.username.toLowerCase()
+          return val.username.toLowerCase() === stream.username.toLowerCase();
         }
       })
       if(sameUser != undefined){
@@ -194,8 +189,8 @@ function displayLogic(streamArr, channelArr){
 function  findMatches(wordToMatch,users){
   return users.filter(user => {
     // make regex with word, global, case insenstive
-    const regex = new RegExp(wordToMatch, 'gi')
-    return user.username.match(regex) || user.feed.match(regex)
+    const regex = new RegExp(wordToMatch, 'gi');
+    return user.username.match(regex) || user.feed.match(regex);
   })
 }
 // takes block of html and appends to css id
@@ -210,34 +205,31 @@ function makeSearchHTML(arr){
   // if input is empty, display all
   if(input.value == ""){
     var results = document.querySelectorAll('.results-container')
-    results.forEach((domNode) => domNode.remove())
+    results.forEach((domNode) => domNode.remove());
     var html = fillHTMLtemplate(arr)
-    displayResults(html,"#results")
-    addClassToElems(arr,".results-container","online","offline")
-    addClassToElems(arr,".online-status","online","offline")
+    displayResults(html,"#results");
+    addClassToElems(arr,".results-container","online","offline");
+    addClassToElems(arr,".online-status","online","offline");
 
 
   } else {
-    var matches = findMatches(input.value,arr)
-    var results = document.querySelectorAll('.results-container')
-    results.forEach((domNode) => domNode.remove())
-    var html = fillHTMLtemplate(matches)
-    var display = displayResults(html,"#results")
-    addClassToElems(matches,".results-container","online","offline")
-    addClassToElems(matches,".online-status","online","offline")
-
+    var matches = findMatches(input.value,arr);
+    var results = document.querySelectorAll('.results-container');
+    results.forEach((domNode) => domNode.remove());
+    var html = fillHTMLtemplate(matches);
+    var display = displayResults(html,"#results");
+    addClassToElems(matches,".results-container","online","offline");
+    addClassToElems(matches,".online-status","online","offline");
   }
-
 }
-// function addClassToElems(data_arr, domNodes, class1, class2){
 
 input.addEventListener('keyup', () => {
     console.log(input.value)
-    makeSearchHTML(globalUserChannelData)
+    makeSearchHTML(globalUserChannelData);
 })
 input.addEventListener('input', () => {
     console.log(input.value)
-    makeSearchHTML(globalUserChannelData)
+    makeSearchHTML(globalUserChannelData);
 })
 
 
@@ -251,46 +243,6 @@ function fillHTMLtemplate(arr){
     <li class="list-item"><img class="logo" src=${user.logo}></li>
     </div>
     `
-  }).join('')
+}).join('');
   return markup
 }
-
-
-
-
-
-
-
-
-
-// Old ajax function
-// })
-// function makeAjax(url, callback){
-//     let results = [];
-//     let myHeaders = new Headers();
-//     myHeaders.append('Client-ID','g8oo57hf3026alyweepj1ov6rg6p5q')
-//     let options = {
-//         method: 'GET',
-//         headers: myHeaders,
-//     }
-//
-//     users.forEach((user) => {
-//         // console.log(user)
-//         fetch(`https://api.twitch.tv/kraken/streams/${user}`,{
-//             method: 'GET',
-//             headers: {
-//                 'CLIENT-ID':'g8oo57hf3026alyweepj1ov6rg6p5q'
-//             }
-//         })
-//         .then(blob => blob.json ())
-//         .then((data) => {
-//             console.log(data)
-//         })
-//     })
-// setTimeout(function(){
-//     callback(results)
-// },1000)
-
-// makeAjax('https://api.twitch.tv/kraken/channels/twitch',(res) => {
-//     console.log(res)
-// })
