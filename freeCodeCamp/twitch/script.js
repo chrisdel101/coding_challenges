@@ -58,101 +58,60 @@ offline.addEventListener('click', () => {
 
 })
 
-
+// Steps
 // make ajax call to find out if user is online- function should pass true or false
 //make ajax call with userdata to get logo, url stream, and if account exists
 //merge the arrays with displayLogic => now two arrays
 // take all array data and dispay it
 // have event listener, if change, delete all HTML and add new
 //once blank add all again
-try {
-  console.log('make ajax 1')
-  makeAjax(`https://api.twitch.tv/kraken/streams/`, users,(res) => {
-    res.forEach((userObj) => {
-      var userData = {}
-      // console.log(userObj)
 
-      // get user name in url
-      let user = userObj._links.self
-      // seperate to get username alone
-      let userName = getUserName(user)
-      // push to blank object
-      userData['username'] = userName
+makeAjax(`https://wind-bow.glitch.me/twitch-api/streams`, users,(res) => {
+    makeStreamUsers(res)
+ })
 
-      // check if useronline
-      if(userObj.stream != null){
-        userData['online'] = true;
-      } else {
-        userData['online'] = false
-      }
-
-      // get user live feed
-      // if(userObj.stream != null){
-      //     let feed = userObj.stream.channel.url
-      //     userData['feed'] = feed;
-      // } else {
-      //     userData['feed'] = "offline";
-      // }
-      // if(userObj.stream != null){
-      //     let game = userObj.stream.channel.game
-      //     userData['game'] = game;
-      // } else {
-      //     userData['feed'] = null;
-      // }
-      // if(userObj.stream != null){
-      //     let logo = userObj.stream.channel.logo
-      //     userData['logo'] = logo;
-      // } else  {
-      //     userData['logo'] = "offline"
-      // }
-      //
-      // console.log(userData)
-      // var html = fillHTMLtemplate(userData)
-      // displayResults(html,"#results")
-
-      globalUserStreamData.push(userData)
-    })
-  })
-} catch(err) {
-  throw(err);
-}
-try {
-  console.log('make ajax 2')
-  makeAjax(`https://api.twitch.tv/kraken/channels/`, users,(res) => {
-
-    // callback does not return a value here
+makeAjax(`https://wind-bow.glitch.me/twitch-api/channels`, users,(res) => {
+    // callback calls the displayLogic inside itself
     setOnlineStatus(res,() => {
-      // make html out of user data
-      let html = fillHTMLtemplate(globalUserChannelData)
-      // // put html into display logic
-      displayResults(html, "#results")
+        // make html out of user data
+        let html = fillHTMLtemplate(globalUserChannelData)
+        // // put html into display logic
+        displayResults(html, "#results")
 
-      addClassToElems(globalUserChannelData,".results-container","online", "offline");
-      addClassToElems(globalUserChannelData,".online-status","online", "offline");
 
-      // select all classes in nodelist
-      // loop through json
-      // globalUserChannelData.forEach((user,index) => {
-      //   // if true, use index to set that one to addclass
-      //   if(user.online === true){
-      //     onlineStatus[index].classList.add('online');
-      //   } else {
-      //     onlineStatus[index].classList.add('offline');
-      //   }
-      //   if(user.online === true){
-      //     resultsContainers[index].classList.add('online')
-      //   } else {
-      //     resultsContainers[index].classList.add('offline')
-      //
-      //   }
-      //
-      // })
     })
 
-  })
-} catch(err){
-  throw(err);
+      // addClassToElems(globalUserChannelData,".results-container","online", "offline");
+      // addClassToElems(globalUserChannelData,".online-status","online", "offline");
+ })
+
+
+function setOnlineStatus(obj,callback){
+        // console.log(userObj)
+        let tempUserStore = {}
+        // check user is active
+        if(obj.status != null){
+            let userName = obj.display_name;
+            let status = obj.status;
+            let feed = obj.url;
+            let logo = obj.logo;
+            tempUserStore = {
+                'username':userName,
+                'status':status,
+                'feed': feed,
+                'logo':logo
+            }
+        } else {
+            // stop if value is null
+            return
+        }
+        // push to global array
+        globalUserChannelData.push(tempUserStore)
+
+        callback(displayLogic(globalUserStreamData,globalUserChannelData)
+)
 }
+
 // adds classes to toggle colors
 function addClassToElems(data_arr, domNodes, class1, class2){
     var domNodes = document.querySelectorAll(domNodes);
@@ -165,53 +124,31 @@ function addClassToElems(data_arr, domNodes, class1, class2){
         }
     })
 }
-// on call to /channel make userObj, and call array merge logic
-function setOnlineStatus(response,callback){
-  response.forEach((userObj) => {
-    // console.log(userObj)
-    let userData = {}
-    // check user is active
-    if(userObj.status != null){
-      let userName = userObj.display_name;
-      let status = userObj.status;
-      let feed = userObj.url;
-      let logo = userObj.logo;
-      userData = {
-        'username':userName,
-        'status':status,
-        'feed': feed,
-        'logo':logo
-      }
-    } else {
-      // stop if value is null
-      return
-    }
-    // push to global array
-    globalUserChannelData.push(userData)
-  })
-  // settimeout before calling running displayLogic
-  setTimeout(function(){
-    callback(displayLogic(globalUserChannelData))
-  },0010)
-}
-function makeAjax(url, arr, callback){
-  let results = [];
-  arr.forEach((i) => {
-    let myHeaders = new Headers();
-    myHeaders.append('Client-ID','g8oo57hf3026alyweepj1ov6rg6p5q')
-    let options = {
-      method: 'GET',
-      headers: myHeaders,
-    }
-    fetch(`${url}/${i}`,options)
-    .then(blob => blob.json ())
-    .then((data) => { results.push(data)})
+function makeStreamUsers(obj){
+    var tempUserStore = {}
+    let user = obj._links.self
+    // seperate to get username alone
+    let userName = getUserName(user)
+    // push to blank object
+    tempUserStore['username'] = userName
 
-  })
-  // returns an array
-  setTimeout(function(){
-    callback(results)
-  },1000)
+    // check if useronline
+    if(obj.stream != null){
+        tempUserStore['online'] = true;
+    } else {
+        tempUserStore['online'] = false
+    }
+    globalUserStreamData.push(tempUserStore)
+}
+// on call to /channel make userObj, and call array merge logic
+// on call to /channel make res, and call array merge logic
+
+function makeAjax(url, arr, callback){
+  arr.forEach((i) => {
+    fetch(`${url}/${i}`)
+    .then(blob => blob.json ())
+    .then(callback)
+  });
 }
 
 
@@ -222,13 +159,14 @@ function getUserName(str){
 }
 
 // checks each array for user and adds online status- leaving one main array
-function displayLogic(){
+function displayLogic(streamArr, channelArr){
+    // if((streamArr)
   // loop streams to check if online
-  globalUserStreamData.forEach((stream) => {
+  streamArr.forEach((stream) => {
     // console.log(stream.online)
     if(stream.online === true){
       // if online, add attr to channel data
-      var sameUser = globalUserChannelData.find((val) => {
+      var sameUser = channelArr.find((val) => {
         // make toLowerCase, check for undefined
         if(val != undefined){
           return val.username.toLowerCase() == stream.username.toLowerCase()
@@ -239,7 +177,7 @@ function displayLogic(){
       }
     } else {
       // if offline, add attr to channel data
-      var sameUser = globalUserChannelData.find((val) => {
+      var sameUser = channelArr.find((val) => {
         if(val != undefined){
           return val.username.toLowerCase() === stream.username.toLowerCase()
         }
