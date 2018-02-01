@@ -1,16 +1,14 @@
-// var is being overwritten every call
-function solution(start,end,jumpLength){
-    var jumpNum = 0;
+// to get the counter to work, it must be passed in as an argument
+
+function solution(start,end,jumpLength, count = 0){
 	if(start >= end){
 		return
     }
     if(start < end){
         start = start + jumpLength;
-        ++jumpNum
-		console.log(jumpNum)
-		solution(start,end,jumpLength)
+		solution(start,end,jumpLength, count + 1)
     }
-   return jumpNum
+
 }
 
 solution(0,100,10)
