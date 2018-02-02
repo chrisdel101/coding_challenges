@@ -1,0 +1,140 @@
+/* if offline, don't display feed
+if offline make pic grayed out */
+
+body {
+    font-family: 'Roboto Slab', serif !important;
+    background-color: #f0ead6 !important;
+}
+* {
+    margin:0;
+}
+#main{
+    /* border: brown solid 3px; */
+    background-color: #84b484;
+}
+#user-status{
+    position: relative;
+    left: 13.5em;
+    min-height: 120px;
+    direction: ltr;
+}
+.page-header {
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    font-weight: bold;
+    te
+}
+#input-container {
+    max-width: 165px;
+    margin: auto;
+    padding-bottom: 15px;
+    text-align: center;
+}
+#main {
+  max-width: 600px;
+  margin: auto;
+}
+#results {
+  list-style: none;
+}
+#display-box {
+    min-height: 1000px
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+}
+.feed {
+  width: 100%;
+}
+.online-status.offline::after {
+    content: "       OFFLINE";
+    font-family: monospace;
+    color: #8ea7c2;
+}
+.online-status.online::after {
+    content: "       online";
+    font-family: 'Sedgwick Ave Display', cursive;
+    color: #5c5457;
+}
+.results-container {
+    border:black solid;
+    min-height: 130px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+.results-container > li {
+    text-align: center;
+}
+.results-container.online {
+    background-color: #b8cca6;
+    color: #5c5457;
+}
+.results-container.offline {
+    background-color: #4a5e82;
+    color: #b8cca6;
+}
+.results-container.online .list-item a{
+      color:#328332;
+}
+.results-container.offline .list-item a{
+      color:#7EC0EE;
+}
+.title {
+    text-transform: capitalize;
+}
+li.online-status {
+    margin-bottom: 6px;
+}
+.user-status {
+    background-color: #e1e1e6;
+    border: black 1px solid;
+    width: 30px;
+    transition: all, 0.5s;
+    display: block;
+    float:right;
+    clear:both;
+    min-height: 30px;
+}
+.user-status > p {
+    opacity: 0;
+    position: absolute;
+    transition: opacity 0.5s;
+    transition-delay: 0.1s;
+    margin:0;
+}
+.user-status:hover > p{
+    opacity: 1;
+    position:static;
+}
+.user-status:hover {
+    width:100px;
+    cursor: pointer;
+}
+#user-status > * {
+    direction: ltr;
+}
+.user-status:before {
+    content: "\f111";
+    font-family: FontAwesome;
+    float:left;
+    margin-left:5px;
+}
+.user-status:hover:before{
+    position:absolute;
+    visibility: hidden
+}
+#all.user-status:before{
+    color:blue;
+}
+/* #all.user-status:hover:before{
+    position:absolute;
+    visibility: hidden
+} */
+#online.user-status:before{
+    color:green;
+}
+#offline.user-status:before{
+    color:grey;
+}

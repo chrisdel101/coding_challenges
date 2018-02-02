@@ -161,32 +161,41 @@
 // }
 
 
+//DIDN'T WORK
+// function chunkArrayInGroups(arr, size){
+//     var arr1 = [];
+//     var counter = 0;
+//     var currentIndex = 0;
+//     var lastIndex = 0;
+//     for(var i = 0;i < arr.length;i++){
+//         // current needs +1 to work with slice
+//         currentIndex = i+1
+//         counter++
+//         if(counter === size){
+//             console.log(i, size)
+//             // first time through needs 0 index
+//             if(i < size){
+//                 lastIndex = 0;
+//             }
+//             console.log(`last:${lastIndex}`)
+//             console.log(`currentIndex:${currentIndex}`)
+//         	var slice = arr.slice(lastIndex, currentIndex)
+//             //0,2 2,4, 4,6
+//         	arr1.push(slice)
+//             // reset last to current
+//         	lastIndex = currentIndex
+//             counter=0
+//         }
+//     }
+//         return arr1
+// }
+// console.log(chunkArrayInGroups([0, 1, 2, 3, 5, 6],4))
 
-function chunkArrayInGroups(arr, size){
-    var arr1 = [];
-    var counter = 0;
-    var currentIndex = 0;
-    var lastIndex = 0;
-    for(var i = 0;i < arr.length;i++){
-        // current needs +1 to work with slice
-        currentIndex = i+1
-        counter++
-        if(counter === size){
-            console.log(i, size)
-            // first time through needs 0 index
-            if(i < size){
-                lastIndex = 0;
-            }
-            console.log(`last:${lastIndex}`)
-            console.log(`currentIndex:${currentIndex}`)
-        	var slice = arr.slice(lastIndex, currentIndex)
-            //0,2 2,4, 4,6
-        	arr1.push(slice)
-            // reset last to current
-        	lastIndex = currentIndex
-            counter=0
-        }
+function chunkArrayInGroups(arr,size){
+    var count = 0;
+    for (var i = 0; i < arr.length; i++) {
+        count = i + 1
     }
-        return arr1
+    
 }
-console.log(chunkArrayInGroups([0, 1, 2, 3, 5, 6],4))
+chunkArrayInGroups([1,2,3])
