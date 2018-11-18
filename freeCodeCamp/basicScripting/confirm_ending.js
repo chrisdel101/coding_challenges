@@ -37,3 +37,14 @@ function confirmEnding(str, target){
 }
 //
 console.log(confirmEnding("Open sesame", "pen"))
+
+// NEWER ANS
+function confirmEnding(str, target){
+// 	make num negative for slice
+	let sliceAmount = -Math.abs(target.length)
+    // slice this much of end
+	let last = str.slice(sliceAmount)
+
+	return (last === target ? true : false)
+
+}

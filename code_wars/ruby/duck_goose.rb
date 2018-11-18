@@ -69,11 +69,11 @@
 
 # THIS WORKS FOR SOME REASON **WHERE DOES NAME COME FROM
 
-  # def duck_duck_goose(players, goose)
-  #   players[(goose % players.size) - 1].name
-  # end
-  #
-  # duck_duck_goose(["a","b", "c","d"],11)
+  def duck_duck_goose(players, goose)
+    players[(goose % players.size) - 1].name
+  end
+
+  duck_duck_goose(["a","b", "c","d"],11)
 
 
 # ///////////////////Using two operators- no modulo//////////////////
