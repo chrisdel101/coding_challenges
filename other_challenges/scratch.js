@@ -86,11 +86,11 @@
 
 
 
-    //      return (contacts[i].firstName && contacts[i].prop)
-    //  } else if  (!(contacts[i].hasOwnProperty(firstName)) {
-    //     return "No such contact";
-    //  } else if (!(contacts[i].hasOwnProperty(prop)){
-    //         return "No such property"
+//      return (contacts[i].firstName && contacts[i].prop)
+//  } else if  (!(contacts[i].hasOwnProperty(firstName)) {
+//     return "No such contact";
+//  } else if (!(contacts[i].hasOwnProperty(prop)){
+//         return "No such property"
 //      }
 //    }
 // }
@@ -189,21 +189,21 @@
 //
 // In this case we need a blank object; for object we need tally[vote], for number accumulator we can use tally.vote
 //
-var votes = ["angular","angular","angular","react","react","ember","vanilla"];
-
-var initialValue = {};
-
-var reducer = function(tally,vote){
-  if(!tally[vote]){
-    tally[vote] = 1;
-  } else {
-    tally[vote] = tally[vote] + 1;
-  }
-  return tally;
-}
-var result = votes.reduce(reducer, initialValue);
-
-console.log(result);
+// var votes = ["angular", "angular", "angular", "react", "react", "ember", "vanilla"];
+//
+// var initialValue = {};
+//
+// var reducer = function(tally, vote) {
+// 	if (!tally[vote]) {
+// 		tally[vote] = 1;
+// 	} else {
+// 		tally[vote] = tally[vote] + 1;
+// 	}
+// 	return tally;
+// }
+// var result = votes.reduce(reducer, initialValue);
+//
+// console.log(result);
 //
 // FILTER///////////////////////////
 
@@ -306,3 +306,14 @@ console.log(result);
 //   total.push(current)
 // }
 // console.log(total)
+let names = [1, 2, 2, 5, 6, 4, 4, 1, 1, 2, 2]
+
+var countedNums = names.reduce(function(allNums, num) {
+	if (num in allNums) {
+		allNums[num]++;
+	} else {
+		allNums[num] = 1;
+	}
+	return allNums;
+}, {});
+console.log(countedNums)
