@@ -14,10 +14,10 @@ function queueTime(customers, n) {
 		// reset arr store
 		tempArr = []
 	}
-	// console.log('customer ranges', customerRanges)
 	let currentCustomer
 	let done = false
 	let i = 0
+	// make n only as long as line of customers
 	if (n > customerRanges.length) {
 		n = customerRanges.length
 	}
@@ -32,6 +32,7 @@ function queueTime(customers, n) {
 			//arr[2][1]/// Indexes stay the same and get reassigned
 			currentCustomer = customerRanges[k][i]
 			// if undefined, concat next section to current
+			// else - just loop over and do nothing
 			if (!currentCustomer) {
 				let left = customerRanges[n]
 				// if some chunks left continue
@@ -56,12 +57,6 @@ function queueTime(customers, n) {
 					// console.log('done', customerRanges[k + n])
 				}
 			}
-			// else {
-			// 	// loop through
-			// 	// console.log('arr', k + 1)
-			// 	// console.log('currentCus', currentCustomer)
-			// 	// console.log(customerRanges[k])
-			// }
 		}
 		// base case to stop outer while loop
 		if ((Object.entries(obj).length >= n) && (Object.values(obj).every(i => i === undefined))) {
@@ -73,7 +68,6 @@ function queueTime(customers, n) {
 		// console.log('i', i)
 		i++
 	}
-
 	return i
 }
 console.log(queueTime([1, 2, 3, 4], 1))
