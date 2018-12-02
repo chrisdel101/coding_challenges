@@ -39,33 +39,19 @@ function queueTime(customers, n) {
 				if (left) {
 					// add next range from end to current index
 					customerRanges[k] = customerRanges[k].concat(customerRanges[n])
-					// console.log('arr', k + 1)
-					// console.log('index', n)
-					// console.log('chunk', customerRanges[n])
-					// console.log('currentCus array', customerRanges[k])
-					// console.log('splice', customerRanges[k + n])
-					// splice off the chunk added
-					// console.log('spliced', customerRanges[n])
 					// splice off the concated part to shave arr length
 					customerRanges.splice(n, 1)
-					// console.log('whole', customerRanges)
-					// console.log('currentCus', customerRanges[k][i])
 				} else {
 					// if current line has not more to get from end, make it undefined
 					obj[k] = undefined
-					// console.log('arr', k + 1)
-					// console.log('done', customerRanges[k + n])
 				}
 			}
 		}
 		// base case to stop outer while loop
 		if ((Object.entries(obj).length >= n) && (Object.values(obj).every(i => i === undefined))) {
-			// console.log('true')
 			done = true
 			break
 		}
-		// console.log('obj', obj)
-		// console.log('i', i)
 		i++
 	}
 	return i
