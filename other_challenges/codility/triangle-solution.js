@@ -45,16 +45,17 @@ function solution(arr) {
 		}
 		return tuples
 	}
-
-	function isTriangle(arr) {
-		for (var k = 0; k < arr.length; k++) {
-			console.log(arr[k])
-			if ((arr[k][0] + arr[k][1] > arr[k][2]) && (arr[k][1] + arr[k][2] > arr[k][0]) && (arr[k][2] + arr[k][0] > arr[k][1])) {
-				return 1
-			}
-		}
-		return 0
-	}
+    console.log(makeTuples([1, 5, null, 1, 2, 2, null, 3]))
+    //
+	// function isTriangle(arr) {
+	// 	for (var k = 0; k < arr.length; k++) {
+	// 		console.log(arr[k])
+	// 		if ((arr[k][0] + arr[k][1] > arr[k][2]) && (arr[k][1] + arr[k][2] > arr[k][0]) && (arr[k][2] + arr[k][0] > arr[k][1])) {
+	// 			return 1
+	// 		}
+	// 	}
+	// 	return 0
+	// }
 	return isTriangle(makeTuples(arr))
 }
 console.log(solution([10, 2, 5, 1, 8, 20]))

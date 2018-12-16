@@ -306,14 +306,27 @@
 //   total.push(current)
 // }
 // console.log(total)
-let names = [1, 2, 2, 5, 6, 4, 4, 1, 1, 2, 2]
+// let names = [1, 2, 2, 5, 6, 4, 4, 1, 1, 2, 2]
+//
+// var countedNums = names.reduce(function(allNums, num) {
+// 	if (num in allNums) {
+// 		allNums[num]++;
+// 	} else {
+// 		allNums[num] = 1;
+// 	}
+// 	return allNums;
+// }, {});
+// console.log(countedNums)
 
-var countedNums = names.reduce(function(allNums, num) {
-	if (num in allNums) {
-		allNums[num]++;
-	} else {
-		allNums[num] = 1;
-	}
-	return allNums;
-}, {});
-console.log(countedNums)
+let tuples = [ [ 1 ], [ 1, 2 ], [ 1, 2, 2 ], [ 2 ], [ 2, 2 ], [ 2 ] ]
+
+for (var i = 0; i < tuples.length; i++) {
+    let staticVal = tuples[i]
+    let j = 0
+    console.log('j', j)
+    while(j < tuples.length){
+        console.log('inner', tuples[j])
+        j++
+    }
+    console.log('reset')
+}
