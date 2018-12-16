@@ -10,7 +10,7 @@ function makeIntervals(arr){
         if(arr[i] === null){
             // set current nullIndex - end of slice path
             nullIndex = i
-            console.log('n', nullIndex)
+            // console.log('n', nullIndex)
             // slice from start to nullIndex
             let window = arr.slice(windowStartIndex, nullIndex)
             // save window to arr - oR CALL INTERVAL FUNC HERE
@@ -86,22 +86,68 @@ function getIMW(arrOfTuples){
     	//make so not checking same val against itself
     		let innerIndex = arrOfTuples.indexOf(arrOfTuples[j])
     		if(innerVal.match(outerVal) && innerIndex !== i){
-    			console.log('break')
+    			// console.log('break')
     			break
     // 		if made to end without matching, push to arr
             } else if(j === arrOfTuples.length - 1){
-    			console.log('at END:',outerVal)
+    			// console.log('at END:',outerVal)
     			IMWs.push(outerVal)
-    		} 
+    		}
     		j++
     	}
     }
     return IMWs
 }
 // console.log(getIMW(getMonitorWindows(makeIntervals(arr))))
-console.log(getIMW(getMonitorWindows([[1,2],[3],[1],[4,5], [4],[2]]
-)))
+// console.log(getIMW(getMonitorWindows([[1,2],[3],[1],[4,5], [4],[2]]
+// )))
+// takes an array of interseting monitor window strings
 
+function maxSum(arrOfIMW){
+// 	will be strings, make nums
+	let toNums = convertToInts(arrOfIMW)
+    console.log('wins', toNums)
+    //loop over each
+    // let reduced = toNums.reduce((accumulator, currentValue) => {
+    //     return accumulator + currrentValue
+    // })
+    // create array of sums
+    let map = toNums.map(arr => {
+        return arr.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+        })
+    })
+    //find highest sum of window
+    let highSum = map.reduce((a, b) => {
+        return Math.max(a, b)
+    })
+    // check which index this in the array of sums
+    let index = map.indexOf(highSum)
+    // index into the original arr to get solution
+    let highestWindow = toNums[index]
+    return highestWindow
+
+}
+// take array of interesting monitor windows and convert to ints
+function convertToInts(arr){
+    let nums = []
+	arr.forEach(block => {
+		let storageArr = []
+ 		for (var i = 0; i < block.length; i++) {
+            let current = block[i]
+            // skip over commas in the string
+            if(current !== ","){
+// 				if not comma, push to store
+                current = parseInt(current)
+                storageArr.push(current)
+            }
+        }
+        //once converted, push into outer arr
+        nums.push(storageArr)
+	})
+	return nums
+}
+console.log(maxSum(getIMW(getMonitorWindows(makeIntervals(arr)))))
 // let tuples = makeIntervals(arr)
 // // takes and array and breaks into all windows
 // function allMonintorWindows(arr) {
