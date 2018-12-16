@@ -195,6 +195,16 @@ class MonitoringWindow {
 
     }
 }
-let arr = []
-let x = new MonitoringWindow(arr)
-console.log(x.maxSum())
+
+// const test1 = new MonitoringWindow([1, 5, null, 1, 2, 2, null, 3])
+// // console.log(test1.maxSum()[0] === 1)
+// // console.log(test1.maxSum()[1] === 5)
+// //
+// //
+// // const test2 = new MonitoringWindow([1, 5, null, 1, 2, 2, null, 3])
+// // console.log(test2.minAverage()[0] === 1)
+// // console.log(test2.minAverage()[1] === 2)
+// // console.log(test2.minAverage()[2] === 2)
+
+const test3 = new MonitoringWindow([1,2,null,4,22,66,12,89, null, undefined, NaN])
+console.log(test3.maxSum())
