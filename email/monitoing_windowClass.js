@@ -114,22 +114,51 @@ class MonitoringWindow {
     // take array of interesting monitor windows strs
     // returns array indentical in nums
     _convertToInts(arr){
-        let nums = []
-    	arr.forEach(block => {
-    		let storageArr = []
-     		for (var i = 0; i < block.length; i++) {
-                let current = block[i]
-                // skip over commas in the string
-                if(current !== ","){
-    // 				if not comma, push to store
-                    current = parseInt(current)
-                    storageArr.push(current)
-                }
+        var numStrs = []
+        arr.forEach(block => {
+
+        	let cursor = 0
+        	let tempStorage = []
+        	for(var i = 0; i < block.length; i++){
+
+        		let current = block[i]
+        	// console.log('block', block)
+        	//check if block has commas- none, push whole num
+        	if(!block.includes(",")){
+        		// console.log('no commas. Val as is')
+        // 		block = parseInt(block)
+        		tempStorage.push(block)
+        		break
+        		// console.log('i', i)
+        	} else if(block.includes(",")) {
+        	if(current === ","){
+        // 	if commas, get all blocks btw commas
+        			let slice = block.slice(cursor, i)
+        		// console.log('i', i)
+        		// console.log('val here', current)
+        		// console.log(`slice from ${cursor} to ${i}`)
+        		// console.log('slice LEN', slice.length)
+        			// console.log('original cursor', cursor)
+        			cursor = i + 1
+        			// console.log('reset cursor', cursor)
+        		tempStorage.push(slice)
+        		//if at end of block
+        		} else if(i === block.length -1){
+        			let slice = block.slice(cursor, i+1)
+        	// console.log("END slice", slice)
+        		tempStorage.push(slice)
+        		}
+        	}
+
             }
-            //once converted, push into outer arr
-            nums.push(storageArr)
-    	})
-    	return nums
+        	numStrs.push(tempStorage)
+        })
+        let nums = numStrs.map(arr => {
+            return arr.map(str => {
+                return parseInt(str)
+            })
+        })
+        return nums
     }
 
     // INSTANCE FUNC- call on instance to get IMW with the highest sum
@@ -145,6 +174,7 @@ class MonitoringWindow {
         console.log('wins', getIMWs)
         //loop over each- return arr of window sums
         let sums = getIMWs.map(arr => {
+            // console.log(arr)
             return arr.reduce((accumulator, currentValue) => {
                 return accumulator + currentValue
             })
@@ -201,10 +231,48 @@ class MonitoringWindow {
 // // console.log(test1.maxSum()[1] === 5)
 // //
 // //
-// // const test2 = new MonitoringWindow([1, 5, null, 1, 2, 2, null, 3])
+// const test2 = new MonitoringWindow([1, 5, null, 1, 2, 2, null, 3])
 // // console.log(test2.minAverage()[0] === 1)
 // // console.log(test2.minAverage()[1] === 2)
 // // console.log(test2.minAverage()[2] === 2)
 
-const test3 = new MonitoringWindow([1,2,null,4,22,66,12,89, null, undefined, NaN])
-console.log(test3.maxSum())
+const test3 = new MonitoringWindow([1,90,null,4,22,66,12,89, null, undefined, NaN, 3000])
+console.log(test3.maxSum()[0] === 3000)
+// let res = test3._getIMW([ [ 1 ],
+//   [ 1, 2 ],
+//   [ 2 ],
+//   [ 4 ],
+//   [ 4, 22 ],
+//   [ 4, 22, 66 ],
+//   [ 4, 22, 66, 12 ],
+//   [ 4, 22, 66, 12, 89 ],
+//   [ 22 ],
+//   [ 22, 66 ],
+//   [ 22, 66, 12 ],
+//   [ 22, 66, 12, 89 ],
+//   [ 66 ],
+//   [ 66, 12 ],
+//   [ 66, 12, 89 ],
+//   [ 12 ],
+//   [ 12, 89 ],
+//   [ 89 ] ])
+  // console.log(res)
+  // console.log(test3._convertToInts(test3._getIMW([ [ 1 ],
+  //   [ 1, 2 ],
+  //   [ 2 ],
+  //   [ 4 ],
+  //   [ 4, 22 ],
+  //   [ 4, 22, 66 ],
+  //   [ 4, 22, 66, 12 ],
+  //   [ 4, 22, 66, 12, 89 ],
+  //   [ 22 ],
+  //   [ 22, 66 ],
+  //   [ 22, 66, 12 ],
+  //   [ 22, 66, 12, 89 ],
+  //   [ 66 ],
+  //   [ 66, 12 ],
+  //   [ 66, 12, 89 ],
+  //   [ 12 ],
+  //   [ 12, 89 ],
+  //   [ 89 ] ]))))
+// console.log(test3._convertToInts(["1,2", "4,22,66,12,89", "13", "1010,1231,2,1231"]))
