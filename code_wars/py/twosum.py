@@ -1,13 +1,11 @@
 def two_sum(numbers, target):
-    i = 0
-    for first in numbers:
-        # print(i)
-        slice = numbers[i:i+1]
-        index = numbers.index(slice[0])
-        print(index)
-            for second in numbers:
-            # don't check for the index of original item
-            if
-        i = i + 1
+    for outerIndex, outerVal in enumerate(numbers):
+        for innerIndex, innerVal in enumerate(numbers):
+            sum = outerVal + innerVal
+        #     # print(first, second)
+        #     # print sum
+            if(sum == target):
+                return [outerIndex, innerIndex]
+        # i = i + 1
         pass
-two_sum([1,2,3,4], 4)
+print(two_sum([1,4,3,0], 4))
