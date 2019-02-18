@@ -1,21 +1,33 @@
 def parse(data):
+    if not len(data):
+        return
     val = 0
     list = []
-    for i in data:
-        if(i != "i" and i != "d"  and i != "s" and i != "o"):
-            break
+    # true if passes through to the else
+    noVal = False
+    for index, i in enumerate(data):
         if(i == "i"):
+            print('i',val)
             val = val + 1
         elif(i == "d"):
-            val = val - 1
+            # if (val - 1) >= 0:
+                val = val - 1
+                print('d', val)
         elif(i == "s"):
+            print('s', val)
             val = val*val
         elif(i == "o"):
-            list.append(list)
-    return(val)
+            print('o', val)
+            list.append(val)
+
+        # if (len(data) - 1) == index:
+        #     if not len(list):
+        #         # print('here')
+        #         list.append(val)
+    return(list)
 
 
-print(parse("iio"))
+print(parse("idoiido"))
 
 # Write a simple parser that will parse and run Deadfish.
 #
