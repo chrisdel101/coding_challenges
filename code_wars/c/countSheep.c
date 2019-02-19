@@ -10,22 +10,36 @@ int main(void) {
 
   // return 0;
     char* str = count_sheep(1);
-    printf("%s\n", str);
+    // printf("%s\n", str);
 
 }
 char* count_sheep(int n)
-  {
+{
     char buffer[50];
-     sprintf(buffer,"%i sheep...", n);
-     int len = strlen(buffer);
-     char *pointer = malloc(n * len);
+    sprintf(buffer,"%i sheep...", n);
+    int len = strlen(buffer);
+    // 10 chars - 0 at end
+    // printf("%s\n", buffer);
+    char *pointer = malloc(n * len);
 
-     for (int i = 1; i < n+1 ; i++) {
+    for (int i = 1; i < n+1 ; i++) {
         sprintf(buffer,"%i sheep...", i);
-        strcat(pointer, buffer);
-      }
-     return(pointer);
+        strcpy(temp, buffer);
+    }
 }
+// char* count_sheepOLD(int n)
+//   {
+//     char buffer[50];
+//     sprintf(buffer,"%i sheep...", n);
+//     int len = strlen(buffer);
+//     char *pointer = malloc(n * len);
+//
+//      for (int i = 1; i < n+1 ; i++) {
+//         sprintf(buffer,"%i sheep...", i);
+//         strcat(pointer, buffer);
+//       }
+//      return(pointer);
+// }
 
 // char buffer[10];
 //

@@ -1,29 +1,39 @@
-function e(content, evaported, threshold){
-    let originalContent = 10
-    let i = 0
+// recursive version
+// function evaporator(content, evaported, threshold){
+//     let  = 10
+//     let breakingPoint = content * (threshold / 100)
+//     let i = 0
+//
+//     function recurse(content, evaported, threshold){
+//         let tenPercent = content * (evaported/100)
+//         let contentLeft = content - tenPercent
+//         i++
+//         if(contentLeft < breakingPoint) return
+//     	recurse(contentLeft, evaported, threshold)
+//     }
+//     recurse(content, evaported, threshold)
+//     return i
+// }
+//
+// console.log(evaporator(10,10,10))
 
-    function recurse(content, evaported, threshold){
-        let percentLeft
-    	// if(percentLeft < thres) return
-        let breakPoint = threshold / originalContent
-        // console.log('thres', breakPoint)
-        // console.log('cont' ,contentLeft)
+function evaporator(content, evaported, threshold){
+    let breakingPoint = content * (threshold / 100)
+    let i = 1
+    let amountEvap = content * (evaported/100)
+    // console.log('evap num',evaported/100)
+    let contentLeft = content - amountEvap
+    // console.log(contentLeft)
 
-        // if(i > 20) return
-        let mlsEvaportad = content * (evaported / 100)
-        let contentLeft = content - mlsEvaportad
-        // console.log('cont' ,contentLeft)
-        // let check = contentLeft > threshold
-        // console.log(i)
+    // while (i < 5) {
+    while( contentLeft > breakingPoint){
         i++
-        if(contentLeft < breakPoint) {
-            console.log(i)
-            return i
-        }
-    	recurse(contentLeft, evaported, threshold)
+        amountEvap = contentLeft * (evaported/100)
+        contentLeft = contentLeft - amountEvap
+        console.log(contentLeft)
     }
-    recurse(content, evaported, threshold)
+
     return i
 }
 
-console.log(e(10,10,10))
+console.log(evaporator(100, 4.69, 2.49))

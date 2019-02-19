@@ -16,10 +16,11 @@ int main(void) {
 }
 char* string_maker(int n, char* str)
   {
-    char buffer[50];
+     char buffer[50];
      sprintf(buffer,"%i %s...", n, str);
      int len = strlen(buffer);
-     char *pointer = malloc(n * len);
+     char *pointer = malloc(n * (len+1));
+     printf("%s", pointer);
 
      for (int i = 1; i < n+1 ; i++) {
         sprintf(buffer,"%i %s...", i, str);
