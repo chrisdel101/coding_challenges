@@ -24,14 +24,14 @@ evaporator () {
 evaporator 100 4.06 1.25
 # evaporator 10 10 10
 #
-# let breakingPoint = content * (threshold / 100)
-# let i = 1
-# let amountEvap = content * (evaported/100)
-# let contentLeft = content - amountEvap
-#
-# while (contentLeft > breakingPoint) {
-#     i++
-#     amountEvap = contentLeft * (evaported/100)
-#     contentLeft = contentLeft - amountEvap
-#     console.log(contentLeft)
-# }
+let breakingPoint = content * (threshold / 100)
+let i = 1
+let amountEvap = content * (evaported/100)
+let contentLeft = content - amountEvap
+
+while (contentLeft > breakingPoint) {
+    i++
+    amountEvap = contentLeft * (evaported/100)
+    contentLeft = contentLeft - amountEvap
+    console.log(contentLeft)
+}
