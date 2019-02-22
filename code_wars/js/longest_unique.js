@@ -1,4 +1,4 @@
-function store(arr,n){
+function longestConsec(arr,n){
 var store = []
 for(var i = 0; i < arr.length;  i++){
 	var temp = []
@@ -10,7 +10,20 @@ for(var i = 0; i < arr.length;  i++){
     temp = temp.join('')
 	store.push(temp)
 }
-console.log(store)
+  let longest = ""
+  for (var j = 0; j < store.length; j++) {
+      if(store[j].length > longest.length){
+          longest = store[j]
+      }
+  }
+  console.log('ll',longest.length)
+  if(n >= arr.length || n == 0){
+      // console.log(n)
+      // console.log(longest.length)
+    return ""
+  }
+  // console.log(longest)
+  return longest
 }
 
-store(["hello", "goodbye", "so long", "aloha"], 2)
+longestConsec([ 'it', 'wkppv', 'ixoyx', '3452', 'zzzzzzzzzzzz'], 15)

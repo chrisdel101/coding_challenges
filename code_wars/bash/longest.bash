@@ -1,33 +1,19 @@
 # # #!/usr/bin/env bash
 
-testIndex2(){
-    declare -A asscArr
-
-    var=("$@")
-    index=0
-    for i in "${var[@]}"; do
-        # echo ${i}
-        echo ${var[index]}
-        let "index=index + 1"
-    done
-}
-
-arr=("zone" "abigail" "theta" "form" "libe" "zas")
-# testIndex2 ${arr[@]}
-
-# longestConsec(){
-#     var=("$@")
-#     innerIndex=0
-#     for i in "${var[@]}"; do
-#         echo ${var[innerIndex]}
-#             let "innerIndex=innerIndex + 1"
-#
-#     done
-#
-# }
 longestConsec(){
-    declare -A asscArr
+    # declare -A asscArr
     inputArr=("$@")
+    counter=0
+    array=( "$1" )
+
+    # for i in $inputArr; do
+    #     echo $i
+    # done
+   ## Do something with it.
+    # echo $array
+    # for (( i = 0; i < 3; i++ )); do
+    #     echo "${1[i]}"
+    # done
     index=0
     for last; do true; done
     finalIndex=0
@@ -42,15 +28,33 @@ longestConsec(){
     innerIndex=0
     # echo $index
         # reset inner var each time
-        for i in "${inputArr[@]}"; do
+        mainArr=()
+        # put string into ARR
+        for i in $inputArr; do
             # make j == outerindex
+            # tempStri="i ${i}"
+            # echo "tempStri ${tempStri}"
+            i="${i}" | tr -d '('
+            # echo $i
+            mainArr+=($i)
+            let "counter=counter + 1"
+        done
+        # echo "c $counter"
+        # mainArr=tr -d '()' <<< "${mainArr[@]}"
+        # remove first char
+        mainArr=`echo $mainArr | tr -d '('`
+        # mainArr[-1]=${mainArr[-1]%?}
+        # sed 's/(\([[:alpha:]][[:alpha:]]\))/\1/g'
+        # echo "main ${mainArr[@]}"
+        for k in "${mainArr[@]}"; do
             tempArr=()
             for (( j = $index; j <  $index + $last; j++ )); do
 
-             # asscArr[$j]=$i
-             tempStr="${inputArr[j]}"
-             # echo "${j} ${inputArr[j]}"
-             # echo "temp ${tempStr}"
+             # tempStri="k ${k}"
+             # echo " ${mainArr[j]}"
+             tempStr=${mainArr[j]}
+             # echo "tempStr ${tempStr}"
+             # echo "temp ${inputArr[j]}"
              tempArr+=($tempStr)
                 # echo "${inputArr[innerIndex]} ${inputArr[innerIndex+1]} ${inputArr[innerIndex+2]}"
                 let "innerIndex=innerIndex + 1"
@@ -92,30 +96,27 @@ longestConsec(){
         # echo "HighestHighest:${highestLen}"
         # echo "finalINdex: ${finalIndex}"
     # done
-        echo "WORD ${word}"
+        # echo "n ${n}"
+        # inputLen=${#inputArr[*]}
+        echo ${counter}
+        echo ${last}
+        if [ ${last} -gt ${counter} ]
+        then
+            echo "y"
+        elif [ ${last} -eq 0 ]
+        then
+            echo ""
+        elif [ ${counter} -le 0 ]
+        then
+            echo ""
+        else
+            echo  "${word}"
+        fi
 
     # for key in ${!asscArr[@]}; do
     #     # echo ${key} ${arr[${key}]}
     # done
 }
-# x=("ejjjjmmtthh", "zxxuueeg", "aanlljrrrxx", "dqqqaaabbb", "oocccffuucccjjjkkkjyyyeehh")
+x=("ejjjjmmtthh", "zxxuueeg", "aanlljrrrxx", "dqqqaaabbb", "oocccffuucccjjjkkkjyyyeehh")
 x=("zone" "abigail" "theta" "form" "libe" "zas")
-longestConsec ${x[@]} 2
-
-# ! /bin/bash
-# function f() {
-#     a=("$@")
-#     ((last_idx=${#a[@]} - 1))
-#
-#     b=${a[last_idx]}
-#     unset a[last_idx]
-#
-#     for i in "${a[@]}" ; do
-#         echo "$i"
-#     done
-#     echo "b: $b"
-# }
-#
-# x=("one two" "LAST")
-
-# f "("one two" "LAST")"" "$b"
+longestConsec "("qqqbooorrrkkkbb" "iiyylllfff" "nnnzzzeeooss" "mwxxx" "mrrrlll" "dzzoox" "kkyyyevvvtt" "tttrrnnnnnyy" "uutxxxggg" "yynnddl" "qrrrrruuqqk")" 11
