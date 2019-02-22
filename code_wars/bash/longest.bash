@@ -1,26 +1,8 @@
 # # #!/usr/bin/env bash
-# #
-# #
-# longestConsec(){
-#     declare -A arr
-#     index=0
-#
-#     inputArr=("$@")
-#     ((last_idx=${#a[@]} - 1))
-#     b=${inputArr[last_idx]}
-#     unset inputArr[last_idx]
-#
-#     for i in "${inputArr[@]}"; do
-#         echo ${i}
-#         arr[$index]=$i
-#         let "index=index + 1"
-#     done
-#     for key in ${!arr[@]}; do
-#         echo ${key} ${arr[${key}]}
-#     done
-# }
 
 testIndex2(){
+    declare -A asscArr
+
     var=("$@")
     index=0
     for i in "${var[@]}"; do
@@ -44,19 +26,55 @@ arr=("zone" "abigail" "theta" "form" "libe" "zas")
 #
 # }
 longestConsec(){
+    declare -A asscArr
     inputArr=("$@")
-    innerIndex=0
+    index=0
+    for last; do true; done
+    finalIndex=0
+    highestLen=0
+    word=""
+    # finalIndex="inputArr[${#inputArr[@]}-1]"
     # remove last elem
     unset 'inputArr[${#inputArr[@]}-1]'
 
-    # while([ $outerIndex -lt  1 ]); do
-
+    # while([ $index -lt  2 ]); do
+        # echo $last
+    innerIndex=0
+    # echo $index
         # reset inner var each time
-
         for i in "${inputArr[@]}"; do
-            echo ${inputArr[innerIndex+1]}
+            # make j == outerindex
+            tempArr=()
+            for (( j = $index; j <  $index + $last; j++ )); do
+
+             # asscArr[$j]=$i
+             tempStr="${inputArr[j]}"
+             # echo "${j} ${inputArr[j]}"
+             # echo "temp ${tempStr}"
+             tempArr+=($tempStr)
+                # echo "${inputArr[innerIndex]} ${inputArr[innerIndex+1]} ${inputArr[innerIndex+2]}"
+                let "innerIndex=innerIndex + 1"
+            done
+            # echo "TEMP ARR: ${tempArr[@]}"
+            # concat all letters together
+            concatArr=$(echo ${tempArr[@]} | sed 's/ //g')
+            # echo "concat ${concatArr}"
+            # get the length
+            len=${#concatArr}
+            # echo "len: ${len}"
+            # echo "Highest:${highestLen}"
+            if [[ $len -gt $highestLen ]]; then
+
+            finalIndex=$index
+            word=${concatArr}
+            highestLen=$len
+            # echo "reassign high: ${highestLen}"
+                # echo $len
+            fi
+
+            # echo ${#tempArr[@]}
             # if [ -z ${arr[$innerIndex]} ]; then
-            #     arr[$innerIndex]=$i
+            #
 
                 # echo "${arr[$innerIndex+1]}"
                 # let "innerIndex=innerIndex + 1"
@@ -66,18 +84,21 @@ longestConsec(){
                 # echo ${arr[$innerIndex]}
                 # echo $str
                 # arr[$innerIndex]=$str
-                let "innerIndex=innerIndex + 1"
+                # let "innerIndex=innerIndex + 1"
             # fi
             # echo $innerIndex
+            let "index=index + 1"
         done
-        # let "outerIndex=outerIndex + 1"
+        # echo "HighestHighest:${highestLen}"
+        # echo "finalINdex: ${finalIndex}"
     # done
+        echo "WORD ${word}"
 
-    # for key in ${!arr[@]}; do
-    #     echo ${key} ${arr[${key}]}
+    # for key in ${!asscArr[@]}; do
+    #     # echo ${key} ${arr[${key}]}
     # done
 }
-
+# x=("ejjjjmmtthh", "zxxuueeg", "aanlljrrrxx", "dqqqaaabbb", "oocccffuucccjjjkkkjyyyeehh")
 x=("zone" "abigail" "theta" "form" "libe" "zas")
 longestConsec ${x[@]} 2
 
