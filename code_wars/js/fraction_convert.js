@@ -76,6 +76,7 @@ function mixedFraction(s){
     let commonFact = GCF(parseInt(nums[0]),parseInt(nums[1]) )
     console.log('comm', commonFact)
     if(commonFact === 1){
+        console.log('7')
         // move minus value to top
         if(nums[1] < 0 && nums[0] > 0){
             // make bottom pos
@@ -92,8 +93,8 @@ function mixedFraction(s){
         if(Math.abs(nums[0]) > Math.abs(nums[1])){
             console.log('N1',nums[1])
             // console.log('N0',nums[0])
-            let frontInt = round(nums[0] / nums[1])
-            console.log(frontInt)
+            let frontInt = parseInt(nums[0] / nums[1])
+            // console.log('F   F', parseInt(frontInt))
             let newTop = nums[0] % nums[1]
             console.log('2')
             return(`${frontInt} ${Math.abs(newTop)}/${Math.abs(nums[1])}`)
@@ -106,25 +107,55 @@ function mixedFraction(s){
     let reducedBottom = parseInt(nums[1]) /commonFact
     console.log('rT', reducedTop, 'RB', reducedBottom)
     if(Math.abs(reducedTop) < Math.abs(reducedBottom)){
-        console.log('3')
+        console.log('22')
+        // console.log('N1', nums[1])
         if(reducedTop === 0){
             return `${0}`
         }
+        if(reducedBottom < 0){
+            console.log('INS')
+            reducedBottom = reducedBottom * -1
+            return `-${reducedTop}/${reducedBottom}`
+        }
+        console.log('ins')
+        console.log('rT', reducedTop, 'RB', reducedBottom)
         return `${reducedTop}/${reducedBottom}`
     }
-    let frontInt = Math.floor(reducedTop / reducedBottom)
+    let frontInt = round(reducedTop / reducedBottom)
+    console.log('front', frontInt)
     let newTop = reducedTop % reducedBottom
     let newBottom = reducedBottom
+    console.log('nt', newTop, 'nb', newBottom)
     if(!newTop || !newBottom){
             console.log('4')
         return `${frontInt}`
     } else {
             console.log('5')
+            // if new bottom negative, make int positive
+            if(newBottom < 0 && frontInt > 0){
+                newBottom = newBottom * -1
+                frontInt = frontInt * -1
+                // else just make bottom pos
+            } else if(newBottom < 0 && frontInt < 0){
+                newBottom = newBottom * -1
+            }
+            if(newTop < 0){
+                if(frontInt > 0){
+                    frontInt = frontInt * -1
+                    newTop = newTop * -1
+                } else {
+                    newTop = newTop * -1
+                }
+            }
         return `${frontInt} ${newTop}/${newBottom}`
     }
     // https://stackoverflow.com/questions/41586838/rounding-of-negative-numbers-in-javascript
     function round(v) {
-        return (v >= 0 || -1) * Math.round(Math.abs(v));
+        if(v >= 0){
+            return Math.floor(v)
+        } else {
+            return Math.ceil(v)
+        }
     }
     function GCF(a, b) {
         // if (a === 0 || b === 0) return 0
@@ -133,7 +164,7 @@ function mixedFraction(s){
     }
 }
 // console.log(mixedFraction("0/18891"))
-console.log(mixedFraction("-4/3"))
-// console.log(mixedFraction("42/9"))
-// console.log(mixedFraction("94/-93"))
+// console.log(mixedFraction("649/359"))
+// console.log(mixedFraction("-4/-25"))
+console.log(mixedFraction("883/-522"))
 //
