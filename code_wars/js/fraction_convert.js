@@ -58,45 +58,41 @@
 function mixedFraction(s){
     let nums = s.split("/")
     let num = s.split('/').reduce((p, c) => p / c);
-    console.log('num', num)
+    // console.log('num', num)
+    let breakingCall = nums[0] % nums[1]
+    let breaker = GCF(breakingCall, num)
+    console.log(GCF(breaker, num))
 
-        let breakingCall = nums[0] % nums[1]
-        let breaker = GCF(breakingCall, num)
-        console.log(GCF(breaker, num))
-
-
-    // console.log('nums', nums[1] )
-    // console.log('num1', parseInt(nums[1]))
-    // if(parseInt(nums[0]) === 0 || parseInt(nums[1]) === 0){
-    //     // console.log('inner 0',parseInt(nums[0]))
-    //     // console.log('inner 1', parseInt(nums[1]))
-    //     // console.log('here')
-    //     throw "ZeroDivisionError"
-    // }
+    console.log(nums)
+    // if bottom neg, move minus to top
+    if(parseInt(nums[1]) < 0 && parseInt(nums[0] > 0)){
+        nums[1] = nums[1] * -1
+        nums[0] = nums[0] * -1
+    }
+    if(nums[0] === "0"){
+        return `${0}`
+    }
     let commonFact = GCF(parseInt(nums[0]),parseInt(nums[1]) )
-    console.log('comm', commonFact)
+    commonFact = Math.abs(commonFact)
     if(commonFact === 1){
-        console.log('7')
-        // move minus value to top
-        if(nums[1] < 0 && nums[0] > 0){
-            // make bottom pos
-            nums[1] = nums[1] * -1
-            nums[0] = nums[0] * -1
-            console.log('N0',nums[0])
-            // console.log(`-${nums[0]}/${nums[1]}`)
+        console.log('14')
             if(Math.abs(nums[0]) < Math.abs(nums[1])){
+                console.log(nums)
+                if(nums[0] === '0'){
+                    return `${nums[1]}`
+                }
                 return `${nums[0]}/${nums[1]}`
-
-            }
-        }
-        // if top more, divide bottom into topNum
-        if(Math.abs(nums[0]) > Math.abs(nums[1])){
+            } else if(Math.abs(nums[0]) > Math.abs(nums[1])){
             console.log('N1',nums[1])
             // console.log('N0',nums[0])
             let frontInt = parseInt(nums[0] / nums[1])
-            // console.log('F   F', parseInt(frontInt))
+            console.log('F   F', parseInt(frontInt))
             let newTop = nums[0] % nums[1]
+            console.log('newT', newTop)
             console.log('2')
+            if(newTop === 0){
+                return `${frontInt}`
+            }
             return(`${frontInt} ${Math.abs(newTop)}/${Math.abs(nums[1])}`)
         }
     }
@@ -108,15 +104,12 @@ function mixedFraction(s){
     console.log('rT', reducedTop, 'RB', reducedBottom)
     if(Math.abs(reducedTop) < Math.abs(reducedBottom)){
         console.log('22')
-        // console.log('N1', nums[1])
-        if(reducedTop === 0){
-            return `${0}`
-        }
-        if(reducedBottom < 0){
-            console.log('INS')
-            reducedBottom = reducedBottom * -1
-            return `-${reducedTop}/${reducedBottom}`
-        }
+
+        // if(reducedBottom < 0){
+        //     console.log('INS')
+        //     reducedBottom = reducedBottom * -1
+        //     return `-${reducedTop}/${reducedBottom}`
+        // }
         console.log('ins')
         console.log('rT', reducedTop, 'RB', reducedBottom)
         return `${reducedTop}/${reducedBottom}`
@@ -164,7 +157,7 @@ function mixedFraction(s){
     }
 }
 // console.log(mixedFraction("0/18891"))
-// console.log(mixedFraction("649/359"))
+console.log(mixedFraction("-31/-32"))
 // console.log(mixedFraction("-4/-25"))
-console.log(mixedFraction("883/-522"))
+// console.log(mixedFraction("1/1"))
 //
