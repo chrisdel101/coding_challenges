@@ -78,15 +78,22 @@ function mixedFraction(s){
     if(commonFact === 1){
         // move minus value to top
         if(nums[1] < 0 && nums[0] > 0){
+            // make bottom pos
             nums[1] = nums[1] * -1
+            nums[0] = nums[0] * -1
+            console.log('N0',nums[0])
             // console.log(`-${nums[0]}/${nums[1]}`)
-            console.log('1')
-            return `-${nums[0]}/${nums[1]}`
+            if(Math.abs(nums[0]) < Math.abs(nums[1])){
+                return `${nums[0]}/${nums[1]}`
+
+            }
         }
         // if top more, divide bottom into topNum
         if(Math.abs(nums[0]) > Math.abs(nums[1])){
+            console.log('N1',nums[1])
+            // console.log('N0',nums[0])
             let frontInt = round(nums[0] / nums[1])
-            // console.log(frontInt)
+            console.log(frontInt)
             let newTop = nums[0] % nums[1]
             console.log('2')
             return(`${frontInt} ${Math.abs(newTop)}/${Math.abs(nums[1])}`)
@@ -97,9 +104,12 @@ function mixedFraction(s){
     // }
     let reducedTop = parseInt(nums[0]) /commonFact
     let reducedBottom = parseInt(nums[1]) /commonFact
-    console.log(reducedTop, reducedBottom)
-    if(reducedTop < reducedBottom){
+    console.log('rT', reducedTop, 'RB', reducedBottom)
+    if(Math.abs(reducedTop) < Math.abs(reducedBottom)){
         console.log('3')
+        if(reducedTop === 0){
+            return `${0}`
+        }
         return `${reducedTop}/${reducedBottom}`
     }
     let frontInt = Math.floor(reducedTop / reducedBottom)
@@ -122,7 +132,8 @@ function mixedFraction(s){
         else return GCF(b, a % b);
     }
 }
-console.log(mixedFraction("0/18891"))
+// console.log(mixedFraction("0/18891"))
+console.log(mixedFraction("-4/3"))
 // console.log(mixedFraction("42/9"))
-// console.log(mixedFraction("0/0"))
+// console.log(mixedFraction("94/-93"))
 //
