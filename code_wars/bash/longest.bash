@@ -1,108 +1,52 @@
 # # #!/usr/bin/env bash
 
 longestConsec(){
-    # declare -A asscArr
     inputArr=("$@")
     counter=0
     array=( "$1" )
-
-    # for i in $inputArr; do
-    #     echo $i
-    # done
-   ## Do something with it.
-    # echo $array
-    # for (( i = 0; i < 3; i++ )); do
-    #     echo "${1[i]}"
-    # done
     index=0
+    # set last item to var last
     for last; do true; done
     finalIndex=0
     highestLen=0
-    word=""
-    # finalIndex="inputArr[${#inputArr[@]}-1]"
+    finalWord=""
     # remove last elem
     unset 'inputArr[${#inputArr[@]}-1]'
-
-    # while([ $index -lt  2 ]); do
-        # echo $last
-    innerIndex=0
-    # echo $index
         # reset inner var each time
         mainArr=()
-        # put string into ARR
+        # put input string into ARR
         for i in $inputArr; do
-            # make j == outerindex
-            # tempStri="i ${i}"
-            # echo "tempStri ${tempStri}"
-            i="${i}" | tr -d '('
-            # echo $i
+            # add to arr
             mainArr+=($i)
+            # counter for lenghth
             let "counter=counter + 1"
         done
-        # echo "c $counter"
-        # mainArr=tr -d '()' <<< "${mainArr[@]}"
         # remove first char
         mainArr=`echo $mainArr | tr -d '('`
-        # mainArr[-1]=${mainArr[-1]%?}
-        # sed 's/(\([[:alpha:]][[:alpha:]]\))/\1/g'
-        # echo "main ${mainArr[@]}"
+        # loop over new arr
         for k in "${mainArr[@]}"; do
             tempArr=()
             for (( j = $index; j <  $index + $last; j++ )); do
-
-             # tempStri="k ${k}"
-             # echo " ${mainArr[j]}"
-             tempStr=${mainArr[j]}
-             # echo "tempStr ${tempStr}"
-             # echo "temp ${inputArr[j]}"
-             tempArr+=($tempStr)
-                # echo "${inputArr[innerIndex]} ${inputArr[innerIndex+1]} ${inputArr[innerIndex+2]}"
-                let "innerIndex=innerIndex + 1"
+                 tempStr=${mainArr[j]}
+                 # add to new arr
+                 tempArr+=($tempStr)
             done
-            # echo "TEMP ARR: ${tempArr[@]}"
             # concat all letters together
             concatArr=$(echo ${tempArr[@]} | sed 's/ //g')
-            # echo "concat ${concatArr}"
-            # get the length
+            # get the length of conacted str
             len=${#concatArr}
-            # echo "len: ${len}"
-            # echo "Highest:${highestLen}"
+            # fing longest str
             if [[ $len -gt $highestLen ]]; then
-
-            finalIndex=$index
-            word=${concatArr}
-            highestLen=$len
-            # echo "reassign high: ${highestLen}"
-                # echo $len
+                finalIndex=$index
+                finalWord=${concatArr}
+                highestLen=$len
             fi
-
-            # echo ${#tempArr[@]}
-            # if [ -z ${arr[$innerIndex]} ]; then
-            #
-
-                # echo "${arr[$innerIndex+1]}"
-                # let "innerIndex=innerIndex + 1"
-            # else
-            #     str=$arr[$innerIndex]$i
-                # echo $str
-                # echo ${arr[$innerIndex]}
-                # echo $str
-                # arr[$innerIndex]=$str
-                # let "innerIndex=innerIndex + 1"
-            # fi
-            # echo $innerIndex
             let "index=index + 1"
         done
-        # echo "HighestHighest:${highestLen}"
-        # echo "finalINdex: ${finalIndex}"
-    # done
-        # echo "n ${n}"
-        # inputLen=${#inputArr[*]}
-        echo ${counter}
-        echo ${last}
+
         if [ ${last} -gt ${counter} ]
         then
-            echo "y"
+            echo ""
         elif [ ${last} -eq 0 ]
         then
             echo ""
@@ -110,12 +54,8 @@ longestConsec(){
         then
             echo ""
         else
-            echo  "${word}"
+            echo  "${finalWord}"
         fi
-
-    # for key in ${!asscArr[@]}; do
-    #     # echo ${key} ${arr[${key}]}
-    # done
 }
 x=("ejjjjmmtthh", "zxxuueeg", "aanlljrrrxx", "dqqqaaabbb", "oocccffuucccjjjkkkjyyyeehh")
 x=("zone" "abigail" "theta" "form" "libe" "zas")
