@@ -1,3 +1,4 @@
+const assert = require('assert')
 // make it a decimal
 // take right side as int
 // function mixedFraction(s){
@@ -64,85 +65,156 @@ function mixedFraction(s){
     console.log(GCF(breaker, num))
 
     console.log(nums)
-    // if bottom neg, move minus to top
-    if(parseInt(nums[1]) < 0 && parseInt(nums[0] > 0)){
-        nums[1] = nums[1] * -1
-        nums[0] = nums[0] * -1
-    }
-    if(nums[0] === "0"){
-        return `${0}`
-    }
+
     let commonFact = GCF(parseInt(nums[0]),parseInt(nums[1]) )
     commonFact = Math.abs(commonFact)
+    console.log('COM', commonFact)
+    let result
+
     if(commonFact === 1){
-        console.log('14')
+        console.log('q0000')
+        let frontInt
+        let newTop
             if(Math.abs(nums[0]) < Math.abs(nums[1])){
-                console.log(nums)
+                console.log('numS', nums)
                 if(nums[0] === '0'){
-                    return `${nums[1]}`
+                    result =`${0}`
+                } else {
+                    result = `${nums[0]}/${nums[1]}`
                 }
-                return `${nums[0]}/${nums[1]}`
             } else if(Math.abs(nums[0]) > Math.abs(nums[1])){
-            console.log('N1',nums[1])
+            // console.log('N1',nums[1])
             // console.log('N0',nums[0])
-            let frontInt = parseInt(nums[0] / nums[1])
+            frontInt = parseInt(nums[0] / nums[1])
             console.log('F   F', parseInt(frontInt))
-            let newTop = nums[0] % nums[1]
+            newTop = nums[0] % nums[1]
             console.log('newT', newTop)
-            console.log('2')
+            // console.log('2')
             if(newTop === 0){
-                return `${frontInt}`
+                result = `${frontInt}`
+                console.log('res', result)
+            } else {
+                result = `${frontInt} ${Math.abs(newTop)}/${Math.abs(nums[1])}`
             }
-            return(`${frontInt} ${Math.abs(newTop)}/${Math.abs(nums[1])}`)
         }
+        console.log('res', result)
+        console.log('newTop', newTop)
+        if(result){
+            return checkNegativity(result)
+        } else {
+            let check = checkNegativity(s)
+
+        }
+        return result ? checkNegativity(result) : nums[0]
+        // return result
     }
-    // else if(commonFact === 0){
-    //     throw "ZeroDivisionError"
+
+    // if bottom neg, move minus to top
+    // if(parseInt(nums[1]) < 0 && parseInt(nums[0] > 0)){
+    //     nums[1] = nums[1] * -1
+    //     nums[0] = nums[0] * -1
+    //     // if both negtaive remove bottom negative sign
+    // } if( parseInt(nums[1]) < 0 && parseInt(nums[0]) < 0 ){
+    //     console.log('HI')
+    //         nums[1] = nums[1] * -1
     // }
+    // if(nums[0] === "0"){
+    //     return `${0}`
+    // }
+
+
     let reducedTop = parseInt(nums[0]) /commonFact
     let reducedBottom = parseInt(nums[1]) /commonFact
     console.log('rT', reducedTop, 'RB', reducedBottom)
-    if(Math.abs(reducedTop) < Math.abs(reducedBottom)){
-        console.log('22')
+        // if staying as reduced fraction
+        if(Math.abs(reducedTop) < Math.abs(reducedBottom)){
+            console.log('Fractin')
+            result = `${reducedTop}/${reducedBottom}`
+            result = checkNegativity(result)
+            return result
+        } else {
+            let frontInt = round(reducedTop / reducedBottom)
+            console.log('FI', frontInt)
+            let newTop = reducedTop % reducedBottom
+            let newBottom = reducedBottom
+            if(!newTop || !newBottom){
+                result = `${frontInt}`
+                return result
+            } else {
+                console.log('5')
+                // if new bottom negative, make int positive
 
-        // if(reducedBottom < 0){
-        //     console.log('INS')
-        //     reducedBottom = reducedBottom * -1
-        //     return `-${reducedTop}/${reducedBottom}`
-        // }
-        console.log('ins')
-        console.log('rT', reducedTop, 'RB', reducedBottom)
-        return `${reducedTop}/${reducedBottom}`
-    }
-    let frontInt = round(reducedTop / reducedBottom)
-    console.log('front', frontInt)
-    let newTop = reducedTop % reducedBottom
-    let newBottom = reducedBottom
-    console.log('nt', newTop, 'nb', newBottom)
-    if(!newTop || !newBottom){
-            console.log('4')
-        return `${frontInt}`
-    } else {
-            console.log('5')
-            // if new bottom negative, make int positive
-            if(newBottom < 0 && frontInt > 0){
-                newBottom = newBottom * -1
-                frontInt = frontInt * -1
-                // else just make bottom pos
-            } else if(newBottom < 0 && frontInt < 0){
-                newBottom = newBottom * -1
-            }
-            if(newTop < 0){
-                if(frontInt > 0){
-                    frontInt = frontInt * -1
-                    newTop = newTop * -1
-                } else {
-                    newTop = newTop * -1
+                result = `${newTop}/${newBottom}`
+                result = checkNegativity(result)
+                console.log(result[0])
+                if(frontInt < 0){
+                    if(result[0] === "-"){
+                        result = result.slice(1)
+                    }
                 }
+                console.log('res', result)
+                result = `${frontInt} ${result}`
+                return result
             }
-        return `${frontInt} ${newTop}/${newBottom}`
+        }
+        // if(parseInt(nums[1]) < 0 && parseInt(nums[0] > 0)){
+        //     nums[1] = nums[1] * -1
+        //     nums[0] = nums[0] * -1
+        //     // if both negtaive remove bottom negative sign
+        // } if( parseInt(nums[1]) < 0 && parseInt(nums[0]) < 0 ){
+        //     console.log('HI')
+        //         nums[1] = nums[1] * -1
+        // }
+    if(nums[0] === "0"){
+        return `${0}`
     }
     // https://stackoverflow.com/questions/41586838/rounding-of-negative-numbers-in-javascript
+    function checkNegativity(str) {
+
+	let tempStr = str.split("/")
+	console.log(Math.abs(tempStr[0]) / Math.abs(tempStr[1]) === 1)
+	if ((tempStr[0] < 0 && tempStr[1] < 0) || (tempStr[0] > 0 && tempStr[1] < 0)) {
+		tempStr[0] = tempStr[0] * -1
+		tempStr[1] = tempStr[1] * -1
+		if (Math.abs(tempStr[0]) / Math.abs(tempStr[1]) === 1) {
+			if (tempStr[1] < 0 || tempStr[0] > 0) {
+				// console.log('third')
+
+				console.log("T0", tempStr[0])
+				return `-${tempStr[0]}`
+			} else if (tempStr[1] > 0 || tempStr[0] < 0) {
+				// console.log('fourth')
+                return `${tempStr[0]}`
+				console.log("T1", tempStr[0])
+
+			}
+			console.log('first')
+			console.log(tempStr)
+        }
+			return `${tempStr[0]}/${tempStr[1]}`
+			// top is zero
+		} else if (tempStr[0] === '0') {
+			console.log('second')
+
+			return `0`
+		} else if (Math.abs(tempStr[0]) / Math.abs(tempStr[1]) === 1) {
+			console.log(tempStr[1] < 0 || tempStr[0] > 0)
+			if (tempStr[1] < 0 || tempStr[0] > 0) {
+				console.log('third')
+
+				console.log("T0", tempStr[0])
+				return `-${tempStr[0]}`
+			} else if (tempStr[1] > 0 || tempStr[0] < 0) {
+				console.log('fourth')
+
+				console.log("T1", tempStr[0])
+				return `${tempStr[0]}`
+			}
+		}
+		return str
+	}
+
+
     function round(v) {
         if(v >= 0){
             return Math.floor(v)
@@ -156,8 +228,8 @@ function mixedFraction(s){
         else return GCF(b, a % b);
     }
 }
-// console.log(mixedFraction("0/18891"))
-console.log(mixedFraction("-31/-32"))
-// console.log(mixedFraction("-4/-25"))
-// console.log(mixedFraction("1/1"))
-//
+assert.strictEqual(mixedFraction("5/1"), "5")
+// console.log(mixedFraction("202/-130"))
+
+console.log(mixedFraction("0/1"))
+// console.log(mixedFraction("-62/-96"))
