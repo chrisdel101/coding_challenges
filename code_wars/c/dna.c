@@ -12,36 +12,38 @@ char *dnaX[] = {
 
 int main(void) {
     // for (size_t j = 0; j < 3; j++) {
-        char x =  *dna_to_rna("UUUU");
-        printf("%c\n", x);
-
-
-
-
-   return x;
+        char* dna =  dna_to_rna("GAGGCGGGG");
+        printf("%s\n", dna);
+//         GCUAUCGUUUCAUCAGCGU
+//         GCUAUCGUUUCAUC
+//         GCTATCGTTTCATC
+           // GCUAUCGUUUCAUC
+           // GCUAUCGUUUCAUC
+           // GCUAUCGUUUCAUC
 }
 
-char *dna_to_rna(const char *dna)
+char* dna_to_rna(const char *dna)
 {
-    static char arr[6] = "";
-    for (size_t i = 0; i < strlen(dna); i++) {
-        if(dna[i] == 'T'){
-            char dest[strlen(&dna[i]) + 1];
-            strcpy(dest,&dna[i]);
-            char src[] = "U";
-            arr[i] = *src;
+    // printf("%i\n", strlen(dna));
 
-        } else if(dna[i] == 'U') {
-            char dest[strlen(&dna[i]) + 1];
-            strcpy(dest,&dna[i]);
-            char src[] = "T";
-            arr[i] = *src;
+    char* pointer = malloc(strlen(dna) +1);
+    // printf("%i\n", (strlen(dna) + 1));
+    for (int i = 0; i < strlen(dna) + 2; i++) {
+        // printf("%c\n", dna[i]);
+
+        if(dna[i] == 'U'){
+            pointer[i] = 'T';
+        } else if(dna[i] == 'T'){
+            pointer[i] = 'U';
         } else {
-            arr[i] = dna[i];
+            pointer[i] = dna[i];
         }
     }
-    // printf("%s\n", arr); 
-    return arr;
+    // for (size_t j = 0; j < count; j++) {
+    //     printf("%s\n", );
+    // }
+    // printf("%s\n",pointer );
+    return pointer;
 }
 
 // int main () {
@@ -54,3 +56,6 @@ char *dna_to_rna(const char *dna)
 //
 //    return(0);
 // }
+
+// GAGGCGGGG
+// GACCGCCGCC

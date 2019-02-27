@@ -318,15 +318,36 @@
 // }, {});
 // console.log(countedNums)
 
-let tuples = [ [ 1 ], [ 1, 2 ], [ 1, 2, 2 ], [ 2 ], [ 2, 2 ], [ 2 ] ]
+// let tuples = [ [ 1 ], [ 1, 2 ], [ 1, 2, 2 ], [ 2 ], [ 2, 2 ], [ 2 ] ]
+//
+// for (var i = 0; i < tuples.length; i++) {
+//     let staticVal = tuples[i]
+//     let j = 0
+//     console.log('j', j)
+//     while(j < tuples.length){
+//         console.log('inner', tuples[j])
+//         j++
+//     }
+//     console.log('reset')
+// }
 
-for (var i = 0; i < tuples.length; i++) {
-    let staticVal = tuples[i]
-    let j = 0
-    console.log('j', j)
-    while(j < tuples.length){
-        console.log('inner', tuples[j])
-        j++
-    }
-    console.log('reset')
+
+function arrIndex(arrs) {
+	arrs.every(arr => arr.reverse())
+	for(var i = arrs.length - 1; i >= 0; i--) {
+		// console.log(i)
+		for(var j = arrs[i].length - 1; j >= 0; j--) {
+			if(arrs[j][i]) {
+				console.log(arrs[j][i])
+				console.log('index', i)
+			}
+			// console.log()
+		}
+	}
 }
+console.log(arrIndex([
+	[3],
+	[7, 4],
+	[2, 4, 6],
+	[8, 5, 9, 3]
+]))

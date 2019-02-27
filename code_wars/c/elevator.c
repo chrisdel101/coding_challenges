@@ -4,8 +4,8 @@
 const char* elevator(int left, int right, int call);
 
 int main(void){
-    elevator(rnd_L, rnd_R, rnd_C);
-    printf("%s", elevator(rnd_L, rnd_R, rnd_C));
+    const char* str = elevator(1, 2, 0);
+    printf("%s", str);
 }
 
 // int add(int a, int b){
@@ -13,11 +13,17 @@ int main(void){
 //     return sum;
 // }
 const char* elevator(int left, int right, int call) {
-    // if both equal to return right
+    //equal to return right
     if(left  == right){
         return "right";
-        // if only left equal to call take left
+        // if only left equal to call
     } else if(left == call && right != call){
+        return "left";
+        // call higher and left greater
+    } else if(call > left > right){
+        return "left";
+        // call lower and left lower
+    } else if((left < right) > call){
         return "left";
     } else {
         return "right";
