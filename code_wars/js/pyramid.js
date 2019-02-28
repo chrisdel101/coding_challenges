@@ -72,12 +72,12 @@ function longestSlideDown(pyramid) {
 	return storeArr
 }
 
-console.log(longestSlideDown([
-	[3],
-	[7, 4],
-	[2, 4, 6],
-	[8, 5, 9, 3]
-]))
+// console.log(longestSlideDown([
+// 	[3],
+// 	[7, 4],
+// 	[2, 4, 6],
+// 	[8, 5, 9, 3]
+// ]))
 // console.log(longestSlideDown([
 //     // [2, 4, 6], [8, 5, 9, 3]
 // ]))
@@ -98,31 +98,66 @@ function arraySlice(arr, index) {
 let counter = 0
 
 function arrIndex(arrs) {
+
+	// count down index from end of longest row
 	let indexOfLongest = arrs[arrs.length - 1].length - 1 - counter
+	// reverse arrs
 	arrs.every(arr => arr.reverse())
 	let k = 0
-	while(k < 4) {
+	let store = []
+	while(k < 1) {
 		console.log('IND', indexOfLongest)
 		// console.log(arrs)
 		// console.log('RUN')
+		// loop over every row
+		let tempArr = []
 		for(var i = arrs.length - 1; i >= 0; i--) {
-			// console.log(i)
-			let arrsIn = arrs.length - counter
-
-			for(var j = arrs[i].length - 1; j >= arrs[i].length - 1; j--) {
-				// console.log('arrsi', arrs[i])
-				// console.log(' before j', arrs[j])
-				if(arrs[i][indexOfLongest]) {
-					let sliced = arrs[i].splice(arrs[j].length - 1, 1)
-					console.log('sliced', sliced[0])
-					break
-				} else {
-					console.log(arrs[i][j])
-				}
+			// console.log('i loop', i)
+			// console.log('i',i)
+			let row = arrs[i]
+			// loop get the last index of each row
+			for(var j = row.length - 1; j >= row.length - 1; j--) {
+				// console.log('AAA',
+				// row[j])
+				// console.log('j', j)
+				// if row has the index this hish, slice it off
+				// if(row[indexOfLongest]) {
+				// 	let sliced = row.splice(arrs[j].length - 1, 1)
+				// 	// console.log('sliced', sliced[0])
+				// 	tempArr.push(sliced[0])
+				// 	break
+				// } else {
+				// 	// else
+				// 	console.log(tempArr)
+				console.log(row[j])
+				tempArr.push(row[j])
+				// }
+				// push()
+				// console.log('store', store)
 			}
 			counter++
+			console.log('TA', tempArr)
+			// store.push(tcoempArr)conso
+			// console.log('store', store)
+
 		}
-		indexOfLongest = indexOfLongest - 1
+		indexOfLongest--
 		k++
+		// let flatten = store.reduce(
+		// 	function(accumulator, currentValue) {
+		// 		return accumulator.concat(currentValue);
+		// 	},
+		// 	[]
+		// );
+		store.push(tempArr)
+		console.log('store', store)
 	}
-} [2][1][]
+	// return store
+}
+
+console.log(arrIndex([
+	[3],
+	[7, 4],
+	[2, 4, 6],
+	[8, 5, 9, 3]
+]))
