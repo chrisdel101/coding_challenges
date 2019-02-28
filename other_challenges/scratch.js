@@ -331,18 +331,35 @@
 //     console.log('reset')
 // }
 
+let counter = 0
 
 function arrIndex(arrs) {
+	let indexOfLongest = arrs[arrs.length - 1].length - 1 - counter
 	arrs.every(arr => arr.reverse())
-	for(var i = arrs.length - 1; i >= 0; i--) {
-		// console.log(i)
-		for(var j = arrs[i].length - 1; j >= 0; j--) {
-			if(arrs[j][i]) {
-				console.log(arrs[j][i])
-				console.log('index', i)
+	let k = 0
+	while(k < 4) {
+		console.log('IND', indexOfLongest)
+		// console.log(arrs)
+		// console.log('RUN')
+		for(var i = arrs.length - 1; i >= 0; i--) {
+			// console.log(i)
+			let arrsIn = arrs.length - counter
+
+			for(var j = arrs[i].length - 1; j >= arrs[i].length - 1; j--) {
+				// console.log('arrsi', arrs[i])
+				// console.log(' before j', arrs[j])
+				if(arrs[i][indexOfLongest]) {
+					let sliced = arrs[i].splice(arrs[j].length - 1, 1)
+					console.log('sliced', sliced[0])
+					break
+				} else {
+					console.log(arrs[i][j])
+				}
 			}
-			// console.log()
+			counter++
 		}
+		indexOfLongest = indexOfLongest - 1
+		k++
 	}
 }
 console.log(arrIndex([

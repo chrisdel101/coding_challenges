@@ -95,11 +95,34 @@ function arraySlice(arr, index) {
 
 // row 1 i
 
-0
-	[][][][]
-1
-	[1][][][]
-2
-	[2][1][][]
-3
-	[3][2][1][]
+let counter = 0
+
+function arrIndex(arrs) {
+	let indexOfLongest = arrs[arrs.length - 1].length - 1 - counter
+	arrs.every(arr => arr.reverse())
+	let k = 0
+	while(k < 4) {
+		console.log('IND', indexOfLongest)
+		// console.log(arrs)
+		// console.log('RUN')
+		for(var i = arrs.length - 1; i >= 0; i--) {
+			// console.log(i)
+			let arrsIn = arrs.length - counter
+
+			for(var j = arrs[i].length - 1; j >= arrs[i].length - 1; j--) {
+				// console.log('arrsi', arrs[i])
+				// console.log(' before j', arrs[j])
+				if(arrs[i][indexOfLongest]) {
+					let sliced = arrs[i].splice(arrs[j].length - 1, 1)
+					console.log('sliced', sliced[0])
+					break
+				} else {
+					console.log(arrs[i][j])
+				}
+			}
+			counter++
+		}
+		indexOfLongest = indexOfLongest - 1
+		k++
+	}
+} [2][1][]
