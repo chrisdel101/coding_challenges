@@ -331,40 +331,132 @@
 //     console.log('reset')
 // }
 
-let counter = 0
-
-function arrIndex(arrs) {
-	let indexOfLongest = arrs[arrs.length - 1].length - 1 - counter
-	arrs.every(arr => arr.reverse())
+// let counter = 0
+//
+// function arrIndex(arrs) {
+// 	let indexOfLongest = arrs[arrs.length - 1].length - 1 - counter
+// 	arrs.every(arr => arr.reverse())
+// 	let k = 0
+// 	while(k < 4) {
+// 		console.log('IND', indexOfLongest)
+// 		// console.log(arrs)
+// 		// console.log('RUN')
+// 		for(var i = arrs.length - 1; i >= 0; i--) {
+// 			// console.log(i)
+// 			let arrsIn = arrs.length - counter
+//
+// 			for(var j = arrs[i].length - 1; j >= arrs[i].length - 1; j--) {
+// 				// console.log('arrsi', arrs[i])
+// 				// console.log(' before j', arrs[j])
+// 				if(arrs[i][indexOfLongest]) {
+// 					let sliced = arrs[i].splice(arrs[j].length - 1, 1)
+// 					console.log('sliced', sliced[0])
+// 					break
+// 				} else {
+// 					console.log(arrs[i][j])
+// 				}
+// 			}
+// 			counter++
+// 		}
+// 		indexOfLongest = indexOfLongest - 1
+// 		k++
+// 	}
+// }
+// console.log(arrIndex([
+// 	[3],
+// 	[7, 4],
+// 	[2, 4, 6],
+// 	[8, 5, 9, 3]
+// ]))
+function getAllIndexes(arrs) {
+	let negativeDiff
+	let postiveDiff
+	let state = {
+		activeRow: 0
+	}
 	let k = 0
-	while(k < 4) {
-		console.log('IND', indexOfLongest)
-		// console.log(arrs)
-		// console.log('RUN')
+	let store = []
+	while(k < 6) {
+		let tempArr = []
 		for(var i = arrs.length - 1; i >= 0; i--) {
-			// console.log(i)
-			let arrsIn = arrs.length - counter
-
-			for(var j = arrs[i].length - 1; j >= arrs[i].length - 1; j--) {
-				// console.log('arrsi', arrs[i])
-				// console.log(' before j', arrs[j])
-				if(arrs[i][indexOfLongest]) {
-					let sliced = arrs[i].splice(arrs[j].length - 1, 1)
-					console.log('sliced', sliced[0])
-					break
-				} else {
-					console.log(arrs[i][j])
+			if(Object.entries(state).length === 1) {
+				for(var l = arrs.length - 1; l >= 0; l--) {
+					state[`row${l}`] = {
+						length: arrs[l].length,
+						index: 0,
+						name: `row${l}`
+					}
 				}
 			}
-			counter++
+
+			// create state object that persists
+			// console.log(state[`row${i}`])
+			// console.log(state[`row${i}`].index)
+			// console.log(arrs[i][state[`row${i}`].index])
+			// console.log('active', state.activeRow)
+			if(i !== state.activeRow) {
+				// console.log('i', i)
+				// console.log('normal', arrs[i][state[`row${i}`].index])
+				tempArr.push(arrs[i][state[`row${i}`].index])
+				// if active
+			} else if(i === state.activeRow) {
+				// console.log('equal', state.activeRow)
+				// console.log('active', `row${i}`)
+				// // tempArr.push(arrs[i][state[`row${i}`].index])
+				// console.log('curent', state[`row${i}`])
+				// console.log('next', state[`row${i+1}`])
+				// console.log('diff', ((state[`row${i}`].index) + (state[`row${i+1}`].index)))
+				console.log('ROW', state[`row${i}`])
+				// if is it end of row- but indexes do not work
+				if(((state[`row${i}`].index) - (state[`row${i+1}`].index)) < -1 || ((state[`row${i}`].index) + (state[`row${i+1}`].index)) > 1) {
+					console.log('no push. Just shift')
+					state.activeRow++
+					break
+					// if is not end of row- but indexes do not work
+				} else if(!arrs[i][state[`row${i}`].index + 1]) {
+					// if next invalid push and then increase active row
+					console.log('push and shift')
+					tempArr.push(arrs[i][state[`row${i}`].index])
+					state.activeRow++
+					// if more than two ahead of next row
+
+				} else {
+					// console.log('curent', state[`row${i}`])
+					// console.log('next', state[`row${i+1}`])
+					// console.log('below', state[`row${i}`].index + state[`row${i+1}`].index)
+					console.log('curent', state[`row${i}`])
+					console.log('next', state[`row${i+1}`])
+					tempArr.push(arrs[i][state[`row${i}`].index])
+
+					state[`row${i}`].index++
+				}
+			}
+
+
+			// if(i === state.activeRow && state[`row${i}`].index === state[`row${i}`].length - 1) {
+			// 	console.log('fired')
+			// 	state.activeRow++
+			//
+			// }
 		}
-		indexOfLongest = indexOfLongest - 1
+
+		// console.log('Raised Index', state[`row${i}`].index)
 		k++
+		store.push(tempArr)
 	}
+	console.log(store)
+	console.log(state)
+
 }
-console.log(arrIndex([
-	[3],
-	[7, 4],
-	[2, 4, 6],
-	[8, 5, 9, 3]
-]))
+
+getAllIndexes(
+
+	[
+		[3],
+		[7, 4],
+		[2, 4, 6],
+		[8, 5, 9, 3],
+		[5, 13, 10, 6, 8],
+		// ]))
+	]
+)
