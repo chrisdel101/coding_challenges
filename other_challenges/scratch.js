@@ -377,6 +377,7 @@ function getAllIndexes(arrs) {
 	let k = 0
 	let store = []
 	while(k < 6) {
+		console.log('K', k)
 		let tempArr = []
 		for(var i = arrs.length - 1; i >= 0; i--) {
 			if(Object.entries(state).length === 1) {
@@ -384,53 +385,197 @@ function getAllIndexes(arrs) {
 					state[`row${l}`] = {
 						length: arrs[l].length,
 						index: 0,
-						name: `row${l}`
+						name: `row${l}`,
+						backOneIndexes: []
 					}
 				}
 			}
+			// console.log('next', state[`row${i+1}`])
+			// console.log('ROW', state[`row${i}`])
+			// console.log('loop i', i)
+			if(i === state.activeRow) {
+				console.log('Active', state[`row${i}`])
 
-			// create state object that persists
-			// console.log(state[`row${i}`])
-			// console.log(state[`row${i}`].index)
-			// console.log(arrs[i][state[`row${i}`].index])
-			// console.log('active', state.activeRow)
-			if(i !== state.activeRow) {
-				// console.log('i', i)
-				// console.log('normal', arrs[i][state[`row${i}`].index])
-				tempArr.push(arrs[i][state[`row${i}`].index])
-				// if active
-			} else if(i === state.activeRow) {
-				// console.log('equal', state.activeRow)
-				// console.log('active', `row${i}`)
-				// // tempArr.push(arrs[i][state[`row${i}`].index])
-				// console.log('curent', state[`row${i}`])
-				// console.log('next', state[`row${i+1}`])
-				// console.log('diff', ((state[`row${i}`].index) + (state[`row${i+1}`].index)))
-				console.log('ROW', state[`row${i}`])
-				// if is it end of row- but indexes do not work
+				// if more than two ahead of next row
 				if(((state[`row${i}`].index) - (state[`row${i+1}`].index)) < -1 || ((state[`row${i}`].index) + (state[`row${i+1}`].index)) > 1) {
-					console.log('no push. Just shift')
+					console.log('no push. Just shift active to ' + state[`row${i+1}`].name)
 					state.activeRow++
-					break
-					// if is not end of row- but indexes do not work
+
+					// if is not end of the loop- but it's the end of the active row
 				} else if(!arrs[i][state[`row${i}`].index + 1]) {
 					// if next invalid push and then increase active row
-					console.log('push and shift')
+					console.log('End of row: push and shift active ' + state[`row${i}`].name, arrs[i][state[`row${i}`].index])
 					tempArr.push(arrs[i][state[`row${i}`].index])
 					state.activeRow++
-					// if more than two ahead of next row
 
 				} else {
-					// console.log('curent', state[`row${i}`])
-					// console.log('next', state[`row${i+1}`])
-					// console.log('below', state[`row${i}`].index + state[`row${i+1}`].index)
-					console.log('curent', state[`row${i}`])
-					console.log('next', state[`row${i+1}`])
-					tempArr.push(arrs[i][state[`row${i}`].index])
 
-					state[`row${i}`].index++
+					let currentRow = arrs[i]
+					let upperRow = arrs[i - 1]
+					let activeRowIndex = state[`row${i}`].index
+					let previousActiveIndex = state[`row${i}`].index - 1
+					// if 0 index push and increase only
+					if(state[`row${i}`].index === 0) {
+
+						recurseZero(i, activeRowIndex, arrs, true)
+						// if(upperRow[currentIndex]) {
+						// 	console.log(`check above zero ${upperRow[currentIndex]}`)
+						// 	tempArr.push(upperRow[currentIndex])
+						// 	// increment to stop it starting again
+						// 	i++
+						// }
+						changeIndex(state[`row${i}`])
+					} else {
+
+
+						// continue
+						// if back one row and one index
+						if(upperRow[previousActiveIndex] && !state[`row${state.activeRow}`].backOneIndexes.some(ind => {
+								// console.log(ind)
+								return ind <= state[`row${state.activeRow}`].index
+							})) {
+							console.log('back one')
+							console.log(state[`row${state.activeRow}`].index)
+							console.log(state[`row${state.activeRow}`].backOneIndexes.some(ind => {
+								// console.log(ind)
+								ind <= state[`row${state.activeRow}`].index
+							}))
+							// active indexs is the real acttive row$
+							// shfting is the moving row
+							// mark index as checked this action
+							state[`row${i}`].backOneIndexes.push(state[`row${i}`].index)
+
+							function recurse(rowShiftingIndex, activeIndex) {
+								// console.log('rowShiftingIndex', rowShiftingIndex)
+								// console.log('activeIndex', activeIndex)
+								// if a row up  and back push current and recurse
+								if(arrs[rowShiftingIndex - 1]) {
+									if(arrs[rowShiftingIndex - 1][activeIndex - 1]) {
+
+										// actually decrement the outer loop
+										if(i > 0) {
+											i--
+											console.log('i shift back one:', i)
+										} else {
+											console.error('i shift back one- too low')
+										}
+										// push current val and decrement row upwards for next call
+										console.log(`push current val: ${arrs[rowShiftingIndex][activeIndex]}`)
+										tempArr.push(arrs[rowShiftingIndex][activeIndex])
+										// move up a row
+										rowShiftingIndex = rowShiftingIndex - 1
+										// move back an index
+										activeIndex = activeIndex - 1
+
+										recurse(rowShiftingIndex, activeIndex)
+										// if up and over from original and zero index
+									} else if(!arrs[rowShiftingIndex - 1][activeIndex - 1] && activeIndex === 0) {
+										// console.log('CC', arrs[rowShiftingIndex][activeIndex])
+										console.log(`push back one val: ${arrs[rowShiftingIndex][activeIndex]}`)
+										tempArr.push(arrs[rowShiftingIndex][activeIndex])
+										if(i > 0) {
+											i--
+											console.log('i shift back one zero', i)
+										} else {
+											console.error('TOO LOW')
+										}
+										// rowShiftingIndex = rowShiftingIndex - 1
+										recurseZero(rowShiftingIndex, 0, arrs, false)
+										return
+									}
+									// if up and over from orignal and not zero index
+								} else {
+									tempArr.push(arrs[rowShiftingIndex][rowShiftingIndex])
+									console.log('push last ', arrs[rowShiftingIndex][rowShiftingIndex])
+									return
+								}
+							}
+							recurse(i, activeRowIndex)
+
+
+							// 						changeIndex(state[`row${i}`])
+
+							//console.log('check', arrs[state.activeRow][state[`row${state.activeRow}`]])
+
+							// console.log('check', state[`row${state.activeRow}`].backOneIndexes)
+							//
+							// console.log('check', state[`row${state.activeRow}`].index)
+							let check = state[`row${state.activeRow}`].backOneIndexes.some(ind => {
+								return ind <= state[`row${state.activeRow}`].index
+							})
+							console.log('check', check)
+							console.log(
+								arrs[state.activeRow - 1][state[`row${state.activeRow}`].index])
+							console.log(state.activeRow !== 0)
+
+						}
+						// checking if a row above exists, is not the top row, is backone index already
+						else if(arrs[state.activeRow - 1][state[`row${state.activeRow}`].index] && state.activeRow !== 0 && state[`row${state.activeRow}`].backOneIndexes.some(ind => {
+								return ind <= state[`row${state.activeRow}`].index
+							})) {
+
+							// console.log(arrs[i - 1][state[`row${i}`].index])
+							if(arrs[state.activeRow - 1][state[`row${state.activeRow}`].index] && state[`row${state.activeRow}`].index !== 0) {
+								console.log('UP ONE')
+								console.log(`push ${arrs[state.activeRow][state[`row${state.activeRow}`].index]}`)
+								tempArr.push(arrs[state.activeRow][state[`row${state.activeRow}`].index])
+								// if(arrs[rowShiftingIndex - 1][activeRowIndex] - 1) {
+								//
+								// }
+								changeIndex(state[`row${state.activeRow}`])
+								// state[`row${state.activeRow}`].index++
+								break
+							}
+							else if(upperRow[activeRowIndex + 1]) {
+								console.log(arrs[i])
+								console.log('over one')
+								// console.log(upperRow[activeRowIndex + 1])
+								// tempArr.push(arrs[i][state[`row${i}`].index])
+								// tempArr.push(upperRow[activeRowIndex + 1])
+
+								function recurse(i) {
+									console.log('i', i)
+									console.log('row', arrs[i])
+									console.log('val', arrs[i][state[`row${i}`].index])
+									let currentRow = arrs[i]
+									let upperRow = arrs[i - 1]
+									let currentIndex = state[`row${i}`].index
+									// if a row up push current recurse
+									if(upperRow) {
+										if(upperRow[currentIndex + 1])
+											tempArr.push(currentRow[currentIndex])
+										console.log('push', currentRow[currentIndex])
+										recurse(i - 1)
+									} else {
+										tempArr.push(currentRow[currentIndex])
+										console.log('push last ', currentRow[currentIndex])
+										return
+									}
+								}
+								recurse(activeRowIndex)
+								changeIndex(state[`row${i}`])
+
+								break
+							} else {
+
+								tempArr.push(arrs[i][state[`row${i}`].index])
+								changeIndex(state[`row${i}`])
+
+							}
+
+						}
+
+
+					}
+
 				}
+
+
+			} else {
+				console.log('nothing', [state[`row${i}`]])
+				tempArr.push(arrs[i][state[`row${i}`].index])
 			}
+
 
 
 			// if(i === state.activeRow && state[`row${i}`].index === state[`row${i}`].length - 1) {
@@ -442,10 +587,56 @@ function getAllIndexes(arrs) {
 
 		// console.log('Raised Index', state[`row${i}`].index)
 		k++
+		function changeIndex(stateObj) {
+			console.log('change index')
+			let index
+			// index cannot exceed length
+			if(stateObj.index + 1 <= stateObj.length - 1) {
+				stateObj.index++
+			} else {
+				console.error(`Indexes too low for ${stateObj.name}`)
+			}
+		}
+		// checks the one currently on for a zero index above
+		function recurseZero(rowShiftingIndex, acrossIndex, arrs, firstRun) {
+			// if current one is zero, push it
+			if(firstRun) {
+				console.log('first recurse zero push ' + arrs[rowShiftingIndex][state[`row${rowShiftingIndex}`].index])
+				tempArr.push(arrs[rowShiftingIndex][state[`row${rowShiftingIndex}`].index])
+				changeIndex(state[`row${i}`])
+			}
+			if(!arrs[rowShiftingIndex - 1]) {
+
+				// console.log('recurse zero end')
+				return
+			}
+			// if something is above it
+			if(arrs[rowShiftingIndex - 1][acrossIndex]) {
+				// console.log('curent inde', acrossIndex)
+				console.log(`push zero index val: ${arrs[rowShiftingIndex - 1][acrossIndex]}`)
+				tempArr.push(arrs[rowShiftingIndex - 1][acrossIndex])
+				// increment the loop to stop it starting again
+				if(i > 0) {
+					i--
+					console.log('i shift zero:', i)
+				} else {
+					console.error('i shift zero- too low')
+				}
+
+				rowShiftingIndex = rowShiftingIndex - 1
+				recurseZero(rowShiftingIndex, acrossIndex, arrs, false)
+
+			}
+
+		}
 		store.push(tempArr)
+		console.log('DONE')
 	}
 	console.log(store)
 	console.log(state)
+
+
+
 
 }
 
@@ -455,8 +646,8 @@ getAllIndexes(
 		[3],
 		[7, 4],
 		[2, 4, 6],
-		[8, 5, 9, 3],
-		[5, 13, 10, 6, 8],
+		[8, 5, 9, 3]
+		// [5, 13, 10, 6, 8],
 		// ]))
 	]
 )
