@@ -13,7 +13,7 @@ function bowlingScore(frames) {
 	})
 
 	// console.log(frames)
-	for(var i = 0; i < 9; i++) {
+	for(var i = 0; i < 7; i++) {
 		let tempVal = 0
 		console.log(`LOOP${i}`)
 		// if X make obk w/ two indexes
@@ -21,6 +21,7 @@ function bowlingScore(frames) {
 			// if any values exists, update
 			if(Object.values(strikes).length) {
 				console.log('update strikes')
+				updateStrikes(strikes, [10])
 			}
 			if(Object.values(spares).length) {
 				console.log('update spares')
@@ -28,6 +29,7 @@ function bowlingScore(frames) {
 
 			}
 			// make any new strikes occuring here
+			console.log('create new strike', `strike${k}`)
 			strikes[`strike${k}`] = {
 				startingIndex: i,
 				movingIndex: i,
@@ -35,7 +37,6 @@ function bowlingScore(frames) {
 				active: true
 			}
 			// console.log(`create new strike${k}`)
-			console.log('create new obj', `strike${k}`)
 			k++
 		} else {
 			// if not a strike it's a num
@@ -43,17 +44,26 @@ function bowlingScore(frames) {
 			// tempVal = parseInt(frames[i][0])
 			// updateStrikes(strikes, tempVal)
 			// updateSpares(spares, tempVal)
-			console.log(`frame${i}`, frames[i])
+			// console.log(`frame${i}`, frames[i])
 
 			// if frame has a spare
 			// handle frames[i][1]
 			let ball1 = parseInt(frames[i][0])
 			let ball2 = 10 - ball1
+			console.log('ball1', ball1)
+			console.log('ball2', ball2)
+			// console.log('ball2', ball2)
 			if(frames[i][1] === '/') {
 				console.log('spare on 1')
 				// console.log(ball1 + ball2)
-				updateStrikes(strikes, ball1)
-				updateStrikes(strikes, ball2)
+				let active = Object.values(strikes).filter((val) => {
+						return val.active
+					})
+					.forEach((active, i) => {
+
+						updateStrikes(strikes, [ball1, ball2])
+					})
+				// updateStrikes(strikes, ball2)
 				updateSpares(spares, ball1)
 				spares[`spare${m}`] = {
 					startingIndex: i,
@@ -65,11 +75,11 @@ function bowlingScore(frames) {
 				m++
 				// if frame is just nums
 			} else {
-				tempVal = parseInt(frames[i][0]) + parseInt(frames[i][1])
+				tempVal = 10 - parseInt(frames[i][0])
 				// console.log('XX', parseInt(frames[i][0]) + parseInt(frames[i][1]))
-				updateStrikes(strikes, parseInt(frames[i][0]))
-				updateStrikes(strikes, parseInt(frames[i][1]))
-				updateSpares(spares, parseInt(frames[i][0]))
+				updateStrikes(strikes, [ball1, ball2])
+				// updateStrikes(strikes, ball2)
+				updateSpares(spares, ball1)
 				console.log(`push plain number frame ${parseInt(frames[i][0])} + ${parseInt(frames[i][1])}`)
 				frameVals.push(parseInt(frames[i][0]) + parseInt(frames[i][1]))
 			}
@@ -88,6 +98,7 @@ function bowlingScore(frames) {
 			let diff = obj[`spare${i}`].movingIndex - obj[`spare${i}`].startingIndex
 			// if gap > 2, kill it
 			if(diff === 1) {
+				gf
 				obj[`spare${i}`].value = obj[`spare${i}`].value + frameVal
 				console.log("spare val to", obj[`spare${i}`].value)
 				frameVals.push(obj[`spare${i}`].value)
@@ -101,7 +112,7 @@ function bowlingScore(frames) {
 	}
 
 	function updateStrikes(obj, frameVal, ball1) {
-		console.log('strikes', strikes)
+		console.log('frameVal', frameVal)
 		Object.values(obj).forEach((val, i) => {
 			if(!obj[`strike${i}`].active) {
 				return
@@ -113,8 +124,15 @@ function bowlingScore(frames) {
 			// console.log(obj[`strike${i}`])
 			console.log('Dif', diff)
 			// console.log(ball1)
-			console.log(obj[`strike${i}`].value)
+			// console.log('strike', obj[`strike${i}`].value)
 			if(diff === 2) {
+				if(frameVal.length === 2) {
+					frameVal = frameVal[0] + frameVal[1]
+				} else {
+					frameVal = parseInt(frameVal.toString())
+				}
+				console.log('FRAMEVAL', frameVal)
+				// console.log('value', obj[`strike${i}`].value)
 				obj[`strike${i}`].value = frameVal + obj[`strike${i}`].value
 
 				frameVals.push(obj[`strike${i}`].value)
@@ -123,14 +141,22 @@ function bowlingScore(frames) {
 				obj[`strike${i}`].active = false
 				// if gap is 2, get value
 			} else if(diff === 1) {
+				if(frameVal.length === 2) {
+					frameVal = frameVal[0] + frameVal[1]
+				} else {
+					frameVal = parseInt(frameVal.toString())
+				}
+
+				// console.log('FRAMEVAL', frameVal)
 				let value = obj[`strike${i}`].value + frameVal
-				console.log(frameVal)
+				// console.log('frameVal', frameVal)
 				obj[`strike${i}`].value = value
-				console.log(`val 1. Val to ${value}`)
+				console.log(`val strike${i} Val to ${value}`)
 				// else increment on each frame
 			}
 			// console.log('strike', obj[`strike${i}`])
 		})
+		console.log('strikes', strikes)
 	}
 	console.log(frameVals)
 	let sums = []
