@@ -13,20 +13,60 @@ function bowlingScore(frames) {
 	})
 
 
-	// console.log(frames.length)
+	// console.log(frames)
 	for(var i = 0; i < 10; i++) {
 		let tempVal = 0
 		console.log(`LOOP${i}`)
 		// if X make obk w/ two indexes
-		if(frames[i].includes('X')) {
-			let n = 0
-			addAndUpdateStrikes(n)
+		if(frames[i].includes('X') && i !== 9) {
+			// if any values exists, update
+			if(Object.values(strikes).length) {
+				updateStrikes(strikes, [10], true, i)
+			}
+			if(Object.values(spares).length) {
+				updateSpares(spares, 10)
+
+			}
 			// make any new strikes occuring here
 			k = createStrike(k, i, false)
+		} else if(frames[i].includes('X') && i === 9) {
+			let lastFrameVal = 0
+			if(frames[i][0] === 'X') {
+				updateStrikes(strikes, [10], true, i)
+				updateSpares(spares, 10)
+			} else {
+				updateStrikes(strikes, [0], true, i)
+				updateSpares(spares, parseInt(frames[i][0]))
+
+			}
+
+			// if all strikes
+			if(frames[i][1] === 'X' && frames[i][2] === 'X') {
+				lastFrameVal = 30
+				updateStrikes(strikes, [10], true, i)
+				// if a strike and a spare
+			} else if(frames[i].includes('/')) {
+				lastFrameVal = 20
+				if(frames[i].indexOf('/') === 1) {
+					console.log('PP', frames[i][0])
+					updateStrikes(strikes, [10], true, i)
+					// updateStrikes(strikes, [parseInt(frames[i][0])], true, i)
+				}
+				// if  2 strikes and then normal pins
+			} else if(frames[i][1] === 'X' && frames[i][2] !== 'X') {
+				lastFrameVal += 20
+				lastFrameVal += parseInt(frames[i][2])
+				updateStrikes(strikes, [10], true, i)
+			}
+			console.log(strikes)
+			frameVals.push(lastFrameVal)
+
+
 		} else {
 			let ball1
 			let ball2
-			if(frames[i].includes('/')) {
+			if(frames[i].includes('/') && i !== 9) {
+
 				ball1 = parseInt(frames[i][0])
 				ball2 = 10 - parseInt(frames[i][0])
 
@@ -38,9 +78,23 @@ function bowlingScore(frames) {
 					value: 10,
 					active: true
 				}
-
+				// console.log(spares)
 				m++
 				// if frame is just nums
+			} else if(frames[i].includes('/') && i === 9) {
+				let lastFrameVal = 0
+				if(frames[i][1] === '/') {
+
+					updateSpares(spares, parseInt(frames[i][0]))
+
+					lastFrameVal += 10
+					lastFrameVal += parseInt(frames[i][2])
+					frameVals.push(lastFrameVal)
+					// console.log(frameVals)
+					// console.log('PUSH last frame val', lastFrameVal)
+					// console.log(frameVals)
+
+				}
 			} else {
 				ball1 = parseInt(frames[i][0])
 				ball2 = parseInt(frames[i][1])
@@ -68,42 +122,6 @@ function bowlingScore(frames) {
 
 		// console.log('k', k)
 		return k
-	}
-
-	function addAndUpdateStrikes(n) {
-		// if any values exists, update
-		if(Object.values(strikes).length) {
-			console.log('update strikes')
-			updateStrikes(strikes, [10], true, i)
-		}
-		if(Object.values(spares).length) {
-			updateSpares(spares, 10)
-
-		}
-		if(i === 9 && frames[i][n] === 'X') {
-
-			console.log('recurse create new strike', `strike${k}`)
-			k = createStrike(k, i, true)
-			// console.log('push strike', strikes[`strike${k-1}`], strikes[`strike${k-1}`].value)
-			let diff = strikes[`strike${k-1}`].movingIndex - strikes[`strike${k-1}`].startingIndex
-			// if(frames[8][0] !== 'X') {
-			frameVals.push(strikes[`strike${k-1}`].value)
-
-			// }
-			console.log('N+ 1', frames[i][n + 1])
-			if(frames[i][n + 1] === 'X') {
-				console.log(k)
-				addAndUpdateStrikes(n + 1)
-				// if not X but still there
-			} else if(frames[i][n + 1] !== 'X' && frames[i][n + 1]) {
-				frameVals.push(parseInt(frames[i][n + 1]))
-			} else {
-				console.log('END')
-				return
-			}
-		} else {
-			return
-		}
 	}
 
 	function updateSpares(obj, frameVal) {
@@ -142,27 +160,22 @@ function bowlingScore(frames) {
 			console.log(obj[`strike${ind}`].startingIndex)
 			// console.log(obj[`strike${ind}`])
 			console.log('Dif', diff)
-			// console.log(ball1)
-			console.log('i', i)
-			console.log('k', k)
+
 			// if(i === 9 && (k === 0 || k === 1 || k === 2)) {
 			// 	console.log('push')
 			// 	frameVals.push(strikes[`strike${k-1}`].value)
 			// } else
 			if(diff === 2) {
 				let innerFrameVal = frameVal[0]
+				console.log(innerFrameVal)
 				obj[`strike${ind}`].value = innerFrameVal + obj[`strike${ind}`].value
 
 				frameVals.push(obj[`strike${ind}`].value)
 
-
-				console.log(`set
-                 ${strikes[`strike${ind}`]} pushed to true`)
 				console.log(`push strike ${ind} val
                  ${strikes[`strike${ind}`].value}`)
 				console.log(`set strike ${ind} to false`)
 				obj[`strike${ind}`].active = false
-				obj[`strike${ind}`].pushed = true
 				// if gap is 2, get value
 			} else if(diff === 1) {
 				let innerFrameVal
@@ -211,7 +224,9 @@ function bowlingScore(frames) {
 // console.log(bowlingScore('11 11 11 11 11 11 11 11 11 11'))
 // console.log(bowlingScore('X X X X X X X X X XXX'))
 // console.log(bowlingScore('00 5/ 4/ 53 33 22 4/ 5/ 45 XXX'))
-console.log(bowlingScore('5/ 4/ 3/ 2/ 1/ 0/ X 9/ 4/ 8/8'))
+// console.log(bowlingScore('42 42 72 6/ 72 62 6/ 0/ 4/ 1/X'))
+// console.log(bowlingScore('08 6/ 61 81 90 41 90 63 X 1/X'))
+console.log(bowlingScore('62 61 7/ 15 8/ 4/ 36 X 9/ 1/X'))
 
 // 5/ 4/ 3/ 2/ 1/ 0/ X 9/ 4/ 7/2
 // 6/ 5/ 6/ 2/ 3/ 0/ 1/ 8/ 3/ 6/5
