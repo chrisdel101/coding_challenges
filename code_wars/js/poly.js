@@ -33,6 +33,7 @@ function simplify(poly) {
 				// console.log('cc', chunkBetween)
 				// console.log('K', k)
 				// console.log('i', i)
+				// look ahead for break
 				if(next === "+" || next === "-" || !isNaN(next) || next === undefined) {
 					i = k
 					// console.log('redefine i', i)
@@ -69,6 +70,7 @@ function simplify(poly) {
 			let chunkBetween = ""
 			let k = i
 			let sign = poly[i - 1]
+			// console.log('S', sign)
 			let coeffecient
 			if(!isNaN(poly[i - 1])) {
 				let sign
@@ -88,10 +90,10 @@ function simplify(poly) {
 			while(searching) {
 				// console.log('k', k)
 				let next = poly[k + 1]
-				// console.log('nex', next)
+				// console.log('next', next)
 				// console.log('current', poly[k])
-				// console.log('NEX/T', chunkBetween)
-				if((next === "+" || next === "-" || !isNaN(next) || next === undefined) && chunkBetween !== "") {
+				// console.log('chunkBetween', chunkBetween)
+				if((next === "+" || next === "-" || !isNaN(next) || next === undefined)) {
 					i = k
 					chunkBetween += poly[k]
 					// console.log('redefine i', i)
@@ -151,9 +153,9 @@ function simplify(poly) {
 		// check that new key is diff - don't delete the only one
 		if(ordered !== key) {
 			// add new obj w keys
-			console.log('IN', obj[key])
+			// console.log('IN', obj[key])
 			obj[ordered] = obj[key]
-			console.log('IN', obj[ordered])
+			// console.log('IN', obj[ordered])
 			// del old key
 			delete obj[key]
 			arr.push(ordered)
@@ -163,9 +165,10 @@ function simplify(poly) {
 		// console.log(key)
 
 	}
-	// console.log('A', arr)
+	console.log('A', arr)
 
 	function sortArr(arr) {
+		console.log('fired')
 		//first pass shift items
 		let temp
 		for(let [i, val] of arr.entries()) {
@@ -177,9 +180,14 @@ function simplify(poly) {
 					arr[i + 1] = temp
 					// console.log(arr)
 					// store.push(arr)
-					// if equal sort by alpah
+					// if equal sort by alpha by first letter
 				} else if(val.length === arr[i + 1].length) {
 					if(val[0] > arr[i + 1][0]) {
+						temp = val
+						arr[i] = arr[i + 1]
+						arr[i + 1] = temp
+						// if first equal try second
+					} else if(val[0] === arr[i + 1][0] && val[1] > arr[i + 1][1]) {
 						temp = val
 						arr[i] = arr[i + 1]
 						arr[i + 1] = temp
@@ -199,30 +207,44 @@ function simplify(poly) {
 			// }
 
 		}
+		return arr
 	}
-	sortArr(arr)
+	arr = sortArr(arr)
 	console.log('arr', arr)
+	console.log(obj)
 	// make a string
-	// let arr = []
-
-	for(let key in obj) {
-		// console.log(key)
-		let i = 0
-
-
-
-		// if(obj[key].sign) {
-		// 	str += `${obj[key].sign}${obj[key].value > 1 ?  obj[key].value : ""}${key}`
-		// } else {
-		// 	str += `+${obj[key].value > 1 ?  obj[key].value : ""}${key}`
-		// }
-		// console.log(obj[key])
+	let str = ""
+	let newArr = []
+	// for(let key in obj) {
+	// 	// console.log(key)
+	// 	let i = 0
+	// 	if(obj[key].sign) {
+	// 		newArr.push(`${obj[key].sign}${obj[key].value > 1 ?  obj[key].value : ""}${key}`)
+	// 	} else {
+	// 		newArr.push(`+${obj[key].value > 1 ?  obj[key].value : ""}${key}`)
+	// 	}
+	// 	// console.log(obj[key])
+	// }
+	arr.forEach(key => {
+		if(obj[key].value !== 0) {
+			if(obj[key].sign) {
+				newArr.push(`${obj[key].sign}${obj[key].value > 1 ?  obj[key].value : ""}${key}`)
+			} else {
+				newArr.push(`+${obj[key].value > 1 ?  obj[key].value : ""}${key}`)
+			}
+		}
+	})
+	let mathStr = newArr.join("")
+	if(mathStr[0] === "+") {
+		mathStr = mathStr.slice(1, mathStr.length)
 	}
 
-	// console.log(str)
-	console.log(obj)
+	console.log(mathStr)
+	return mathStr
+	// console.log(obj)
 }
 
 
-simplify("-y+x")
+// simplify("-y+x")
 // simplify("xzy+zby")
+simplify("-a+5ab+3a-c-2a")
