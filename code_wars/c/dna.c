@@ -12,7 +12,7 @@ char *dnaX[] = {
 
 int main(void) {
     // for (size_t j = 0; j < 3; j++) {
-        char* dna =  dna_to_rna("GAGGCGGGG");
+        char* dna =  dna_to_rna("GACCGCCGCC");
         printf("%s\n", dna);
 //         GCUAUCGUUUCAUCAGCGU
 //         GCUAUCGUUUCAUC
@@ -24,13 +24,8 @@ int main(void) {
 
 char* dna_to_rna(const char *dna)
 {
-    // printf("%i\n", strlen(dna));
-
-    char* pointer = malloc(strlen(dna) +1);
-    // printf("%i\n", (strlen(dna) + 1));
-    for (int i = 0; i < strlen(dna) + 2; i++) {
-        // printf("%c\n", dna[i]);
-
+  char* pointer = malloc(strlen(dna) +1);
+    for (int i = 0; i < strlen(dna); i++) {
         if(dna[i] == 'U'){
             pointer[i] = 'T';
         } else if(dna[i] == 'T'){
@@ -39,10 +34,8 @@ char* dna_to_rna(const char *dna)
             pointer[i] = dna[i];
         }
     }
-    // for (size_t j = 0; j < count; j++) {
-    //     printf("%s\n", );
-    // }
-    // printf("%s\n",pointer );
+
+    pointer[strlen(dna)] = '\0';
     return pointer;
 }
 
