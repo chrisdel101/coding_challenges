@@ -1,30 +1,28 @@
 class Array
-   #  attr_accessor :arr
-   #  def initialize(arr)
-   #    @arr = arr
-   # end
-  def square(arr)
-    return arr.map {|item| item**2 }
+  def square()
+    return map {|item| item**2 }
   end
   def cube(arr)
-    return arr.map {|item| item**3 }
+    return map {|item| item**3 }
   end
   def average(arr)
-    return sum/ (@arr.length)
+    return sum/ self.size
   end
   def sum(arr)
-    return @arr.reduce(:+)
+    return reduce(:+)
   end
   def even()
-      return
+      return select(&:even?)
   end
   def odd()
+      return select(&:even?)
   end
 
   # now fill in the rest
 end
 
 
-array = Array.new
-print(array.square([1,2,3,3,4]))
+array = Array.new([1,2,3,3,4]).square()
+print(array)
+# print(array.average([1,2,3,3,4]))
 # print(array.average())

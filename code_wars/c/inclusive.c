@@ -9,53 +9,59 @@ int containAllRots(char* strng, char* arr[], int sz);
 
 int main(void)
 {
-    char *arr[] = {"bsjq", "qbsj", "sjqb", "twZNsslC", "jqbs"};
+    char *arr[] = {"ggFB2A5HZ7",
+                    "A5HZ7ggFB2",
+                    "Z7ggFB2A5H",
+                    "gFB2A5HZ7g",
+                    "7ggFB2A5HZ",
+                    "FB2A5HZ7gg",
+                    "B2A5HZ7ggF",
+                    "B2A5HZ7ggF",
+                    "2A5HZ7ggFB",
+                    "HZ7ggFB2A5",
+                    "5HZ7ggFB2A"
+
+    };
+    // char *arr[] = {"ObPfws", "Cofuhqrmmzq", "wFvfcqU", "sObPfw", "bPfwsO", "PfwsOb", "wsObPf", "fwsObP"};
     // printf("%i\n",sizeof(arr)/sizeof(*arr) );
 
-    containAllRots("bsjq", arr, sizeof(arr)/sizeof(*arr));
+    containAllRots("B2A5HZ7ggF", arr, sizeof(arr)/sizeof(*arr));
 }
 // check if str chars are in each string
 int containAllRots(char* strng, char* arr[], int sz) {
-
-
-    // char multi[strlen(strng)][strlen(strng)];
+    int totalMatches = 0;
+    // store rotating section of string
     char tempArr1[strlen(strng)];
-    for (size_t i = 0; i < 1; i++) {
+    for (size_t i = 0; i < strlen(strng); i++) {
+        // store first char and up - increase each time
         char tempArr2[i+1+1];
         tempArr1[i] = strng[i];
-        // printf("TEMPCHAR: %c\n",tempArr1[i]);
+        // store second char to the end - decrease each time
         for (size_t j = 0; j < strlen(strng)-(i+1); j++) {
             tempArr2[j] = strng[i+j+1];
-            // printf("%i %c\n",j, tempArr2[j]);
-
-
         }
         tempArr1[1+i] = '\0';
         tempArr2[strlen(strng)-i-1] = '\0';
-        char* combined;
-        combined = malloc(4) ;
-        strcpy(combined, tempArr2);
-        strcat(combined, tempArr1);
-        // tempArr2[strlen(strng)-(i+1)] = tempChar[]
-
-        for (size_t k = 0; k < 4; k++) {
-            printf("%i\n", strcmp(combined,arr[k]));
-            // printf("COMB: %c\n",combined[k] );
-            // printf("K %c\n",tempArr2[k]);
-            // printf("K %c\n",tempArr1[k] );
-            printf("%s\n",arr[k] );
+        char* buffer;
+        buffer = malloc(4) ;
+        // copy second part to buffer
+        strcpy(buffer, tempArr2);
+        // add second string to the first string
+        strcat(buffer, tempArr1);
+        // compare strings - if same increment
+        for (size_t k = 0; k < sz; k++) {
+            int match = strcmp(buffer,arr[k]);
+            if(match == 0){
+                totalMatches++;
+            }
         }
-        free(combined);
+        printf("\n");
+        free(buffer);
     }
-    // printf("%i\n", strlen(strng));
-
-    // // printf("%c\n",tempArr[3] );
-    // for (size_t i = 0; i < 4; i++) {
-    //     multi[0][i] = tempArr[i];
-    //     printf("%c\n",multi[0][i] );
-    // }
-    // printf("%c\n",multi[0][3] );
-    // // for (size_t i = 0; i < 4; i++) {
-    // //
-    // }
+    if(totalMatches >= strlen(strng)){
+        puts("TRUE");
+        return true;
+    }
+    puts("FALSE");
+    return false;
 }
