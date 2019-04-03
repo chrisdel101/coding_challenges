@@ -10,14 +10,16 @@ function binarySearch(arr, k) {
 		let leftSide = arr.slice(0, middle)
 		let rightSide = arr.slice(middle, len)
 
-		// console.log(leftSide)
-		// console.log(rightSide)
+		console.log('left',leftSide)
+		console.log('right', rightSide)
 		let mergeSortLeft = mergeSort(leftSide)
+        // console.log('ls', merigeSortLeft)
 		let mergeSortRight = mergeSort(rightSide)
 		return stitch(mergeSortLeft, mergeSortRight)
 	}
 
 	function stitch(left, right) {
+        // console.log(left)
 		var results = []
 		while(left.length && right.length) {
 			if(left[0] <= right[0]) {
@@ -27,6 +29,7 @@ function binarySearch(arr, k) {
 			}
 
 		}
+        console.log('l', left)
 		return [...results, ...left, ...right]
 	}
 
@@ -42,15 +45,16 @@ function binarySearch(arr, k) {
 			}
 			mid = Math.floor((start + end) / 2)
 		}
+        console.log('mid', mid)
 		console.log('val', val)
 		console.log((sortedList[mid] !== val) ? -1 : mid)
-		return (sortedList[mid] !== val) ? false : true
+		return (sortedList[mid] !== val) ? -1 : mid
 	}
 	return search(mergeSort(arr), k)
 	// return mergeSort([10, 3, 1, 202, 133, 43, 33])
 }
 
-console.log(binarySearch([10, 3, 1, 202, 133, 43, 33], 33))
+console.log('end', binarySearch([10, 3, 1, 202, 133, 43, 33], 33))
 //
 // // Complete the findNumber function below.
 // function findNumber(arr, k) {
