@@ -4,27 +4,37 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
-
-
-typedef struct
+// https://stackoverflow.com/a/5281794/5972531
+int isPrime(int num)
 {
-    int n1;
-    int n2;
-} numbers;
-
-numbers returnVal(int a, int b)
-{
-    numbers instance = {a,b};
-    return instance;
+     if (num <= 1) return 0;
+     if (num % 2 == 0 && num > 2) return 0;
+     for(int i = 3; i <= sqrt(num); i+= 2)
+     {
+         if (num % i == 0)
+             return 0;
+     }
+     return 1;
 }
+// int isPrime(int n){
+//     double s = sqrt(n);
+//     printf("S %f\n",s );
+//     if(n == 3) return 1;
+//     for (size_t i = 2; i <= s; i++) {
+//         // printf("p %f\n", n % i);
+//         printf("i %i\n", i);
+//
+//         if(n % i == 0) return 1;
+//     }
+//     printf("i %i\n", n > 1);
+//     return n > 1;
+//     // return 1;
+// }
 
 int main(void)
 {
-    numbers instance = returnVal(1,2);
-    int n1 = instance.n1;
-    int n2 = instance.n2;
-    char arr[] = {n1,n2};
-    return arr;
+    printf("%i\n", isPrime(3));
+    // printf("%i\n", 1 < 2);
 }
 
 // int n = 544;

@@ -24,7 +24,7 @@ class Solution(object):
             negative = True
             del d[0]
         print(times)
-        while k < 12 :
+        while k < times / 2:
             # store last in var
             print('d', d)
             tempLast = d[(len(d) - 1) - j]

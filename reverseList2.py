@@ -8,9 +8,8 @@ class Solution(object):
         if type(x) is int or type(x) is float:
             l = [(i) for i in str(x)]
         elif type(x) is str:
-            l = x.split()
-        # if len() >= 10:
-        #     return 0
+            l = x.split()   
+        # if negative remove -
         if l[0] is chr(45):
             print('TRUE')
             negative = True
@@ -21,12 +20,18 @@ class Solution(object):
         if negative:
             print('above')
             store = "".join(store).lstrip("0")
-            store = "-" + store
-            print(store)
-            return store
+            if(int(store) > (2 ** 31 - 1)):
+                print(0)
+                return 0
+            else:
+                store = "-" + store
+                return store
         else:
             store = "".join(store)
+            if(int(store) > (2 ** 31 - 1)):
+                return 0
             if store is not '0':
+                print(store)
                 return store.lstrip("0")
             else:
                 return store
@@ -34,4 +39,4 @@ class Solution(object):
 
 
 instance = Solution()
-print(instance.reverse(-10))
+print(instance.reverse(-2147483648))
