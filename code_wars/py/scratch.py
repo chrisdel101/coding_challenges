@@ -13,7 +13,7 @@
 # #         del arr[ind1]
 # #         del arr[ind2-1]
 # #         print(arr)
-# # delete(a, 1, 3)
+# # delete(a, 1,  3)
 # #
 # # print(a)
 
