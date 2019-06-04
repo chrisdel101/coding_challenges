@@ -14,9 +14,6 @@ int main(void) {
     maxNumber(7389);
 }
 
-
-
-
 long long maxNumber(long long n)
 {
     int n_copy = n;
@@ -26,7 +23,7 @@ long long maxNumber(long long n)
         n_copy /= 10;
         count++;
     }
-    // printf("%i\n",count);
+    printf("count: %i\n",count);
     char str[count+1];
     // make it a string
     sprintf(str, "%lli", n );
@@ -36,7 +33,7 @@ long long maxNumber(long long n)
 
     char store[100];
     int k = 0;
-    char *arr = permute(str,0, count-1, store);
+    // char *arr = permute(str,0, count-1, store);
     // for (size_t i = 0; i < 100   ; i++) {
     //     for (size_t j = 0; j < count; j++) {
     //         store[k] = arr[j];
@@ -62,13 +59,13 @@ char *permute(char *a, int l, int r, char *store)
     static int j = 0;
     int i = 0;
     char *perms = malloc(100);
-    printf("J TOP %i\n",j);
+    // printf("J TOP %i\n",j);
     if (l == r){
-        printf("J:%i\n",j );
+        // printf("J:%i\n",j );
 
         while(a[j] != '\0')
         {
-            printf("J: %i\n",j );
+            // printf("J: %i\n",j );
             // printf("\n" );
             store[j] = a[j];
             // printf("%c\n",store[j]);
@@ -80,12 +77,12 @@ char *permute(char *a, int l, int r, char *store)
     {
         for (i = l; i <= r; i++)
         {
-            printf("J lower: %i\n",j );
+            // printf("J lower: %i\n",j );
             swap((a+l), (a+i));
             permute(a, l+1, r, store);
             swap((a+l), (a+i)); //backtrack
         }
     }
-    puts("BOTTOM");
+    // puts("BOTTOM");
     return j;
 }
