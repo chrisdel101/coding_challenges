@@ -22,26 +22,34 @@ int main(void)
     scanf("%i", &count);
     getchar();
     struct Entry e[count];
+    // if (false)
+    // {
     for (size_t i = 0; i < count; i++)
     {
         bool whiteSpaceHit = false;
-        char storeStrTemp[100];
+        char storeStrTemp[NAME_LENGTH];
         memset(storeStrTemp, 0, sizeof(storeStrTemp));
         puts("Enter first name and number: ");
         // get args from command line
         fgets(storeStrTemp, sizeof(storeStrTemp), stdin);
+        // strtok(storeStrTemp, "\n");
         printf("hello len %lu\n", strlen(storeStrTemp));
         // counter for inserting into struct
         int counter = 0;
-        // initalize struct
+        // printf("word len %lu\n", strlen(e[i].word));
+        // zero the arrays
+        memset(e[i].word, 0, sizeof(e[i].word));
+        memset(e[i].number, 0, sizeof(e[i].number));
         for (size_t j = 0; j < strlen(storeStrTemp) - 1; j++)
         {
+            // printf("EACH %c\n", storeStrTemp[j]);
+            // printf("\n");
             // if whitespace mark true
             if (storeStrTemp[j] == ' ')
             {
                 whiteSpaceHit = true;
                 // reset to zero
-                printf("space %i\n", counter);
+                // printf("space %i\n", counter);
                 counter = 0;
                 continue;
             }
@@ -49,8 +57,8 @@ int main(void)
             if (!whiteSpaceHit && storeStrTemp[j] != ' ')
             {
                 e[i].word[counter] = storeStrTemp[j];
-                printf("top %i ", counter);
-                printf("%c\n", e[i].word[counter]);
+                // printf("top %i ", counter);
+                // printf(" wor d %c\n", e[i].word[counter]);
                 // printf("%c ", e.word[counter]);
                 // counter++;
             }
@@ -63,7 +71,9 @@ int main(void)
             }
             counter++;
         }
-        printf("word len %lu\n", strlen(e[i].word));
+        // printf("counter %d\n", counter);
+        // printf("word len %lu\n", strlen(e[i].word));
+        // printf("num len %lu\n", strlen(e[i].number));
         // exit(0);
         // remove null terminator
         // char *s = trimwhitespace(e[i].word);
@@ -77,11 +87,15 @@ int main(void)
         //     printf("%c\n", s[k]);
         // }
     }
+    // exit(0);
+    // }
+    printf("\n");
     char *str = malloc(NAME_LENGTH);
     char *output = malloc(NAME_LENGTH);
     char tempWord[NAME_LENGTH];
     puts("Enter str to save. Type Quit to exit.");
-    fgets(tempWord, sizeof tempWord, stdin);
+    fgets(tempWord, sizeof(tempWord), stdin);
+    strtok(tempWord, "\n");
     printf("hello len %lu\n", strlen(tempWord));
     // copy temp to str
     strcpy(str, tempWord);
@@ -110,7 +124,8 @@ int main(void)
         // empty tempWord
         memset(tempWord, 0, sizeof(tempWord));
         puts("Enter str to append. Type Quit to exit.");
-        fgets(tempWord, sizeof tempWord, stdin);
+        fgets(tempWord, sizeof(tempWord), stdin);
+        strtok(tempWord, "\n");
         printf("hello len %lu\n", strlen(tempWord));
         // tempWord[strcspn(tempWord, "\n")] = 0;
         // don't add quit to array
@@ -120,7 +135,7 @@ int main(void)
             sprintf(str, "%s,%s", str, tempWord);
         }
         // check if tempWord is inside struct
-        int structSize = sizeof(e) / sizeof(e[0]);
+        structSize = sizeof(e) / sizeof(e[0]);
         // if true, put name and number to output
         if (checkStructForWord(tempWord, e, structSize) != -1)
         {
