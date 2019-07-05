@@ -24,7 +24,6 @@ node *hash_table[HASHTABLE_SIZE] = {NULL};
 
 int main(void)
 {
-    // printf("s %i\n", strlen(NOT_FOUND));
     loadHashTable();
     checkHashTable();
     return 0;
@@ -49,34 +48,24 @@ void checkHashTable(void)
     bool firstRun = false;
     while (scanf("%s", tempWord) == 1)
     {
+        // make new linked list of names to  check
         if (head == NULL)
         {
             head = createNode(tempWord, 0);
             tail = head;
-            // printf("top %s\n", head->name);
-            // printf("next %s\n", head->next);
         }
         else
         {
             node *new_node = createNode(tempWord, 0);
             tail->next = new_node;
             tail = tail->next;
-            // new_node->next = head;
-
-            // tempHead = tempHead->next;
-            // tempHead = createNode(tempWord, 0);
-            // printf("bottom %s\n", tempHead->name);
         }
     }
     while (head != NULL)
     {
         bool found = false;
-        // printf("size: %i\n", strlen(output));
         int hash_index = hashValue(head->name);
-        // printf("hash %i\n", hash_index);
         node *cursor = hash_table[hash_index];
-        // node *cursor = head;
-        // printf("name %s\n", cursor->name);
         // if null not there - go onto to next word
         if (cursor == NULL)
         {
@@ -84,8 +73,10 @@ void checkHashTable(void)
             head = head->next;
             continue;
         }
+        // compare name to check against hash table words
         while (cursor != NULL)
         {
+            // if match print name and num
             if (strcmp(head->name, cursor->name) == 0)
             {
                 char *tempOutputStore = calloc(NAME_LENGTH, sizeof(char));
@@ -99,31 +90,14 @@ void checkHashTable(void)
             }
             cursor = cursor->next;
         }
+        // else print not found
         if (!found)
         {
             printf("%s", NOT_FOUND);
         }
         // move cursor to where head-> next points
         head = head->next;
-        // }
-        // if (wordFound)
-        //     continue;
-
-        // if (!pinnedToOutput)
-        // {
-        //     outputMallocedSpace += NOT_FOUND_LEN;
-        //     output = realloc(output, outputMallocedSpace);
-
-        //     strcpy(output, NOT_FOUND);
-        // }
-        // else if (pinnedToOutput)
-        // {
-        //     outputMallocedSpace += NOT_FOUND_LEN;
-        //     output = realloc(output, outputMallocedSpace);
-        //     strcat(output, NOT_FOUND);
-        // }
     }
-    // return true;
 }
 void loadHashTable(void)
 {
@@ -144,20 +118,14 @@ void loadHashTable(void)
         if (hash_table[hash_index] == NULL)
         {
             // insert node at head of linked list
-            // same as head = mem
             hash_table[hash_index] = newNode;
             newNode->next = NULL;
-            // count++;
-            // printf("%s\n", newNode->name);
-            // printf("%i\n", newNode->number);
         }
         else
         {
             newNode->next = hash_table[hash_index];
             // reassign head to new node
             hash_table[hash_index] = newNode;
-            // printf("%s\n", newNode->name);
-            // printf("%i\n", newNode->number);
         }
     }
 }
