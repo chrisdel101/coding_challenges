@@ -5,214 +5,170 @@
 #include <ctype.h>
 
 #define NAME_LENGTH 45
-struct Entry
+#define NUM_LENGTH 10
+#define HASHTABLE_SIZE 65536
+#define NOT_FOUND "Not found\n"
+#define NOT_FOUND_LEN 11
+int hashValue(const char *word);
+void loadHashTable(void);
+void checkHashTable(void);
+
+typedef struct node
 {
-    char word[NAME_LENGTH];
-    char number[20];
-};
-typedef struct Entry e;
-int checkStructForWord(char *str1, struct Entry *e, int structSize);
+    char name[NAME_LENGTH + 1];
+    int number;
+    struct node *next;
+} node;
+// set hash table to const size, at null
+node *hash_table[HASHTABLE_SIZE] = {NULL};
 
 int main(void)
 {
-    // struct for the node type
+    // printf("s %i\n", strlen(NOT_FOUND));
+    loadHashTable();
+    checkHashTable();
+    return 0;
+}
+node *createNode(char *name, int number)
+{
+    node *new_node = malloc(sizeof(node));
+    strcpy(new_node->name, name);
+    new_node->number = number;
+    return (new_node);
+}
+void checkHashTable(void)
+{
+    int outputMallocedSpace = 0;
+    char *tempWord = malloc(NAME_LENGTH);
+    char *output = malloc(0);
+    // puts("Enter name to check: ");
+    int j = 0;
+    bool pinnedToOutput = false;
+    node *head = NULL;
+    node *tail;
+    bool firstRun = false;
+    while (scanf("%s", tempWord) == 1)
+    {
+        if (head == NULL)
+        {
+            head = createNode(tempWord, 0);
+            tail = head;
+            // printf("top %s\n", head->name);
+            // printf("next %s\n", head->next);
+        }
+        else
+        {
+            node *new_node = createNode(tempWord, 0);
+            tail->next = new_node;
+            tail = tail->next;
+            // new_node->next = head;
+
+            // tempHead = tempHead->next;
+            // tempHead = createNode(tempWord, 0);
+            // printf("bottom %s\n", tempHead->name);
+        }
+    }
+    while (head != NULL)
+    {
+        bool found = false;
+        // printf("size: %i\n", strlen(output));
+        int hash_index = hashValue(head->name);
+        // printf("hash %i\n", hash_index);
+        node *cursor = hash_table[hash_index];
+        // node *cursor = head;
+        // printf("name %s\n", cursor->name);
+        // if null not there - go onto to next word
+        if (cursor == NULL)
+        {
+            printf("%s", NOT_FOUND);
+            head = head->next;
+            continue;
+        }
+        while (cursor != NULL)
+        {
+            if (strcmp(head->name, cursor->name) == 0)
+            {
+                char *tempOutputStore = calloc(NAME_LENGTH, sizeof(char));
+
+                sprintf(tempOutputStore, "%s=%d\n", cursor->name, cursor->number);
+                printf("%s", tempOutputStore);
+
+                free(tempOutputStore);
+                found = true;
+                break;
+            }
+            cursor = cursor->next;
+        }
+        if (!found)
+        {
+            printf("%s", NOT_FOUND);
+        }
+        // move cursor to where head-> next points
+        head = head->next;
+        // }
+        // if (wordFound)
+        //     continue;
+
+        // if (!pinnedToOutput)
+        // {
+        //     outputMallocedSpace += NOT_FOUND_LEN;
+        //     output = realloc(output, outputMallocedSpace);
+
+        //     strcpy(output, NOT_FOUND);
+        // }
+        // else if (pinnedToOutput)
+        // {
+        //     outputMallocedSpace += NOT_FOUND_LEN;
+        //     output = realloc(output, outputMallocedSpace);
+        //     strcat(output, NOT_FOUND);
+        // }
+    }
+    // return true;
+}
+void loadHashTable(void)
+{
     int count;
     // puts("Enter count: ");
     scanf("%i", &count);
-    getchar();
-    struct Entry e[count];
+
     for (size_t i = 0; i < count; i++)
     {
-        bool whiteSpaceHit = false;
-        char storeStrTemp[NAME_LENGTH];
-        memset(storeStrTemp, 0, sizeof(storeStrTemp));
-        // puts("Enter first name and number: ");
-        // get args from command line
-        fgets(storeStrTemp, sizeof(storeStrTemp), stdin);
-        // printf("hello len %lu\n", strlen(storeStrTemp));
-        // counter for inserting into struct
-        int counter = 0;
-        // zero the arrays
-        memset(e[i].word, 0, sizeof(e[i].word));
-        memset(e[i].number, 0, sizeof(e[i].number));
-        for (size_t j = 0; j < strlen(storeStrTemp) - 1; j++)
+        // puts("Enter name and number");
+        char nameTemp[NAME_LENGTH];
+        int numTemp;
+        scanf("%s %d", nameTemp, &numTemp);
+
+        node *newNode = createNode(nameTemp, numTemp);
+        int hash_index = hashValue(nameTemp);
+
+        if (hash_table[hash_index] == NULL)
         {
-            // printf("\n");
-            // if whitespace mark true
-            if (storeStrTemp[j] == ' ')
-            {
-                whiteSpaceHit = true;
-                // reset to zero
-                // printf("space %i\n", counter);
-                counter = 0;
-                continue;
-            }
-            // this is name part - before whitespace found
-            if (!whiteSpaceHit && storeStrTemp[j] != ' ')
-            {
-                e[i].word[counter] = storeStrTemp[j];
-                // printf("top %i ", counter);
-                // printf(" wor d %c\n", e[i].word[counter]);
-                // printf("%c ", e.word[counter]);
-                // counter++;
-            }
-            //  this is number part - after whitespace found
-            else if (whiteSpaceHit && storeStrTemp[j] != ' ')
-            {
-                // printf("bottom %i", counter);
-                e[i].number[counter] = storeStrTemp[j];
-                // printf("%c ", e.number[counter]);
-            }
-            counter++;
+            // insert node at head of linked list
+            // same as head = mem
+            hash_table[hash_index] = newNode;
+            newNode->next = NULL;
+            // count++;
+            // printf("%s\n", newNode->name);
+            // printf("%i\n", newNode->number);
         }
-        // printf("counter %d\n", counter);
-        // printf("word len %lu\n", strlen(e[i].word));
-        // printf("num len %lu\n", strlen(e[i].number));
-        // exit(0);
-        // remove null terminator
-        // strcpy(e[i].word, s);
-        // printf("len %i\n ", strlen(storeStrTemp));
-        // printf("len %i\n ", strlen(e[i].word));
-        // puts("Remove null term");
-        // for (size_t k = 0; k < counter; k++)
-        // {
-        //     printf("k %zu ", k);
-        //     printf("%c\n", s[k]);
-        // }
-    }
-    // exit(0);
-    // }
-    // puts("HERE");
-    // printf("\n");
-    int j = 0;
-    char *tempWord = malloc(NAME_LENGTH);
-    char *output = malloc(strlen(tempWord) * j);
-    // puts("Enter str to save. Type Quit to exit.");
-    fgets(tempWord, sizeof(tempWord), stdin);
-    strtok(tempWord, "\n");
-    // printf("output len %lu\n", strlen(output));
-    // copy temp to str
-    int structSize = sizeof(e) / sizeof(e[0]);
-    if (checkStructForWord(tempWord, e, structSize) != -1)
-    {
-
-        // printf("tempWord %s\n", tempWord);
-        int indexMatch = checkStructForWord(tempWord, e, structSize);
-        char *strHolder = malloc(NAME_LENGTH);
-
-        sprintf(strHolder, "%s=%s\n", e[indexMatch].word, e[indexMatch].number);
-
-        strcpy(output, strHolder);
-        free(strHolder);
-        for (size_t i = 0; i < strlen(output); i++)
+        else
         {
-            // printf("%c", output[i]);
+            newNode->next = hash_table[hash_index];
+            // reassign head to new node
+            hash_table[hash_index] = newNode;
+            // printf("%s\n", newNode->name);
+            // printf("%i\n", newNode->number);
         }
     }
-    else
-    {
-        strcpy(output, "Not found\n");
-    }
-    // printf("\n");
-    free(tempWord);
-    //  puts("HERE");
-    while (scanf("%s", tempWord) == 1)
-    // while (strcmp(tempWord, "quit") != 0)
-    // while (scanf("%15s", tempWord) == 1)
-    {
-        // printf("len %lu\n", sizeof(output));
-
-        strtok(tempWord, "\n");
-
-        // check if tempWord is inside struct
-        structSize = sizeof(e) / sizeof(e[0]);
-        // if true, put name and number to output
-        if (checkStructForWord(tempWord, e, structSize) != -1)
-        {
-            // puts("Inner Here");
-            int indexMatch = checkStructForWord(tempWord, e, structSize);
-            // printf("matcher: %i\n", indexMatch);
-            // printf("j: %i\n", j);
-            char *strHolder = malloc(NAME_LENGTH);
-            sprintf(strHolder, "%s=%s\n", e[indexMatch].word, e[indexMatch].number);
-            if (strlen(output) == 0)
-            {
-                strcpy(output, strHolder);
-            }
-            else
-            {
-                strcat(output, strHolder);
-            }
-            free(strHolder);
-            // for (size_t i = 0; i < strlen(output); i++)
-            // {
-            //     printf("%c", output[i]);
-            // }
-        }
-        else if (strcmp(tempWord, "\n") != 0 && checkStructForWord(tempWord, e, structSize) == -1)
-        {
-            if (strlen(output) == 0)
-            {
-                strcpy(output, "Not found\n");
-            }
-            else
-            {
-                strcat(output, "Not found\n");
-            }
-        }
-
-        // printf("size %i\n", sizeof(e) / sizeof(e[0]));
-        //print to test
-        // printf("tempWord %s\n", tempWord);
-        // printf("cmp %d\n", strcmp(tempWord, "quit"));
-        // printf("str %s", str);
-        j++;
-        // free(tempWord);
-        if (j == 9)
-        {
-            for (size_t i = 0; i < strlen(output); i++)
-            {
-                printf("%c", output[i]);
-            }
-            printf("\n");
-        }
-    }
-    // printf("\n");
-    // printf("here\n");
-    for (size_t i = 0; i < strlen(output); i++)
-    {
-        printf("%c", output[i]);
-    }
-    printf("\n");
-
-    free(output);
-    // for (size_t i = 0; i < 1; i++)
-    // {
-    // printf("N %s\n", e[0].number);
-    // printf("W %s\n", e[0].word);
-    // }
 }
-// compare string to all struct strings - return index
-int checkStructForWord(char *str1, struct Entry *e, int structSize)
+// HASH FUNCTION - https://www.reddit.com/r/cs50/comments/1x6vc8/pset6_trie_vs_hashtable/
+int hashValue(const char *word)
 {
-    for (signed i = 0; i < structSize; i++)
+    unsigned int hash = 0;
+    for (int i = 0, n = strlen(word); i < n; i++)
     {
-        // str1 = tr    imwhitespace(str1);
-        // str1[strlen(str1)] = '\0';
-        // e[i].word[strlen(e[i].word)] = '\0';
-        // printf("str1: %s\n", str1);
-        // printf("str1len: %lu\n", strlen(str1));
-        // printf("struct word: %s\n", e[i].word);
-        // printf("struct wordLen: %lu\n", strlen(e[i].word));
-        // printf("CMP %i\n", strcmp(e[i].word, str1));
-        if (strcmp(e[i].word, str1) == 0)
-        {
-            // printf("tempstr %s\n", str1);
-            // printf("stored %s\n", e[i].word);
-            // puts("TRUE");
-            return i;
-        }
+        hash = (hash << 2) ^ word[i];
     }
-    // printf("\n");
-    return -1;
+    // returns a number
+    return hash % HASHTABLE_SIZE;
 }

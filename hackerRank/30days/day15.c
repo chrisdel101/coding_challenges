@@ -45,7 +45,7 @@ void display(Node *head)
     Node *start = head;
     while (start)
     {
-        printf("start %d\n ", start->data);
+        printf("start %s\n ", start->data);
         start = start->next;
     }
 }
@@ -61,5 +61,5 @@ int main()
         // printf("head %i\n", head->data);
         // printf("head %i\n", head->next);
     }
-    display(list);
+    // display(list);
 }

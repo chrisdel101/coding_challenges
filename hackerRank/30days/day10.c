@@ -44,7 +44,7 @@ int toBinaryArr(int n)
     for (signed i = j, k = 0, m = 10; i >= 0; i--, k++, m += 10)
     {
         binaryArr[k] = arr1[i - 1];
-        printf("%i", binaryArr[k]);
+        // printf("%i", binaryArr[k]);
     }
     // int i, single = 0;
     // https://stackoverflow.com/a/19599419/5972531
@@ -55,14 +55,14 @@ int toBinaryArr(int n)
     // }
     int max = count1s(binaryArr, j);
     free(binaryArr);
-    printf("max %i\n", max);
+    printf("%i\n", max);
 
     return max;
 }
 
 int main(void)
 {
-    int max = toBinaryArr(1911);
+    int max = toBinaryArr(524283);
     return max;
     // free(binary);
 }

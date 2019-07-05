@@ -36,110 +36,100 @@ void levelOrder(Node *root)
     Node *tempRight = root;
 
     while (
-        rootLeft->left != NULL || rootLeft->right != NULL || rootRight->left != NULL || rootRight->right != NULL)
+        rootLeft->left != NULL ||
+        rootLeft->right != NULL ||
+        rootRight->right != NULL ||
+        rootRight->left != NULL)
     {
+
         // add root data on first pass
-        if (rootLeft == rootStartCopy && rootRight == rootStartCopy)
+        if (
+            rootLeft == rootStartCopy &&
+            rootRight == rootStartCopy)
         {
             printf("root %i\n", root->data);
-            arr[queueIndex] = root->data;
-            queueIndex++;
         }
-        //    roots moving to keep the while loop going
         if (rootLeft->left)
         {
-            rootLeft = rootLeft->left;
-            printf("rootLeft %i\n", rootLeft->data);
+            if (rootLeft->left->left)
+            {
+                rootLeft = rootLeft->left;
+                printf("left 1 %i\n", rootLeft->data);
+            }
+            else if (!rootLeft->left->left &&
+                     rootLeft->left->right)
+            {
+                rootLeft = rootLeft->left;
+                printf("left 2 %i\n", rootLeft->data);
+            }
+            else if (rootLeft->right &&
+                     rootLeft->right->right)
+            {
+                // get data from left before shiting
+                printf("left  3 %i\n", rootLeft->left->data);
+                rootLeft = rootLeft->right;
+                printf("left 4 %i\n", rootLeft->data);
+            }
+            else
+            {
+                if (rootLeft->right &&
+                    !rootLeft->right->right)
+                {
+                    printf("left 5 %i\n", rootLeft->right->data);
+                }
+                rootLeft = rootLeft->left;
+                printf("left 6 %i\n", rootLeft->data);
+            }
         }
-        else if (rootLeft->right)
+        else if (rootLeft->right &&
+                 rootLeft != rootStartCopy)
         {
             rootLeft = rootLeft->right;
-            printf("rootLeft %i\n", rootLeft->data);
+            printf("left  7 %i\n", rootLeft->data);
         }
 
         if (rootRight->right)
         {
-            rootRight = rootRight->right;
-            printf("rootRight %i\n", rootRight->data);
+            if (rootRight->right->right)
+            {
+                if (rootRight->left &&
+                    rootRight != rootStartCopy)
+                {
+                }
+                rootRight = rootRight->right;
+                printf("right 1 %i\n", rootRight->data);
+            }
+            else if (!rootRight->right->right &&
+                     rootRight->right->left)
+            {
+                rootRight = rootRight->right;
+                printf("right 3 %i\n", rootRight->data);
+            }
+            else if (rootRight->left &&
+                     rootRight->left->left)
+            {
+                // get data from left before shiting
+                printf("right  4 %i\n", rootRight->right->data);
+                rootRight = rootRight->left;
+                printf("right 5 %i\n", rootRight->data);
+            }
+            else
+            {
+                if (rootRight->left &&
+                    !rootRight->left->left)
+                {
+                    printf("right 6 %i\n", rootRight->left->data);
+                }
+                rootRight = rootRight->right;
+                printf("right 7 %i\n", rootRight->data);
+            }
         }
-        else if (rootLeft->left)
+        else if (rootRight->left &&
+                 rootRight != rootStartCopy)
         {
-            root = root->left;
-            printf("rootRight %i\n", root->data);
+            rootRight = rootRight->right;
+            printf("right 8 %i\n", rootRight->data);
         }
-        // move temp within root
-
-        // if (tempLeft != rootStartCopy &&
-        //     tempLeft->left && tempLeft->right)
-        // {
-        //     printf("left top1 %i\n", tempLeft->left->data);
-        //     printf("left top2 %i\n", tempLeft->right->data);
-
-        //     arr[queueIndex] = tempLeft->left->data;
-        //     arr[queueIndex] = tempLeft->right->data;
-        //     queueIndex++;
-
-        //     tempLeft = tempLeft->left;
-        // }
-        // else if (tempLeft->left)
-        // {
-        //     arr[queueIndex] = tempLeft->data;
-        //     queueIndex++;
-        //     tempLeft = tempLeft->left;
-        //     printf("left mid %i\n", tempLeft->data);
-        // }
-        // else if (tempLeft->left == NULL && tempLeft->right)
-        // {
-        //     tempLeft = tempLeft->right;
-        //     arr[queueIndex] = tempLeft->data;
-        //     queueIndex++;
-        //     printf("left bottom %i\n", tempLeft->data);
-        // }
-
-        // if (tempRight != rootStartCopy &&
-        //     tempRight->left && tempRight->right)
-        // {
-        //     printf("right top1 %i\n", tempRight->left->data);
-        //     printf("right top2 %i\n", tempRight->right->data);
-
-        //     arr[queueIndex] = tempRight->left->data;
-        //     arr[queueIndex] = tempRight->right->data;
-        //     queueIndex++;
-
-        //     tempRight = tempRight->left;
-        // }
-        // else if (tempRight->right)
-        // {
-        //     tempRight = tempRight->right;
-        //     printf("right mid %i\n", tempRight->data);
-        //     arr[queueIndex] = tempRight->data;
-        //     queueIndex++;
-        // }
-        // else if (tempRight->left)
-        // {
-        //     tempRight = tempRight->left;
-        //     printf("right bottom %i\n", tempRight->data);
-        //     arr[queueIndex] = tempRight->data;
-        //     queueIndex++;
-        // }
-        puts("HERE BOTTOM");
-        // printf("left top %i\n", tempLeft->right->data);
-
-        // if right exists, assign to right
-
-        // if (tempRight->right)
-        // {
-        //     tempRight = tempRight->right;
-        //     printf("right top %i\n", tempRight->data);
-        // }
-        // else
-        // {
-        //     tempRight = tempRight->left;
-        //     printf("right botom %i\n", tempRight->data);
-        // }
-
-        // tempRight = tempRight->right;
-        // printf("right %i\n", tempRight->data);
     }
 }
 Node *insert(Node *root, int data)
