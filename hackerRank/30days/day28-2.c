@@ -12,35 +12,6 @@ typedef struct Node
 
 } Node;
 
-Node *insertAtEnd(Node *list, char *inputName)
-{
-    Node *newNode = malloc(sizeof(Node));
-    Node *tempList = list;
-    if (newNode == NULL)
-    {
-        exit(0);
-    }
-    strcpy(newNode->name, inputName);
-    newNode->next = NULL;
-    if (list == NULL)
-    {
-        list = newNode;
-        return list;
-    }
-    else
-    {
-        while (tempList)
-        {
-            // loop to end
-            printf("end %s\n", tempList->name);
-            tempList = tempList->next;
-        }
-        Node *tempLast = tempList;
-        tempList = newNode;
-        newNode->next = tempLast;
-        return list;
-    }
-}
 Node *insertBefore(Node *list, char *inputName, char *insertBeforeName)
 {
 
@@ -100,15 +71,6 @@ Node *insertBefore(Node *list, char *inputName, char *insertBeforeName)
     }
     return 0;
 }
-bool emailChecker(char *name, char *email)
-{
-    char gmail[] = "gmail";
-    if (strstr(email, gmail))
-    {
-        return true;
-    }
-    return false;
-}
 Node *transverse(Node *head, char *name)
 {
 
@@ -127,7 +89,7 @@ Node *transverse(Node *head, char *name)
         start = insertBefore(start, name, NULL);
         return start;
     }
-    while (start)
+    while (start->next != NULL)
     {
         puts("INSIDE\n");
         // list name is less than word insert name before
@@ -141,14 +103,27 @@ Node *transverse(Node *head, char *name)
         printf("start %s\n ", start->name);
         start = start->next;
     }
-    puts("BELOw\n");
-    printf("last next %s\n", start->name);
-    printf("new node %s", newNode->name);
-    // start = newNode;
-    // newNode->next = tempLast;
-    start->next = newNode;
-    printf("insert at end %s\n", start->name);
+    // if there is only one node - check only first node
+    if (strcmp(start->name, name) == 0)
+    {
+        puts("BELOw\n");
+        printf("last next %s\n", start->name);
+        printf("new node %s", newNode->name);
+        start->next = newNode;
+        printf("insert at end %s\n", start->name);
+        return start;
+    }
+
     return start;
+}
+bool emailChecker(char *name, char *email)
+{
+    char gmail[] = "gmail";
+    if (strstr(email, gmail))
+    {
+        return true;
+    }
+    return false;
 }
 void display(Node *head)
 {
