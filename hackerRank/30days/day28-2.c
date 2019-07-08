@@ -12,69 +12,79 @@ typedef struct Node
 
 } Node;
 
-Node *insertBefore(Node *list, char *inputName, char *insertBeforeName)
+Node *insertBefore(Node *list, char *inputName, Node *newNode)
 {
-
-    Node *newNode = malloc(sizeof(Node));
-    int length = 0;
-    if (newNode == NULL)
+    Node *tempList = list;
+    // if 2 or more nodes go here
+    // printf("Input name %s\n", inputName);
+    // printf("check name %s\n", tempList->name);
+    while (tempList->next != NULL)
     {
-        exit(0);
-    }
-    strcpy(newNode->name, inputName);
-    newNode->next = NULL;
-    if (list == NULL)
-    {
-        // puts("insert first node");
-        list = newNode;
-        return list;
-    }
-    else
-    {
-        Node *tempList = list;
-        // if 2 or more nodes go here
-        while (tempList->next != NULL)
+        // // check if matches current
+        if (strcmp(tempList->name, inputName) > 0)
         {
-            // printf("check next name %s\n", tempList->next->name);
-            // printf("check name %s\n", tempList->name);
-            // // check if matches current
-            if (strcmp(tempList->name, insertBeforeName) == 0)
-            {
-                Node *tempNode = tempList;
-                tempList = newNode;
-                newNode->next = tempNode;
-                return tempList;
-            }
-            else if (strcmp(tempList->next->name, insertBeforeName) == 0)
-            {
-                Node *tempNext = tempList->next;
-                tempList->next = newNode;
-                newNode->next = tempNext;
-                return tempList;
-            }
-            tempList = tempList->next;
-            // if(temp)
-        }
-        // if there is only one node - check only first node
-        if (strcmp(tempList->name, insertBeforeName) == 0)
-        {
-            // puts("one node");
-            // printf("inputName %s\n", inputName);
-            // printf("check next name %s\n", tempList->name);
-            Node *tempNext = tempList; //null
+            Node *tempNode = tempList;
             tempList = newNode;
-            newNode->next = tempNext;
+            newNode->next = tempNode;
+            // printf("end name %s\n", tempList->name);
             return tempList;
         }
-        tempList->next = newNode;
-        return list;
+        // {
+        // }
+        // else if (strcmp(tempList->next->name, insertBeforeName) == 0)
+        // {
+        //     Node *tempNext = tempList->next;
+        //     tempList->next = newNode;
+        //     newNode->next = tempNext;
+        //     return tempList;
+        // }
+        tempList = tempList->next;
+        // printf("looping %s\n", tempList->name);
+        // if(temp)
     }
-    return 0;
+    // if there is only one node - check only first node
+    if (strcmp(tempList->name, inputName) > 0)
+    {
+        Node *tempNode = tempList;
+        tempList = newNode;
+        newNode->next = tempNode;
+        // printf("current %s\n", tempList->name);
+        // printf("next %s\n", tempList->next->name);
+        // printf("end name %s\n", tempList->name);
+        return tempList;
+    }
+    // if (strcmp(tempList->name, insertBeforeName) == 0)
+    // {
+    //     // puts("one node");
+    //     // printf("inputName %s\n", inputName);
+    //     Node *tempNext = tempList; //null
+    //     tempList = newNode;
+    //     newNode->next = tempNext;
+    //     return tempList;
+    // }
+
+    // printf("END END name %s\n", tempList->name);
+    // puts("No change");
+    return list;
+    // }
 }
-Node *transverse(Node *head, char *name)
+Node *insertAfter(Node *head, char *name, Node *newNode)
+{
+    Node *tempList = head;
+    while (tempList->next != NULL)
+    {
+        // puts("INSIDE\n");
+
+        tempList = tempList->next;
+        // printf("current %s\n", tempList->name);
+    }
+    tempList->next = newNode;
+    return head;
+}
+Node *transverseAdd(Node *head, char *name)
 {
 
-    Node *start = head;
+    Node *tempList = head;
     Node *newNode = malloc(sizeof(Node));
     int length = 0;
     if (newNode == NULL)
@@ -84,37 +94,23 @@ Node *transverse(Node *head, char *name)
     strcpy(newNode->name, name);
     newNode->next = NULL;
     // empty list
-    if (start == NULL)
+    if (tempList == NULL)
     {
-        start = insertBefore(start, name, NULL);
-        return start;
+        tempList = newNode;
+        return tempList;
     }
-    while (start->next != NULL)
+    else
     {
-        puts("INSIDE\n");
-        // list name is less than word insert name before
-        if (strcmp(start->name, name) > 0)
-        {
-            // printf("start before %s\n", start->name);
-            start = insertBefore(head, name, start->name);
-            // printf("start after %s\n", start->name);
-            return start;
-        }
-        printf("start %s\n ", start->name);
-        start = start->next;
-    }
-    // if there is only one node - check only first node
-    if (strcmp(start->name, name) == 0)
-    {
-        puts("BELOw\n");
-        printf("last next %s\n", start->name);
-        printf("new node %s", newNode->name);
-        start->next = newNode;
-        printf("insert at end %s\n", start->name);
-        return start;
-    }
 
-    return start;
+        tempList = insertBefore(head, name, newNode);
+    }
+    // printf("return name %s\n", tempList->name);
+    if (tempList->name == head->name)
+    {
+        // puts("HERE");
+        tempList = insertAfter(head, name, newNode);
+    }
+    return tempList;
 }
 bool emailChecker(char *name, char *email)
 {
@@ -148,10 +144,10 @@ int main(void)
         scanf("%s %s", name, email);
         if (emailChecker(name, email))
         {
-            list = transverse(list, name);
+            list = transverseAdd(list, name);
         }
         // display list
-        // printf("head %i\n", head->data);
+        // printf("head %s\n", list->name);
         // printf("head %i\n", head->next);
     }
     display(list);
