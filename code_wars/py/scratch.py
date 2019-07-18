@@ -78,34 +78,30 @@
 #         return "".join(d)
 
 
-
 # instance = Solution()
 # print(instance.reverse(10))
 # # 5 2 3 4 1
 # # 5 4 3 2 1
 # # if odd half the list size round down
 # # mylist = ["a", "b", "a", "c", "c"]
-def test(input):
-    
-    for i in input:
-        print(i)
-test(",>,<[>[->+>+<<]>>[-<<+>>]<<<-]>>.")
+# def test(input):
+
+#     for i in input:
+#         print(i)
+# test(",>,<[>[->+>+<<]>>[-<<+>>]<<<-]>>.")
 # def findNextBracketIndex(code):
 #     forwardIndexes = []
 #     matches = {}
 #     indexes = []
 #     for (ind, i) in enumerate(code):
 #         if i is '[':
-#             forwardIndexes.append(ind)  
+#             forwardIndexes.append(ind)
 #         elif i is ']':
 #             matching = forwardIndexes.pop()
 #             matches[ind] = matching
 #             matches[matching] = ind
 #     return matches
-            
 
-            
 
 #     print(brackets)
 # print(findNextBracketIndex("[,[,,[+]][--]]"))
-   
