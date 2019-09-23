@@ -2,8 +2,13 @@ class Board {
   constructor(board, word) {
     this.board = board
     this.word = word
+    this.tempIndex = {}
     this.currentIndexes = {}
     this.allIndexes = {}
+    this.letters = {
+      current: null,
+      previous: null
+    }
     this.directions = [
       'checkBelow',
       'checkBelowBackDiagnoal',
@@ -30,57 +35,59 @@ class Board {
         firstLetterIndArr[j]['rowIndex'],
         firstLetterIndArr[j]['colIndex']
       )
+      this.tempIndexesSetter(
+        firstLetterIndArr[j]['rowIndex'],
+        firstLetterIndArr[j]['colIndex']
+      )
+
       // track correct placements
       let numFound = 0
       const slicedWord = this.word.slice(1, this.word.length)
       // toggle to return true or false at loop end
-      console.log('this', slicedWord)
       // loop over words and check them in order
       const letters = slicedWord.split('')
       // // loop over letter and check them in order
       for (let i = 0; i < letters.length; i++) {
-        console.log('letters', letters[i])
-        console.log(this.currentIndexes)
+        this.lettersSetter('', '', 'current', letters[i])
+        console.log('Letter', letters[i])
+        console.log('letters', this.letters)
+        // console.log(this.tempIndex)
         let found = false
 
         for (let k = 0; k < this.directions.length; k++) {
-          console.log('letter', letters[i])
-          if (this.checkDirection(this.directions[k], letters[i])) {
+          if (this.checkTempDirection(this.directions[k], letters[i])) {
             console.log('found')
             found = true
-            numFound++
+            // set perm indexes
+            this.indexesSetter(this.tempIndex.rowIndex, this.tempIndex.colIndex)
             // break directons loop
             break
           }
         }
-        // if a letter not round, do the entire thing in reverse
         if (!found) {
-          for (let m = this.directions.length - 1; m >= 0; m--) {
-            console.log('reverse', this.directions[m], letters[i])
-            if (this.checkDirection(this.directions[m], letters[i])) {
-              console.log('found')
-              found = true
-              numFound++
-              // break directons loop
-              break
-            }
-          }
-        }
-
-        if (!found) {
-          console.log('val not found')
-          // break letters loop - try next start letter
-          break
-        } else if (numFound === letters.length) {
-          console.log('all found', numFound)
-          return true
+          console.log('not found')
+          // - set temp index back to previous
+          // - check from previous dir forward
+          this.tempIndexesSetter(
+            this.tempIndex.rowIndex,
+            this.tempIndex.colIndex
+          )
+          this.lettersSetter(
+            this.tempIndex.rowIndex,
+            this.tempIndex.colIndex,
+            'current',
+            this.letters.previous.letter
+          )
+          i--
+          console.log('here')
+          continue
         }
       }
-      console.log('here')
+      return false
     }
-    return false
   }
-  isKeyInAllIndexes(rowIndex, colIndex) {
+  // check for used indexes
+    (rowIndex, colIndex) {
     const key = `${rowIndex}-${colIndex}`
     if (key in this.allIndexes) {
       console.log('KILL by indexes')
@@ -88,6 +95,7 @@ class Board {
     }
     return false
   }
+  // to index tracker
   addToAllIndexes(rowIndex, colIndex) {
     const key = `${rowIndex}-${colIndex}`
     this.allIndexes[key] = {
@@ -103,7 +111,23 @@ class Board {
       colIndex
     }
   }
-  //   find all first letters - return arr of indexes
+  tempIndexesSetter(rowIndex, colIndex) {
+    this.tempIndex = {
+      rowIndex,
+      colIndex
+    }
+  }
+  lettersSetter(rowIndex, colIndex, type, letter, direction) {
+    this.letters[type] = {
+      letter: letter,
+      indexes: {
+        rowIndex,
+        colIndex
+      },
+      lastDir: direction
+    }
+  }
+  // find all first letters - return arr of indexes
   findFirstLetters() {
     let firstLetterIndexes = []
     //   save first letter
@@ -128,9 +152,9 @@ class Board {
       return false
     }
   }
-  checkDirection(direction, letter) {
-    let rowIndex = this.currentIndexes.rowIndex
-    let colIndex = this.currentIndexes.colIndex
+  checkTempDirection(direction, letter) {
+    let rowIndex = this.tempIndex.rowIndex
+    let colIndex = this.tempIndex.colIndex
     switch (direction) {
       case 'checkBelow':
         rowIndex++
@@ -167,17 +191,24 @@ class Board {
       this.board[rowIndex][colIndex] === letter &&
       !this.isKeyInAllIndexes(rowIndex, colIndex)
     ) {
-      this.indexesSetter(rowIndex, colIndex)
-      console.log(`shift to r ${rowIndex} and c ${colIndex}`)
+      this.tempIndexesSetter(rowIndex, colIndex)
+      this.lettersSetter(rowIndex, colIndex, 'previous', letter, direction)
+      console.log(`${direction} shift temp to r ${rowIndex} and c ${colIndex}`)
       return true
     }
     return false
   }
 }
 
+// var testBoard = [
+//   ['E', 'A', 'R', 'A'],
+//   ['N', 'L', 'E', 'C'],
+//   ['I', 'A', 'I', 'S'],
+//   ['B', 'Y', 'O', 'R']
+// ]
 var testBoard = [
   ['E', 'A', 'R', 'A'],
-  ['N', 'L', 'E', 'C'],
+  ['N', 'X', 'E', 'L'],
   ['I', 'A', 'I', 'S'],
   ['B', 'Y', 'O', 'R']
 ]
