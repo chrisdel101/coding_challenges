@@ -15,7 +15,6 @@
 // //
 //
 
-
 // This returns 1 for looping(0), which is incorrect!!
 
 //find the actual fib sequence number located at digit 100
@@ -52,10 +51,8 @@
 // };
 // console.log(recursive(10));
 
-
 /////////First Real Attempt - No recursion//////////
 //
-
 
 // Set up three varaiables
 // - a, b, f(fibonacci)
@@ -67,35 +64,36 @@
 // - a is reassigned to b to move it forward
 // - b is reassingd to f , the sum
 
-  // function fib(steps){
-  //   var a = 0;
-  //   var b = 1;
-  //   var f = 1;
-  //   if (steps === 0){
-  //     return 0
-  //    } else {
-  //   for (var i = 0;i < steps;i++){
-  //     f = a + b;
-  //     a = b;
-  //     b = f;
-  //   }
-  //   return(f);
-  //   }
-  // }
-  // fib(0);
+// function fib(steps){
+//   var a = 0;
+//   var b = 1;
+//   var f = 1;
+//   if (steps === 0){
+//     return 0
+//    } else {
+//   for (var i = 0;i < steps;i++){
+//     f = a + b;
+//     a = b;
+//     b = f;
+//   }
+//   return(f);
+//   }
+// }
+// fib(0);
 
-  /////////Second Real Attempt - No recursion//////////
-  //
+/////////Second Real Attempt - No recursion//////////
+//
 
-  function fib(steps){
-    var a = 0;
-    var b = 1;
-    var f = 1;
-    for (var i = 2;i < steps;i++){
-      f = a + b;
-      a = b;
-      b = f;
-    }
-    console.log(f);
+function fib(steps) {
+  var a = 0
+  var b = 1
+  var f = 1
+  while()
+  for (var i = 2; i < steps; i++) {
+    f = a + b
+    a = b
+    b = f
   }
-  fib(0)
+  console.log(f)
+}
+fib(10)

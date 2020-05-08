@@ -12,8 +12,8 @@ accum () {
         # to lower case
         letter=${letter,,}
         for (( j = 0; j < i; j++ )); do
-                # push to arr
-                arr+=($letter)
+            # push to arr
+            arr+=($letter)
         done
         if [[ $i -lt $(expr ${#1} - 1) ]]; then
             # add hypen
