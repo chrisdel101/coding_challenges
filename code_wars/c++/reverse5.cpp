@@ -6,7 +6,8 @@
 std::string reverseWordsInPlace(const std::string &str)
 {
     int index = 0;
-    char arr[str.length() + 2];
+
+    char arr[str.length() + 1];
     // each word count
     int k = 0;
     for (size_t i = 0; i < str.length(); i++)
@@ -76,53 +77,70 @@ std::string reverseWordsInPlace(const std::string &str)
 }
 std::string spinWords(const std::string &str)
 {
+    // std::cout << "len: " << str.length() << std::endl;
 
     std::string s = reverseWordsInPlace(str);
     char arr[str.length()];
+    int k = 0;
+    int wordLen = 0;
+    // arrIndex
+    int j = 0;
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        // std::cout << wordLen << std::endl;
+        // std::cout << str[i] << std::endl;
+        if (std::isspace(str[i + 1]) || i + 1 == str.length())
+        {
+            std::cout << "space" << std::endl;
+            std::cout << "wordLen" << wordLen << std::endl;
 
+            if (wordLen < 5)
+            {
+                // std::cout << "i" << i << std::endl;
+                // std::cout << "k" << k << std::endl;
+                while (k <= i)
+                {
+                    arr[j] = str[k];
+                    // std::cout << str[k] << std::endl;
+
+                    k++;
+                    j++;
+                };
+            }
+            else
+            {
+                std::cout << "i" << i << std::endl;
+                std::cout << "k" << k << std::endl;
+                std::cout << "j" << j << std::endl;
+                while (k <= i)
+                {
+                    arr[j] = s[k];
+                    // std::cout << arr[j] << std::endl;
+                    k++;
+                    j++;
+                };
+            }
+            wordLen = 0;
+        }
+        wordLen++;
+    }
+    wordLen++;
     for (size_t i = 0; i < str.length(); i++)
     {
-        // std::cout << s[i] << std::endl;
-        if (i < 4)
-        {
-            arr[i] = str[i];
-        }
-        else
-        {
-            arr[i] = s[i];
-        }
+        // std::cout << arr[i] << std::endl;
     }
-    for (size_t i = 0; i < str.length(); i++)
-    {
-        std::cout << arr[i] << std::endl;
-        // if (i < 5)
-        // {
-        //     arr[i] = str[i];
-        // }
-        // else
-        // {
-        //     arr[i] = s[i];
-        // }
-    }
-    // int i = 0;
-    // while (i != '\0')
-    // // for (size_t i = 0; i < s.length(); i++)
-    // {
-    //     if (i < 5)
-    //     {
-    //         arr[i] = str[i] l
-    //     }
-    //     else
-    //     {
-    //         arr[i] = s[i];
-    //     }
-    //     i++;
-    // }
     return arr;
 }
 
 int main()
 {
     // wollef
-    spinWords("Welcome");
+    std::string s = spinWords("to");
+    // std::cout << "len: " << s.length() << std::endl;
+
+    for (size_t i = 0; i < s.length(); i++)
+    {
+        std::cout << "i: " << i << std::endl;
+        std::cout << s[i] << std::endl;
+    }
 }

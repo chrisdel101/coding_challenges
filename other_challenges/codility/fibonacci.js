@@ -87,13 +87,13 @@
 function fib(steps) {
   var a = 0
   var b = 1
-  var f = 1
+  var c = 1
   while()
   for (var i = 2; i < steps; i++) {
-    f = a + b
+    c = a + b
     a = b
-    b = f
+    b = c
   }
-  console.log(f)
+  console.log(c)
 }
 fib(10)
