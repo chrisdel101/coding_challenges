@@ -1,96 +1,22 @@
 'use strict';
 function pyramid(pyramid) {
-  let maxStr = ''
-  let prevTotalsArr = [];
-  let totalStrs = [];
-  let prevIndexSpans = [];
-  let currentMax = 0
+  let newPyramid = [[75]]
   for (const [j, arr] of pyramid.entries()) {
-  if (j === 2) {
-      let t1 = arr[0] + pyramid[0][0] + pyramid[1][0];
-      let t2 = arr[1] + pyramid[0][0] + pyramid[1][0];
-      let t3 = arr[1] + pyramid[0][0] + pyramid[1][1];
-      let t4 = arr[2] + pyramid[0][0] + pyramid[1][1];
-      let t1Str = `${pyramid[0][0]}+${pyramid[1][0]}+${arr[0]}`
-      let t2Str = `${pyramid[0][0]}+${pyramid[1][0]}+${arr[1]}`;
-      let t3Str = `${pyramid[0][0]}+${pyramid[1][1]}+${arr[1]}`;
-      let t4Str = `${pyramid[0][0]}+${pyramid[1][1]}+${arr[2]}`;
-
-      prevTotalsArr.push(t1, t2, t3, t4);
-      currentMax = Math.max(...[t1, t2, t3, t4])
-      totalStrs.push(t1Str, t2Str, t3Str, t4Str);
-      prevIndexSpans = [
-        { start: 0, end: 1, total: 1 },
-        { start: 1, end: 3, total: 2 },
-        { start: 3, end: 4, total: 1 },
-      ];
-    } else if(j>2) {
-      let tempTotals = [];
-      let tempStrTotals = [];
-      let tempNumTotals = [];
-      let highestRowTotal = 0
-      for (const [i, item] of arr.entries()) {
-        if (i === 0) {
-          let total = prevTotalsArr[0] + item; 
-          let totalStr = `${totalStrs[0]}+${item}`;
-          tempTotals.push(total);
-          tempStrTotals.push(totalStr);
-          tempNumTotals.push({ start: 0, end: 1, total: 1 })
-          if(total>currentMax) {
-            maxStr = totalStr
-            console.log('max', maxStr)
-            currentMax = total
-          }
-        } else if (i === arr.length - 1) {
-         
-          let total = prevTotalsArr.slice(-1)[0] + item;
-          let totalStr = `${totalStrs.slice(-1)[0]}+${item}`;
-          tempTotals.push(total);
-          tempStrTotals.push(totalStr);
-          tempNumTotals.push({
-            start: tempNumTotals[i - 1].end,
-            end: tempNumTotals[i - 1].end + 1,
-            total: 1,
-          });
-          if(total>currentMax) {
-            maxStr = totalStr
-            console.log('max', maxStr)
-            currentMax = total
-          }
-        } else {
-          let leftTotalNum = prevIndexSpans[i - 1].total;
-          let rightTotalNum = prevIndexSpans[i].total;
-          let fullTotal = leftTotalNum + rightTotalNum;
-          let obj = {
-            start: tempNumTotals[i - 1].end,
-            end: tempNumTotals[i - 1].end + fullTotal,
-            total: leftTotalNum + rightTotalNum,
-          };
-          tempNumTotals.push(obj);
-          // let z3 = tempNumTotals[i];
-          let start = prevIndexSpans[i - 1].start;
-          let end = prevIndexSpans[i].end;
-          for (let k = start; k < end; k++) {
-            let total = prevTotalsArr[k] + item;
-            let totalStr = `${totalStrs[k]}+${item}`;
-            if(total>currentMax) {
-              maxStr = totalStr
-              console.log('max', maxStr)
-              currentMax = total
-            }
-            tempTotals.push(total);
-            tempStrTotals.push(totalStr);
-          }
-        }
-      }
-      prevTotalsArr = tempTotals;
-      totalStrs = tempStrTotals;
-      prevIndexSpans = tempNumTotals;
+    let i = 0
+    let tempRow = []
+    while(pyramid[j+1] && pyramid[j+1][i+1]){
+      console.log(`${newPyramid[j][i]}+${pyramid[j+1][i]}`)
+      // console.log(`${newPyramid[j][i]}+${pyramid[j+1][i+1]}`)
+      let t1 = newPyramid[j][i] + pyramid[j+1][i]
+      // let t2 = newPyramid[j][i] + pyramid[j+1][i+1]
+      tempRow.push(t1)
+      i += 1
+    } 
+      console.log('Afters')
     }
+    newPyramid.push(tempRow)
   }
-  console.log(maxStr);
-  console.log(totalStrs);
-  console.log(currentMax);
+  console.log(newPyramid)
 }
 pyramid(
   [[75],
