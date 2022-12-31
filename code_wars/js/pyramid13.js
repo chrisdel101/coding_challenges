@@ -1,72 +1,38 @@
-'use strict';
-function pyramid(pyramid) {
-  let newPyramid = [[75]]
-  for (const [j, arr] of pyramid.entries()) {
-    let tempRow = []
-    if(pyramid[j+1]){
-
-      for (let i = 0; i < arr.length; i++) {
-        if(pyramid[j+1] && !pyramid[j+1][i+2]){
-         let t1 = newPyramid[j][i] + pyramid[j+1][i]
-         let t2 = newPyramid[j][i] + pyramid[j+1][i+1]
-         tempRow.push(t1, t2)
-       } else {
-        let t1 = newPyramid[j][i] + pyramid[j+1][i]
-        tempRow.push(t1)
-       }
-      }
-      newPyramid.push(tempRow)
+function longestSlideDown(pyramid) {
+  let currentTotals = pyramid.slice(-1)[0];
+  for (var i = pyramid.length - 2; i > -1; i--) {
+    var tempTotals = [];
+    for (var j = 0; j < pyramid[i].length; j++) {
+      tempTotals.push(Math.max(currentTotals[j], currentTotals[j + 1]) + pyramid[i][j]);
     }
+    currentTotals = tempTotals;
   }
-  console.log(newPyramid)
-  let lastRowChecks = [] 
-  let lastRowNum = newPyramid.length -1
-  for (const [i, item] of newPyramid[lastRowNum].entries()) {
-    if(i == 0){
-      let original = pyramid[lastRowNum][i]
-      let upOnly = newPyramid[lastRowNum-1][i]
-      let c = original + upOnly
-      lastRowChecks.push(c)
-    } else if(pyramid[lastRowNum-1] && !pyramid[lastRowNum-1][i]){
-      let original = pyramid[lastRowNum][i]
-      let upLeftOnly = newPyramid[lastRowNum-1][i]
-      let c = original + upLeftOnly
-      lastRowChecks.push(c)
-
-    } else {
-      let original = pyramid[lastRowNum][i]
-      let upLeft = newPyramid[lastRowNum-1][i-1]
-      let up = newPyramid[lastRowNum-1][i]
-      let c = original + Math.max(up, upLeft) 
-      lastRowChecks.push(c)
-    }
-  }
-
+  return currentTotals.slice(-1)[0];
 }
-pyramid(
+longestSlideDown(
   [[75],
   [95, 64],
   [17, 47, 82], //221
   [18, 35, 87, 10], //308
-  [20,  4, 82, 47, 65],
-  [19,  1, 23, 75,  3, 34],
-  [88,  2, 77, 73,  7, 63, 67],
-  [99, 65,  4, 28,  6, 16, 70, 92],
-  [41, 41, 26, 56, 83, 40, 80, 70, 33],
-  [41, 48, 72, 33, 47, 32, 37, 16, 94, 29],
-  [53, 71, 44, 65, 25, 43, 91, 52, 97, 51, 14],
-  [70, 11, 33, 28, 77, 73, 17, 78, 39, 68, 17, 57],
-  [91, 71, 52, 38, 17, 14, 91, 43, 58, 50, 27, 29, 48],
-  [63, 66,  4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31],
-  [ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23]
+[100,  4, 82, 47, 65],
+[19,  1, 23, 75,  3, 34],
+[88,  2, 77, 73,  7, 63, 67],
+[99, 65,  4, 28,  6, 16, 70, 92],
+[41, 41, 26, 56, 83, 40, 80, 70, 33],
+[41, 48, 72, 33, 47, 32, 37, 16, 94, 29],
+[53, 71, 44, 65, 25, 43, 91, 52, 97, 51, 14],
+[70, 11, 33, 28, 77, 73, 17, 78, 39, 68, 17, 57],
+[91, 71, 52, 38, 17, 14, 91, 43, 58, 50, 27, 29, 48],
+[63, 66,  4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31],
+[ 4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23]
 ])
-  // pyramid([
-  //   [3],
-  // [7, 5],
-  // [2, 4, 6],
-  // [8, 5, 9, 3],
-  // [1, 2, 3, 4, 5]
-  // ])
+// longestSlideDown([
+//   [3],
+// [7, 5],
+// [2, 4, 6],
+// [8, 5, 9, 3],
+// [1, 2, 3, 4, 5]
+// ])
 // pyramid([
 //   [ 59 ],
 //   [ 73, 41 ],
@@ -167,18 +133,18 @@ pyramid(
 //     23, 65, 93, 85, 49, 33, 75,  9,
 //      2
 //   ],
-//   [
-//     33, 24, 47, 61, 60, 55, 32, 88,
-//     57, 55, 91, 54, 46, 57,  7, 77,
-//     98, 52, 80, 99, 24, 25, 46, 78,
-//     79,  5
-//   ],
-//   [
-//     92,  9, 13, 55, 10, 67, 26, 78,
-//     76, 82, 63, 49, 51, 31, 24, 68,
-//      5, 57,  7, 54, 69, 21, 67, 43,
-//     17, 63, 12
-//   ],
+// [
+//   33, 24, 47, 61, 60, 55, 32, 88,
+//   57, 55, 91, 54, 46, 57,  7, 77,
+//   98, 52, 80, 99, 24, 25, 46, 78,
+//   79,  5
+// ],
+// [
+//   92,  9, 13, 55, 10, 67, 26, 78,
+//   76, 82, 63, 49, 51, 31, 24, 68,
+//    5, 57,  7, 54, 69, 21, 67, 43,
+//   17, 63, 12
+// ],
 //   [
 //     24, 59,  6,  8, 98, 74, 66, 26,
 //     61, 60, 13,  3,  9,  9, 24, 30,
@@ -766,4 +732,3 @@ pyramid(
 //     15, 59, 63, 35
 //   ]
 // ])
-
