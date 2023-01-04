@@ -21,8 +21,8 @@ int digPow(int n, int p)
     }
     for (size_t j = numOfDigits-1; j >= 0; j--)
     {
-      int new = pow(digits[j], p++);
-      sum += new;
+    //   int new = pow(digits[j], p++);
+      sum += pow(digits[j], p++);
       if(j == 0) break;
     }
     return (sum % n == 0) ? sum / n : -1;
