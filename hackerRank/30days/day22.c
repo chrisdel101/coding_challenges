@@ -34,8 +34,11 @@ int getHeight(Node *root)
             if (trackRight->right)
             {
                 Node *nextNode = trackRight->right->right != NULL ? trackRight->right->right : trackRight->right->left;
+
                 trackRight = trackRight->right;
+
                 trackRight->right = nextNode;
+                
                 rightCount++;
             }
             else if (trackRight->left)

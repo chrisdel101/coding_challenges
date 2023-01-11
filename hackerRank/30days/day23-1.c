@@ -9,129 +9,180 @@ typedef struct Node
     struct Node *right;
     int data;
 } Node;
+
 Node *newNode(int data)
 {
     Node *node = (Node *)malloc(sizeof(Node));
-    node->left = node->right = NULL;
+    node->left = NULL;
+    node->right = NULL;
     node->data = data;
     return node;
 }
-
-void levelOrder(Node *root)
+void depthFirst(Node *root)
 {
-    int rightCount = 0;
-    int leftCount = 0;
-    Node *tempRoot = root;
-    int queueIndex = 0;
-
-    // get count last
-    int *arr = malloc(100);
-    // push root
-    arr[queueIndex] = root->data;
-    queueIndex++;
-    Node *rootStartCopy = root;
-    Node *rootRight = root;
-    Node *rootLeft = root;
-    Node *tempLeft = root;
-    Node *tempRight = root;
-
-    while (
-        rootLeft->left != NULL ||
-        rootLeft->right != NULL ||
-        rootRight->right != NULL ||
-        rootRight->left != NULL)
+    if (root == NULL)
     {
+        exit(0);
+    }
+    int i = 0;
+    Node *current = root;
+    Node *arr = (Node *)malloc(10 * sizeof(Node));
+    do
+    {
+        if (current->left)
+        {
+            arr[i] = *current;
+            printf("%s %i \n", "Add current to stack", arr[i].data);
+            Node *temp = current;
+            // get next left pointer
+            Node *nextLeft = current->left->left;
+            // get next right pointer
+            Node *nextRight = current->left->right;
+            // assign next as current
+            current = temp->left;
+            // assign current new right
+            current->right = nextRight;
+            // assign current new left
+            current->left = nextLeft;
+            printf("%s %i \n", "Move current to left", current->data);
+            if (current->left)
+                printf("%s %i \n", "check current left", current->left->data);
 
-        // add root data on first pass
-        if (
-            rootLeft == rootStartCopy &&
-            rootRight == rootStartCopy)
-        {
-            printf("root %i\n", root->data);
+            if (current->right)
+                printf("%s %i \n", "check current right", current->right->data);
+            i++;
         }
-        if (rootLeft->left)
+        else if (current->right)
         {
-            if (rootLeft->left->left)
+            if (current->data != root->data)
             {
-                rootLeft = rootLeft->left;
-                printf("left 1 %i\n", rootLeft->data);
+                arr[i] = *current;
+                printf("%s %i \n", "Add current to stack", arr[i].data);
             }
-            else if (!rootLeft->left->left &&
-                     rootLeft->left->right)
-            {
-                rootLeft = rootLeft->left;
-                printf("left 2 %i\n", rootLeft->data);
-            }
-            else if (rootLeft->right &&
-                     rootLeft->right->right)
-            {
-                // get data from left before shiting
-                printf("left  3 %i\n", rootLeft->left->data);
-                rootLeft = rootLeft->right;
-                printf("left 4 %i\n", rootLeft->data);
-            }
-            else
-            {
-                if (rootLeft->right &&
-                    !rootLeft->right->right)
-                {
-                    printf("left 5 %i\n", rootLeft->right->data);
-                }
-                rootLeft = rootLeft->left;
-                printf("left 6 %i\n", rootLeft->data);
-            }
-        }
-        else if (rootLeft->right &&
-                 rootLeft != rootStartCopy)
-        {
-            rootLeft = rootLeft->right;
-            printf("left  7 %i\n", rootLeft->data);
-        }
+            Node *temp = current;
+            // get next left pointer
+            Node *nextLeft = current->right->left;
+            // get next right pointer
+            Node *nextRight = current->right->right;
+            // assign next as current
+            current = temp->right;
+            // assign current new right
+            current->right = nextRight;
+            // assign current new left
+            current->left = nextLeft;
+            if (current->left)
+                printf("%s %i \n", "check current left", current->left->data);
 
-        if (rootRight->right)
+            if (current->right)
+                printf("%s %i \n", "check current right", current->right->data);
+            i++;
+        }
+        else
         {
-            if (rootRight->right->right)
+            Node *temp = current;
+            i--;
+            // backtrack - assign to prev in stack
+            current = &arr[i];
+            printf("%s %i %s %i \n", "Backtrack", temp->data, " to ", current->data);
+            // after backtrack, nullify previous left
+            if (current->left && current->left->data == temp->data)
             {
-                if (rootRight->left &&
-                    rootRight != rootStartCopy)
+                printf("%s %i \n", "nullify left", current->left->data);
+                if (current->data == root->data)
                 {
+                    printf("%s %i \n", "nullify root left", root->left->data);
+                    root->left = NULL;
                 }
-                rootRight = rootRight->right;
-                printf("right 1 %i\n", rootRight->data);
+                current->left = NULL;
             }
-            else if (!rootRight->right->right &&
-                     rootRight->right->left)
+            // after backtrack, nullify previous left
+            else if (current->right && current->right->data == temp->data)
             {
-                rootRight = rootRight->right;
-                printf("right 3 %i\n", rootRight->data);
-            }
-            else if (rootRight->left &&
-                     rootRight->left->left)
-            {
-                // get data from left before shiting
-                printf("right  4 %i\n", rootRight->right->data);
-                rootRight = rootRight->left;
-                printf("right 5 %i\n", rootRight->data);
-            }
-            else
-            {
-                if (rootRight->left &&
-                    !rootRight->left->left)
+                printf("%s %i \n", "nullify right", current->right->data);
+                if (current->data == root->data)
                 {
-                    printf("right 6 %i\n", rootRight->left->data);
+                    root->right = NULL;
                 }
-                rootRight = rootRight->right;
-                printf("right 7 %i\n", rootRight->data);
+                current->right = NULL;
             }
         }
-        else if (rootRight->left &&
-                 rootRight != rootStartCopy)
-        {
-            rootRight = rootRight->right;
-            printf("right 8 %i\n", rootRight->data);
+        // printf("%s %i \n", " right ", root->right->data);
+        // printf("%i \n ", root->right != NULL);
+    } while (i > 0 || (root->right != NULL || root->left != NULL));
+    free(arr);
+}
+struct Qnode
+{
+    struct Qnode *next;
+    Node node;
+} QNode;
+
+void enqueNode(Node *toAdd, struct Qnode **head)
+{
+    struct Qnode *newNode = (struct Qnode *)malloc(sizeof(struct Qnode));
+    newNode->node = *toAdd;
+    newNode->next = NULL;
+    // handle first node in list
+    if (*head == NULL)
+    {
+        *head = newNode;
+        // printf("%s %i \n", "enqueNode: HEAD ", (*head)->node.data);
+    }
+    else
+    {
+        // loop until end of list and add new node
+        struct Qnode *temp = *head;
+        while(temp->next != NULL){
+            // printf("%s %i \n", "looping thru nodes", temp->node.data);
+            temp = temp->next;
         }
+        temp->next = newNode;
+        // printf("%s %i \n", "enqueNode: NODE", newNode->node.data);
     }
 }
+void dequeNode(struct Qnode **head)
+{
+    if( *head){
+        printf("%s %i \n", "shift off head ",(*head)->node.data);
+        // printf("%s %i \n", "shift off headXXX",(*head)->next);
+    }
+    *head = (*head)->next;
+    // if( *head){
+    //     printf("%s %i \n", "new head ",(*head)->node.data);
+    // }
+}
+void breadthFirst(Node *root)
+{
+
+    if (root == NULL)
+    {
+        exit(0);
+    }
+    struct Qnode *head = NULL;
+    enqueNode(root, &head);
+    struct Qnode *endPostion = head;
+    while(head != NULL){
+        // add left of head to queue
+        // printf("%s %i \n", "WHILE: current head  ", head->node.data);
+        if (head->node.left)
+        {
+            // printf("%s %i \n", "while: head left ", head->node.left->data);
+            enqueNode(head->node.left, &head);
+        }
+        // add right of head to queue 
+        if (head->node.right)
+        {
+            // printf("%s %i \n", "while: head right  ",  head->node.right->data);
+            // printf("%s %i \n", "head right", head->next->node.data);
+                enqueNode(head->node.right, &head);
+        }
+        // remove first item in queue 
+        dequeNode(&head);
+        if(head &&  head->next)
+            printf("%s %i \n\n", "HEAD  after ", head->node.data);
+    }
+}
+
 Node *insert(Node *root, int data)
 {
     if (root == NULL)
@@ -152,16 +203,18 @@ Node *insert(Node *root, int data)
     }
     return root;
 }
-int main()
+int main(void)
 {
     Node *root = NULL;
-    int T, data;
-    scanf("%d", &T);
-    while (T-- > 0)
+    int nodes[] = {10, 6, 11, 3, 7, 8, 4, 1, 9};
+
+    int i = 0;
+    while (i < 9)
     {
-        scanf("%d", &data);
-        root = insert(root, data);
+        root = insert(root, nodes[i]);
+        i++;
     }
-    levelOrder(root);
+    printf("%s %i \n", "IN ", root->data);
+    breadthFirst(root);
     return 0;
 }
