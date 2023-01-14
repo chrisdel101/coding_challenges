@@ -1,10 +1,6 @@
-#include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <assert.h>
-#include <limits.h>
-#include <stdbool.h>
 typedef struct Node
 {
     int data;
@@ -12,25 +8,28 @@ typedef struct Node
 } Node;
 
 Node *insert(Node *head, int data);
-int cmpfunc(const void *a, const void *b)
+static int cmpfunc(const void *a, const void *b)
 {
     return (*(int *)a - *(int *)b);
 }
 Node *removeDuplicates(Node *head)
 {
-    int *arr = malloc(100);
+    int *arr = (int *)malloc(100);
     Node *start1 = head;
     int i = 0;
     while (start1)
     {
+        // add all items to arr
         arr[i] = start1->data;
         start1 = start1->next;
         i++;
     }
+    // sort the arr
     qsort(arr, i, sizeof(int), cmpfunc);
     Node *list = NULL;
     for (size_t j = 0; j < i; j++)
     {
+        // REMOVE: loop over sorted - current v next as dupe
         if (arr[j] != arr[j + 1])
         {
             list = insert(list, arr[j]);
@@ -65,22 +64,25 @@ Node *insert(Node *head, int data)
 void display(Node *head)
 {
     Node *start = head;
+    printf("%s %d  \n", "HEAD ", head);
     while (start)
     {
-        printf("%d ", start->data);
+        printf("%s %d  \n", "Display ", start->data);
         start = start->next;
     }
 }
 int main()
 {
-    int T, data;
-    scanf("%d", &T);
     Node *head = NULL;
-    while (T-- > 0)
+    int nodes[] = {1, 2, 2, 3, 3, 4};
+    int i = 0;
+    while (i < 6)
     {
-        scanf("%d", &data);
-        head = insert(head, data);
+        head = insert(head, nodes[i]);
+        i++;
     }
     head = removeDuplicates(head);
+    puts("HERE");
     display(head);
+
 }
