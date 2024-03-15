@@ -5,7 +5,7 @@ function checkWord(board, word) {
   let i = 0;
   let currentSearchRow = 0; // row of starting letter
   let rowSearchPoint = 0; // place in current search row
-  let pivot = 0
+  let found = false
   
   // letter index
   let k = 0;
@@ -13,94 +13,106 @@ function checkWord(board, word) {
   for (let i = 0; i < board.length; i++) {
     // loop board cols
     for (let j = 0; j <= board[i].length; j++) {
+      let firstLetter = word[k]
       // find first letter
-      if(word[k] === board[i][j]){
+      if(firstLetter === board[i][j]){
         // incerment to next letter
         k++
         clockWiseSearch(i, j, k, word, boardCopy, [])
       }
+      if(found){
+        return true
+      }
     }
   }
-  TAMMY
+  // TAMMY
   // ['T', 'A', 'M', 'D', 'A'],
   // ['A', 'A', 'I', 'N', 'N'],
   // ['M', 'M', 'L', 'C', 'E'],
   // ['I', 'A', 'U', 'L', 'G'],
   // ['A', 'M', 'I', 'N', 'A'],
-  function Coord(i, j, value){
-    this.i  = i
-    this.j = j
-    this.value = value
-  }
-  
   function clockWiseSearch(i, j, k, word, boardCopy, coords){
+    if(k === word.length){
+      found = true
+      return
+    }
+    let current = word[k]
     console.log('word',word, k)
     // right 
-    if(board[i] && board[i][j+1] === word[k]){
+    if(boardCopy[i] && boardCopy[i][j+1] === word[k]){
       boardCopy[i][j] = undefined
-      coords.push(Coord(i, j, word[k]))
+      coords.push(new Coord(i, j, word[k]))
       clockWiseSearch(i, j+1, k+1, word, boardCopy, coords)
     }// right top diagonal
-    else if(board[i-1] && board[i-1][j+1] === word[k]){
+    else if(boardCopy[i-1] && boardCopy[i-1][j+1] === word[k]){
       boardCopy[i][j] = undefined
       coords.push(Coord(i, j, word[k]))
       clockWiseSearch(i-1, j+1, k+1, word, boardCopy, coords)
     }
     // top
-    else if(board[i-1] && board[i-1][j] === word[k]){
+    else if(boardCopy[i-1] && boardCopy[i-1][j] === word[k]){
       boardCopy[i][j] = undefined
-      coords.push(Coord(i, j, word[k]))
+      coords.push(newCoord(i, j, word[k]))
       clockWiseSearch(i-1, j, k+1, word, boardCopy, coords)
     }
     // left top diagonal
-    else if(board[i-1] && board[i-1][j-1] === word[k]){
+    else if(boardCopy[i-1] && boardCopy[i-1][j-1] === word[k]){
       boardCopy[i][j] = undefined
-      coords.push(Coord(i, j, word[k]))
+      coords.push(newCoord(i, j, word[k]))
       clockWiseSearch(i-1, j-1, k+1, word, boardCopy, coords)
     }
       // behind
-    else if(board[i] && board[i][j-1] === word[k]){
+    else if(boardCopy[i] && boardCopy[i][j-1] === word[k]){
       boardCopy[i][j] = undefined
-      coords.push(Coord(i, j, word[k]))
+      coords.push(new Coord(i, j, word[k]))
       clockWiseSearch(i, j-1, k+1, word, boardCopy, coords)
     }
     // left bottom diagonal
-    else if(board[i+1] && board[i+1][j-1] === word[k]){
+    else if(boardCopy[i+1] && boardCopy[i+1][j-1] === word[k]){
       boardCopy[i][j] = undefined
-      coords.push(Coord(i, j, word[k]))
+      coords.push(new Coord(i, j, word[k]))
       clockWiseSearch(i+1, j, k+1, word, boardCopy, coords)
     }
     // below
-    else if(board[i+1] && board[i+1][j] === word[k]){
+    else if(boardCopy[i+1] && boardCopy[i+1][j] === word[k]){
       boardCopy[i][j] = undefined
-      coords.push(Coord(i, j, word[k]))
+      coords.push(new Coord(i, j, word[k]))
       clockWiseSearch(i+1, j, k+1, word, boardCopy, coords)
     }
     // right bottom diagonal
-    else if(board[i+1] && board[i+1][j+1] === word[k]){
+    else if(boardCopy[i+1] && boardCopy[i+1][j+1] === word[k]){
       boardCopy[i][j] = undefined
-      coords.push(Coord(i, j, word[k]))
+      coords.push(new Coord(i, j, word[k]))
       clockWiseSearch(i+1, j+1, k+1, word, boardCopy, coords)
     } else {
-      let prevCoord = coords.pop()
-      // unwind coords
+      let prevCoord = coords.slice(-1)
       if(prevCoord){
-        // restore coord value
-        boardCopy[prevCoord.i][prevCoord.j] = prevCoord.value
-        clockWiseSearch(prevCoord.i, prevCoord.j, k-1, word, boardCopy, coords)
-
+        // means at least one dir didn't work - set it to undefined
+        boardCopy[i][j] = undefined
+        //  unwind last coords
+        for (let m = coords.length-1; m > 0; m++) {
+          let {i, j , value} = coords[m]
+          boardCopy[i][j] = value
+          clockWiseSearch(i, j, k-1, word, boardCopy, coords)
+          
+        }
+      } else {
+        console.log('not found')
       }
-      return
     }
-
-
   }
 }
+function Coord(i, j, value){
+  this.i  = i
+  this.j = j
+  this.value = value
+  return this
+}
 var testBoard1 = [
-  ['E', 'A', 'R', 'A'],
-  ['N', 'L', 'E', 'C'],
-  ['I', 'A', 'I', 'S'],
-  ['B', 'Y', 'O', 'R'],
+  ['S', 'A', 'R', 'A'],
+  ['A', 'A', 'E', 'C'],
+  ['R', 'A', 'R', 'S'],
+  ['B', 'Y', 'O', 'S'],
 ];
 
 const testBoard2 = [
@@ -111,7 +123,7 @@ const testBoard2 = [
   ['A', 'M', 'I', 'N', 'A'],
 ];
 
-console.log(checkWord(testBoard1, 'EAR'));
+console.log(checkWord(testBoard1, 'SARS'));
 // console.log(checkWord(testBoard1, 'EARS'));
 // console.log(checkWord(testBoard1, 'RSCAREIOYBAILNEA'));
 // console.log(checkWord(testBoard1, 'BAILER'));
