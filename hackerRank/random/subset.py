@@ -4,14 +4,15 @@ def maxSubsetSum(arr):
     group_by = 2
     # while group_by <= len(arr)-1:
     while group_by <= len(arr)-1:
-        current_index = 0 #start index
+        current_index = 11 #start index i.e 3 or 5, or -7
         # move index up the array, i.e 3, then 5, then -7...
         # current_index+group_by => index of next non-adj item
-        while (current_index+group_by) < len(arr):
-            inner_loop_j = current_index
-            while inner_loop_j < len(arr):
-                # loop from start to > curent index by group num (0, 2)
-                vals = [] #[0, 2]
+        while current_index <= len(arr):
+            # each inner loop gets a sub set w/ same start num
+            inner_loop_j = current_index-group_by
+            while inner_loop_j <= len(arr):
+                # loop from inner_loop_j to > curent index by group num (0, 2)
+                vals = [] #[3, -7]
                 for val in range(current_index, inner_loop_j, group_by):
                     vals.append(arr[val])
                 prev_key = tuple(vals)
@@ -23,13 +24,47 @@ def maxSubsetSum(arr):
                 store[next_key] = prev_sum + arr[inner_loop_j]
                 inner_loop_j += group_by
             # print(current_index)
+            # increment to next start val for subsets i.e [3, -7, 10] -> [7, 10, ...]  
             current_index += 1
+        group_by += 1
+    print(store)
+    return store
+
+def maxSubsetSumOnlyIndex0(arr):
+    store = {}
+    group_by = 2
+    # while group_by <= len(arr)-1:
+    while group_by <= len(arr)-1:
+        current_index = 0 #start index
+        # move index up the array, i.e 3, then 5, then -7...
+        # current_index+group_by => index of next non-adj item
+        # while (current_index+group_by) < len(arr):
+            # each inner loop gets a sub set w/ same start num
+        inner_loop_j = current_index
+        while inner_loop_j < len(arr):
+            # loop from inner_loop_j to > curent index by group num (0, 2)
+            vals = [] #[3, -7]
+            for val in range(current_index, inner_loop_j, group_by):
+                vals.append(arr[val])
+            prev_key = tuple(vals)
+            # index into store
+            prev_sum =  store.get(prev_key) or 0
+            # make next val key 
+            vals.append(arr[inner_loop_j])
+            next_key = tuple(vals)
+            store[next_key] = prev_sum + arr[inner_loop_j]
+            inner_loop_j += group_by
+        # print(current_index)
+        # increment to next start val for subsets i.e [3, -7, 10] -> [7, 10, ...]  
+            # current_index += 1
         group_by += 1
     print(store)
     return store
 sample1 = [3, 5, -7, 8, 10]
 sample2 = [3, 5, -7, 8, 10, -25, 33, 90, 6, 15, 22]
+# maxSubsetSumOnlyIndex0(sample2)
 maxSubsetSum(sample2)
+
 
 def maxSubsetSumVar(arr):
     store = {}
