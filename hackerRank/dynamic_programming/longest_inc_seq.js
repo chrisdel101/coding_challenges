@@ -10,7 +10,7 @@ function LIS(arr){
         } else {
             let newArr = swapUpperBound(temp, arr[i])
             // if empty arr then no greater value found - swap last item
-            temp = newArr
+        temp = arr
             console.log(temp)
         }
     }
