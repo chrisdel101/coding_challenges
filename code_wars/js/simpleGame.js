@@ -70,9 +70,7 @@ function solve(game) {
       // if first node start from 1
       node.usedSpan =  node.isFirstAndOnlyNode ? 1 : node.usedSpan
     }
-    if(node.index === 0){
-      console.log('xxx')
-    }
+  
     // terminal and empty stack - first/only node
     if (node.isFirstAndOnlyNode) {
       // exact match i.e. 4321 when len is 4
@@ -195,11 +193,11 @@ function solve(game) {
   } while (nodeStack.length)
   return values
 }
-console.log(solve('38088198647805'))
+// console.log(solve('38088198647805'))
 // console.log(solve('51416573385334'))
 // console.log(solve('4621'))
 // console.log(solve('65042485'))
-// console.log(solve('6348'))
+console.log(solve('6348'))
 // console.log(solve('3222'))
-// console.log(solve('65042485'))
+// console.log(solve('2177510183994154'))
 // [4,2,3,5]
