@@ -70,6 +70,9 @@ function solve(game) {
       // if first node start from 1
       node.usedSpan =  node.isFirstAndOnlyNode ? 1 : node.usedSpan
     }
+    if(node.index === 0){
+      console.log('xxx')
+    }
     // terminal and empty stack - first/only node
     if (node.isFirstAndOnlyNode) {
       // exact match i.e. 4321 when len is 4
@@ -129,48 +132,62 @@ function solve(game) {
             break
           }
         } else { //non terminal and non first node
-          if (inBoundsSpanEnd === undefined)
-            console.log('indexed past end of array out of bounds')
-          // TODO - remove this - only terminal node should hit this
-          if (node.usedSpan > remainingTotalLen) {
-            if (!stackTop) throw new Error('Stack cannot be empty')
-            // set to backtrack
-            i = nodeStack[0].index
-            break
+          if (inBoundsSpanEnd === undefined){
+            throw new Error('indexed past end of array out of bounds')
           }
+          // // TODO - remove this - only terminal node should hit this
+          // if (node.usedSpan > remainingTotalLen) {
+          //   if (!stackTop) throw new Error('Stack cannot be empty')
+          //   // set to backtrack
+          //   i = nodeStack[0].index
+          //   break
+          // }
 
-          // not out of bounds - next node move check current minus next > 0
-          if (inBoundsSpanEnd !== undefined  && inBoundsSpanEnd - node.usedSpan > 0) {
+          // move to next node move - current minus next > 0
+          if (inBoundsSpanEnd - node.usedSpan > 0) {
             // check value not more than currShortestValue - else no point to compute
             if (currShortestValue && nodeStack.length + 1 > currShortestValue) {
               // backtrack
               i = nodeStack[0].index ?? 0
               break
             }
-            // we've backtracked all the way to start and are done
-            if(node.index === 0 && node.originalValue !== node.usedSpan && node.usedSpan === 1){
-              break
-            }
+            // // we've backtracked all the way to start and are done
+            // if(node.index === 0 && node.originalValue !== node.usedSpan && node.usedSpan === 1){
+            //   break
+            // }
             // accept current node value - update index to next span
             i = i + node.usedSpan // update to new i
             // push to stacks top
             nodeStack.unshift(node)
             break
             // VALUE Return - calc values here
-          }
-           else if (
-            inBoundsSpanEnd !== undefined &&
-            inBoundsSpanEnd - node.usedSpan === 0 &&
-            node.usedSpan === 1
-          ) {
-            // stack may aleady be empty
-            const stackTop = nodeStack[0]
-            // set to backtrack - allow empty stack i=0 to kill loop
-            i = stackTop?.index ?? 0
-            break
+          // }
+          //  else if (
+          //   inBoundsSpanEnd !== undefined &&
+          //   inBoundsSpanEnd - node.usedSpan === 0 &&
+          //   node.usedSpan === 1
+          // ) {
+          //   // stack may aleady be empty
+          //   const stackTop = nodeStack[0]
+          //   // set to backtrack - allow empty stack i=0 to kill loop
+          //   i = stackTop?.index ?? 0
+          //   break
           } else {
+            // decrement span and retry
+            if(node.usedSpan - 1 > 0){
+              node.usedSpan -= 1
+            } else {
+              if(!nodeStack[0]) {
+                console.error("Node stack empty")
+          
+              } else {
+                // span is already at min - cannot go lower
+                  // backtrack
+                i = nodeStack[0].index
+              }
+              break
+            }
             // TODO: cannot be 1<
-            node.usedSpan -= 1
           }
         }
       }
@@ -178,11 +195,11 @@ function solve(game) {
   } while (nodeStack.length)
   return values
 }
-// console.log(solve('38088198647805'))
+console.log(solve('38088198647805'))
 // console.log(solve('51416573385334'))
 // console.log(solve('4621'))
 // console.log(solve('65042485'))
-console.log(solve('6348'))
+// console.log(solve('6348'))
 // console.log(solve('3222'))
 // console.log(solve('65042485'))
 // [4,2,3,5]
