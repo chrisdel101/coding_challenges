@@ -1,8 +1,8 @@
 class Node {
   index
   originalValue
-  usedSpan 
-  isTerminalNode 
+  usedSpan
+  isTerminalNode
   constructor({ index, originalValue, usedSpan, isTerminalNode = false }) {
     this.index = index
     this.originalValue = originalValue
@@ -10,7 +10,6 @@ class Node {
     this.isTerminalNode = isTerminalNode
   }
 }
-
 function solve(game) {
   const nodeStack = []
   let i = 0
@@ -27,8 +26,6 @@ function solve(game) {
       // check span is not already at min
       if (node.usedSpan - 1 > 0) {
         node.usedSpan -= 1
-        node.isTerminalNode =
-          digits[i + node.usedSpan] !== undefined ? false : true
       } else {
         // if it cannot go lower skip node
         i = nodeStack[0]?.index
@@ -43,11 +40,9 @@ function solve(game) {
       node.usedSpan = nodeStack[0]
         ? digits[i] - nodeStack[0].usedSpan
         : digits[i]
-      // if value > remaining length it's last node or out of bounds
-      node.isTerminalNode =
-        digits[i + node.usedSpan] !== undefined ? false : true
     }
-
+    // if value > remaining length it's last node or out of bounds
+    node.isTerminalNode = digits[i + node.usedSpan] !== undefined ? false : true
     jLoop: for (let j = node.usedSpan; j > 0; j--) {
       // undefined if on last item
       const nonTerminalEndValue = digits[i + node.usedSpan]
@@ -75,19 +70,16 @@ function solve(game) {
           i = nodeStack[0]?.index
           break
         } else {
+          // Value found
           nodeStack.unshift(node)
-          // reverse arr to get str order
+          // reverse arr to get str in testing order
           const runValues = nodeStack.toReversed().map((node) => node.usedSpan)
           // remove just added
           nodeStack.shift()
-          // if shortest not set or new shortest is found
-          if (!currShortestValue) {
+          // new shortest found or unset
+          if (!currShortestValue || runValues.length < currShortestValue) {
             currShortestValue = runValues.length
-          }
-          // new shortest found
-          if (runValues.length < currShortestValue) {
-            currShortestValue = runValues.length
-            // empty const values arr
+            // empty larger arr items
             values.splice(0, values.length)
             values.unshift(runValues)
           } else if (runValues.length === currShortestValue) {
@@ -107,7 +99,7 @@ function solve(game) {
             break
           }
           // move next node
-          i = i + node.usedSpan 
+          i = i + node.usedSpan
           nodeStack.unshift(node)
           break
         } else {
@@ -115,6 +107,7 @@ function solve(game) {
           if (node.usedSpan - 1 > 0) {
             node.usedSpan -= 1
           } else {
+            // backtrack
             i = nodeStack[0]?.index
             break
           }
