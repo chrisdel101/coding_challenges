@@ -80,14 +80,18 @@ function solve(game) {
 
     for (let j = node.usedSpan; j > 0; j--) {
       const inBoundsSpanEnd = digits[i + node.usedSpan]
-      if (node.isTerminalNode && node.reversedCheck && node.usedSpan !== remainingTotalLen) break
+      if (
+        node.isTerminalNode &&
+        node.reversedCheck &&
+        node.usedSpan !== remainingTotalLen
+      )
+        break
       if (node.isTerminalNode) {
         // terminal node original must be exact equal to remaining
         if (node.usedSpan !== remainingTotalLen) {
-          node.reversedCheck = true
-          node.usedSpan = 1
+          // node.reversedCheck = true
+          // node.usedSpan = 1
           // set to backtrack
-          // i = nodeStack[0].index
           break
           // terminal node finishes run
         } else {
@@ -111,7 +115,7 @@ function solve(game) {
           }
           // backtrack to try other paths
           i = nodeStack[0]?.index
-          !i && console.error("node stack is empty")
+          !i && console.error('node stack is empty')
           break
         }
       } else {
@@ -119,14 +123,6 @@ function solve(game) {
         if (inBoundsSpanEnd === undefined) {
           throw new Error('indexed past end of array out of bounds')
         }
-        // // TODO - remove this - only terminal node should hit this
-        // if (node.usedSpan > remainingTotalLen) {
-        //   if (!stackTop) throw new Error('Stack cannot be empty')
-        //   // set to backtrack
-        //   i = nodeStack[0].index
-        //   break
-        // }
-
         // move to next node move - current minus next > 0
         if (inBoundsSpanEnd - node.usedSpan > 0) {
           // check value not more than currShortestValue - else no point to compute
@@ -140,18 +136,6 @@ function solve(game) {
           // push to stacks top
           nodeStack.unshift(node)
           break
-          // VALUE Return - calc values here
-          // }
-          //  else if (
-          //   inBoundsSpanEnd !== undefined &&
-          //   inBoundsSpanEnd - node.usedSpan === 0 &&
-          //   node.usedSpan === 1
-          // ) {
-          //   // stack may aleady be empty
-          //   const stackTop = nodeStack[0]
-          //   // set to backtrack - allow empty stack i=0 to kill loop
-          //   i = stackTop?.index ?? 0
-          //   break
         } else {
           // decrement span and retry
           if (node.usedSpan - 1 > 0) {
@@ -171,13 +155,6 @@ function solve(game) {
     }
     // terminal and empty stack - first/only node
     if (node.isTerminalNode && node.reversedCheck) {
-      // exact match i.e. 4321 when len is 4
-      // if (node.originalValue === remainingTotalLen) {
-      //   values.push([node.originalValue])
-      //   break
-      // }
-      // span < length i.e. 3222 when len is 4
-      // if (node.originalValue > remainingTotalLen) {
       for (let j = node.usedSpan; j <= node.originalValue; j++) {
         const nextIncerementValue = digits[i + j]
         // means last index cannot use
@@ -194,9 +171,8 @@ function solve(game) {
           node.isTerminalNode = false
           nodeStack.unshift(node)
           break
-        }
+        } 
       }
-      // }
     }
   } while (nodeStack.length)
   return values
@@ -205,7 +181,8 @@ function solve(game) {
 // console.log(solve('51416573385334'))
 // console.log(solve('4621'))
 // console.log(solve('65042485'))
-console.log(solve('6348'))
+console.log(solve('6'))
+// console.log(solve('6348'))
 // console.log(solve('3222'))
 // console.log(solve('2177510183994154'))
 // [4,2,3,5]
