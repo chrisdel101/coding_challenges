@@ -13,6 +13,7 @@ function checkWord(board, word) {
   if(!coordsHashTable[wordArr[0]]) return false
   const firstLetterStack = [...(coordsHashTable[wordArr[0]] || [])]
   let coordsHashTableCopy = structuredClone(coordsHashTable)
+  const directNodesChecked = {}
   let i = 0
   while (matchString !== word) {
     let currentLetterCoord
@@ -53,9 +54,15 @@ function checkWord(board, word) {
     console.log('nextLetterToFind', nextLetterToFind)
     console.log('current coords', currentLetterCoord, Object.keys(coordsStack[0])[0])
     if (letterCoords) {
+      // give node all possible options for neighbour
+      if(!directNodesChecked[JSON.stringify(currentLetterCoord)]){
+      console.log('Add all', nextLetterToFind, 'to', Object.keys(coordsStack[0])[0], 'at', currentLetterCoord)
+      directNodesChecked[JSON.stringify(currentLetterCoord)] = coordsHashTable[nextLetterToFind]
+    }
       coordsStack.unshift({ [nextLetterToFind]: letterCoords })
       console.log('found and added to stack', nextLetterToFind, 'at', letterCoords)
       matchString += nextLetterToFind
+      directNodesChecked
       // remove from hash here too
       // coords failed - to remove from hash arr
       const usedCoordsItem = Object.values(coordsStack[0])
@@ -66,8 +73,10 @@ function checkWord(board, word) {
         },
       )
       hashItemArrIndex > -1 && console.log('Remove used path as marked', usedCoordsItemKey, `${usedCoordsItem}`)
-      // remove failed coords from hash arr
+      // remove failed coords from hash arr and 
       hashItemArrIndex > -1  && coordsHashTableCopy[usedCoordsItemKey].splice(hashItemArrIndex, 1)
+      // remove failed coords starting nodes visited list
+      hashItemArrIndex > -1  && directNodesChecked[JSON.stringify(currentLetterCoord)].splice(hashItemArrIndex, 1)
       i++
     } else {
       console.log('Not found', nextLetterToFind)
