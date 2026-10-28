@@ -201,13 +201,13 @@ function clockWiseMatchCellToLetterCoordsArr({
   const [i, j] = currentLetterCoord
   const bottomRightStartCoords = [
     [i + 1, j + 1], //bottom right
-    [i, j + 1],
-    [i - 1, j + 1],
-    [i - 1, j],
-    [i - 1, j - 1],
-    [i, j - 1],
-    [i + 1, j - 1],
     [i + 1, j],
+    [i + 1, j - 1],
+    [i, j - 1],
+    [i - 1, j - 1],
+    [i - 1, j],
+    [i - 1, j + 1],
+    [i, j + 1],
   ]
   for (let k = 0; k < bottomRightStartCoords.length; k++) {
     const coordToCheck = bottomRightStartCoords[k]
@@ -224,20 +224,20 @@ function clockWiseMatchCellToLetterByNeighbours({
   const [i, j] = currentLetterCoord
   const bottomRightStartCoords = [
     [i + 1, j + 1], //bottom right
-    [i, j + 1],
-    [i - 1, j + 1],
-    [i - 1, j],
-    [i - 1, j - 1],
-    [i, j - 1],
-    [i + 1, j - 1],
     [i + 1, j],
+    [i + 1, j - 1],
+    [i, j - 1],
+    [i - 1, j - 1],
+    [i - 1, j],
+    [i - 1, j + 1],
+    [i, j + 1],
   ]
   for (let k = 0; k < bottomRightStartCoords.length; k++) {
     const [x,y] = bottomRightStartCoords[k]
     // check if actual letter matches cell
     const isLetter = board[x]?.[y] === nextLetterToFind
     // if found check this is unvisited neighbour
-    const isUnused = isLetter && unusedNeighboursArr.includes([x,y])
+    const isUnused = isLetter && unusedNeighboursArr.some((coord) => `${coord}` === `${[x, y]}`)
     if (isUnused) return [x,y]
   }
 }
@@ -290,7 +290,7 @@ var testBoard5 = [
 // console.log(checkWord(testBoard3, 'BAILER') === true)
 // console.log(checkWord(testBoard3, 'EARS') === false);
 // console.log(checkWord(testBoard3, 'RSCAREIOYBAILNEA') === true);
-// console.log(checkWord(testBoard1, 'BAILER'));
+// console.log(checkWord(testBoard3, 'BAILER'));
 // console.log(checkWord(testBoard3, 'CEREAL'));
 console.log(checkWord(testBoard4, 'PARAPARAS'))
 // console.log(checkWord(testBoard5, 'VNTTB'))
