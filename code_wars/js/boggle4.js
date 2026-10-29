@@ -4,59 +4,49 @@ function checkWord(board, word) {
   let matchString
   const neighbourVisitedMap = mapAllNeighourNodes(board)
   const neighbourVisitedMapCopy = structuredClone(neighbourVisitedMap)
-  const coordsHashTable = board.reduce((acc, currArr, i) => {
+  const pathCoordsHashTable = board.reduce((acc, currArr, i) => {
     currArr.map((value, j) => {
       if (acc[value]) acc[value].push([i, j])
       else acc[value] = [[i, j]]
     })
     return acc
   }, {})
-  const coordsHashTableCopy = structuredClone(coordsHashTable)
+  let pathCoordsHashTableCopy = structuredClone(pathCoordsHashTable)
   // keep track of first nodes 
-  const firstLetterStack = coordsHashTable[wordArr[0]] && [...coordsHashTable[wordArr[0]]]
+  const firstLetterCoordInstances = pathCoordsHashTable[wordArr[0]] && [...pathCoordsHashTable[wordArr[0]]]
   let i = 0
-  while (firstLetterStack && matchString !== word) {
+  while (!!(firstLetterCoordInstances?.length && matchString !== word)) {
     let currentLetterCoord
     if (pathStack.length) {
       // top of stack is current coord
       currentLetterCoord = Object.values(pathStack[0])[0]
     } else {
       // add first item to the stack
-      currentLetterCoord = firstLetterStack?.[0]
+      currentLetterCoord = firstLetterCoordInstances?.[0]
       pathStack.unshift({ [wordArr[0]]: currentLetterCoord })
       const usedCoordsItemKey = Object.keys(pathStack[0])[0]
-      const hashItemArrIndex = coordsHashTableCopy[usedCoordsItemKey].findIndex(
+      const hashItemArrIndex = pathCoordsHashTableCopy[usedCoordsItemKey].findIndex(
         (arr) => {
           return `${arr}` === `${currentLetterCoord}`
         },
       )
-      hashItemArrIndex > -1 &&
-        console.log(
-          'Remove used path as marked',
-          usedCoordsItemKey,
-          `${currentLetterCoord}`,
-        )
       // remove path from hash arr after used
       hashItemArrIndex > -1 &&
-        coordsHashTableCopy[usedCoordsItemKey].splice(hashItemArrIndex, 1)
+        pathCoordsHashTableCopy[usedCoordsItemKey].splice(hashItemArrIndex, 1)
       matchString = wordArr[0]
       // increment to find next letter
       i++
       continue
     }
-
     const nextLetterToFind = wordArr[i]
-
-    const nextLetterHashCoordsArr = coordsHashTableCopy[nextLetterToFind]
-    // if (!nextLetterHashCoordsArr) {
-    //   console.log(nextLetterToFind, 'not found. letter not on board')
-    //   return false
-    // }
+    // coords of all nextLetterToFind instances on board
+    const nextLetterHashCoordsArr = pathCoordsHashTableCopy[nextLetterToFind]
+    // check for possible path to letter
     const nextLetterHashCoords = clockWiseMatchCellToLetterCoordsArr({
       currentLetterCoord,
       letterCoordsArr: nextLetterHashCoordsArr,
     })
-    // make sure found node not in stack - so we cannot visit the prev node
+    // if no direct path check neighbour nodes
     let nextLetterNeighbourCoords
     if (!nextLetterHashCoords) {
       const nextLetterNeighbourMapCoordsArr =
@@ -67,72 +57,37 @@ function checkWord(board, word) {
         unusedNeighboursArr: nextLetterNeighbourMapCoordsArr,
         board,
       })
+      // make sure found node not in stack - so we cannot visit the prev node
      nextLetterNeighbourCoords = coordsArrToCheck.map((coord) => {
-        // check it's not already in the stach
+        // check it's not already in the stack
         const isInstack = pathStack.some((itemObj) => {
           return `${itemObj[nextLetterToFind]}` === `${coord}`
         })
-        return !isInstack ? coord : undefined
+        return !isInstack ? coord : undefined 
       })?.filter(coord => !!coord)?.[0]
-      console.log('nextLetterNeighbourCoords', nextLetterNeighbourCoords)
     }
-
-    console.log('nextLetterToFind', nextLetterToFind)
-    console.log(
-      'current coords',
-      currentLetterCoord,
-      Object.keys(pathStack[0])[0],
-    )
+    // try path nodes then neighbour nodes
     const coordsToUse = nextLetterHashCoords ?? nextLetterNeighbourCoords
     if (coordsToUse) {
-      // !nextLetterHashCoords && console.log("Using Next neighbour")
-      if (!nextLetterHashCoords) {
-        console.log('Using Next neighbour')
-      }
       pathStack.unshift({ [nextLetterToFind]: coordsToUse })
-      console.log(
-        'found and added to stack',
-        nextLetterToFind,
-        'at',
-        coordsToUse,
-      )
       matchString += nextLetterToFind
-      // remove from hash here too
-      // const usedCoordsItem = Object.values(pathStack[0])[0]
       const usedCoordsItemKey = Object.keys(pathStack[0])[0]
-      const hashItemArrIndex = coordsHashTableCopy[usedCoordsItemKey].findIndex(
+      // remove from path hash here too
+      const hashItemArrIndex = pathCoordsHashTableCopy[usedCoordsItemKey].findIndex(
         (arr) => {
           return `${arr}` === `${coordsToUse}`
         },
       )
+      // remove visited coords from path hash
       hashItemArrIndex > -1 &&
-        console.log(
-          'Remove used path as marked',
-          usedCoordsItemKey,
-          `${coordsToUse}`,
-        )
-      // remove failed coords from hash arr and
-      hashItemArrIndex > -1 &&
-        coordsHashTableCopy[usedCoordsItemKey].splice(hashItemArrIndex, 1)
-      // remove visited nodes
+        pathCoordsHashTableCopy[usedCoordsItemKey].splice(hashItemArrIndex, 1)
+      // remove visited neighour nodesd from the map
       const neighbourMapIndex = neighbourVisitedMapCopy[
         JSON.stringify(currentLetterCoord)
       ]?.findIndex((arr) => {
         return `${arr}` === `${coordsToUse}`
       })
-      neighbourMapIndex > -1 &&
-        console.log(
-          'Remove neighbour - ',
-          'coord key:',
-          currentLetterCoord,
-          'From letter',
-          board[currentLetterCoord[0]][currentLetterCoord[1]],
-          'removing coords from list:',
-          neighbourVisitedMapCopy[JSON.stringify(currentLetterCoord)][
-            neighbourMapIndex
-          ],
-        )
-      // remove neighbour as access from current node
+      // remove neighbour from map as visited
       neighbourMapIndex > -1 &&
         neighbourVisitedMapCopy[JSON.stringify(currentLetterCoord)]?.splice(
           neighbourMapIndex,
@@ -140,49 +95,47 @@ function checkWord(board, word) {
         )
       i++
     } else {
-      console.log('Not found', nextLetterToFind)
+      // pop off stack - path is invalid - backtrack 
       const poppedItem = pathStack.shift()
       matchString = matchString.slice(0, -1)
-      // reset visited node to original when popped
+      // reset visited neighbour node map 
       neighbourVisitedMapCopy[JSON.stringify(currentLetterCoord)] =
         structuredClone(neighbourVisitedMap[JSON.stringify(currentLetterCoord)])
-      console.log('Popped prev', Object.keys(poppedItem)[0])
       // empty the stacked - were on first letter
       if (!pathStack.length) {
-        // pop top first letter stack
-        firstLetterStack.shift()
-        if (!firstLetterStack.length) {
-          return false
-        }
+        // get top item from firstLetterCoordInstances stack
+        firstLetterCoordInstances.shift()
+        if (!firstLetterCoordInstances.length) {
+          continue
+        } 
         // reset hashTable
-        coordsHashTableCopy = structuredClone(coordsHashTable)
+        pathCoordsHashTableCopy = structuredClone(pathCoordsHashTable)
         i = 0
         continue
       }
-      // coords failed - to remove from hash arr
+      // remove 
       const failedCoords = Object.values(poppedItem)[0]
       const poppedItemKey = Object.keys(poppedItem)[0]
       // find index of failedCoords in the hash
-      const hashItemArrIndex = coordsHashTableCopy[poppedItemKey].findIndex(
+      const hashItemArrIndex = pathCoordsHashTableCopy[poppedItemKey].findIndex(
         (arr) => {
           return `${arr}` === `${failedCoords}`
         },
       )
       // remove failed coords from hash arr
       hashItemArrIndex > 0 &&
-        coordsHashTableCopy[poppedItemKey].splice(hashItemArrIndex, 1)
-      if (!coordsHashTableCopy[poppedItemKey]) {
-        delete coordsHashTableCopy[poppedItemKey]
-        // i--
+        pathCoordsHashTableCopy[poppedItemKey].splice(hashItemArrIndex, 1)
+      if (!pathCoordsHashTableCopy[poppedItemKey]) {
+        delete pathCoordsHashTableCopy[poppedItemKey]
       }
       i > 1 && i--
     }
   }
   return matchString === word
 }
-function mapAllNeighourNodes(board) {
-  if (!board) return
-  const bottomRightStartCoords = (i, j) => [
+// all 8 neighbour coords clockwise from bottom right
+function getCoordsFromBottomRight(i, j) {
+  return [
     [i + 1, j + 1], //bottom right
     [i + 1, j],
     [i + 1, j - 1],
@@ -192,15 +145,16 @@ function mapAllNeighourNodes(board) {
     [i - 1, j + 1],
     [i, j + 1],
   ]
+}
+function mapAllNeighourNodes(board) {
   const neighbourMap = {}
   for (let k = 0; k < board.length; k++) {
     for (let m = 0; m < board[k].length; m++) {
-      const coordIndexes = bottomRightStartCoords(k, m)
+      const coordIndexes = getCoordsFromBottomRight(k, m)
       neighbourMap[JSON.stringify([k, m])] = []
       for (let n = 0; n < coordIndexes.length; n++) {
         const [i, j] = coordIndexes[n]
         const neighbour = board[i]?.[j]
-        // console.log(neighbour)
         neighbour && neighbourMap[JSON.stringify([k, m])].push([i, j])
       }
     }
@@ -212,22 +166,11 @@ function clockWiseMatchCellToLetterCoordsArr({
   currentLetterCoord,
   letterCoordsArr,
 }) {
-  if (!letterCoordsArr) return
   const [i, j] = currentLetterCoord
-  const bottomRightStartCoords = [
-    [i + 1, j + 1], //bottom right
-    [i + 1, j],
-    [i + 1, j - 1],
-    [i, j - 1],
-    [i - 1, j - 1],
-    [i - 1, j],
-    [i - 1, j + 1],
-    [i, j + 1],
-  ]
+  const bottomRightStartCoords = getCoordsFromBottomRight(i, j)
   for (let k = 0; k < bottomRightStartCoords.length; k++) {
     const coordToCheck = bottomRightStartCoords[k]
-    // check that node has been visited not been in general
-    const coordArrIndex = letterCoordsArr.find(
+    const coordArrIndex = letterCoordsArr?.find(
       (letterCoord) => `${letterCoord}` === `${coordToCheck}`,
     )
     if (coordArrIndex) return coordArrIndex
@@ -239,24 +182,8 @@ function clockWiseMatchCellToLetterByNeighbours({
   nextLetterToFind,
   unusedNeighboursArr,
 }) {
-  if (
-    !currentLetterCoord ||
-    !board ||
-    !nextLetterToFind ||
-    !unusedNeighboursArr
-  )
-    return
   const [i, j] = currentLetterCoord
-  const bottomRightStartCoords = [
-    [i + 1, j + 1], //bottom right
-    [i + 1, j],
-    [i + 1, j - 1],
-    [i, j - 1],
-    [i - 1, j - 1],
-    [i - 1, j],
-    [i - 1, j + 1],
-    [i, j + 1],
-  ]
+  const bottomRightStartCoords = getCoordsFromBottomRight(i, j)
   const possbleCoords = []
   for (let k = 0; k < bottomRightStartCoords.length; k++) {
     const [x, y] = bottomRightStartCoords[k]
@@ -270,12 +197,7 @@ function clockWiseMatchCellToLetterByNeighbours({
   }
   return possbleCoords
 }
-function Coord(i, j, value) {
-  this.i = i
-  this.j = j
-  this.value = value
-  return this
-}
+
 var tammy = [
   ['T', 'A', 'M', 'D', 'A'],
   ['A', 'A', 'I', 'N', 'N'],
@@ -320,6 +242,6 @@ var testBoard5 = [
 // console.log(checkWord(testBoard3, 'EARS') === false);
 // console.log(checkWord(testBoard3, 'RSCAREIOYBAILNEA') === true);
 // console.log(checkWord(testBoard3, 'BAILER'));
-// console.log(checkWord(testBoard3, 'CEREAL'));
-console.log(checkWord(testBoard4, 'PARAPARAS'))
+console.log(checkWord(testBoard3, 'CEREAL'));
+// console.log(checkWord(testBoard4, 'PARAPARAS'))
 // console.log(checkWord(testBoard5, 'VNTTB'))
