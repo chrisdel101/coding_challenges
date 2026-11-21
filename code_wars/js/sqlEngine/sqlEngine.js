@@ -19,7 +19,7 @@
  // lookbehind - ON 0+space not join word+1 space+1
   // match - not join word+1
 // - (?<=\bon\s+(?:(?!join\b)\S+\s+)*)(?!join\b)\S+
-// ON full str  - (?<=\bon\s+(?:(?!join\b)(?!where\b)\S+\s+)*)(?:(?!join\b)(?!where\b)\S+|\s+)*
+// ON full str  - (?<=\bon\s+(?:(?!(?:join|where)\b)\S+\s+)*)(?:(?!(?:join|where)\b)\S+|\s+)+
 // ON split all chars /\w+(?:\.\w+)*|(=|>=|<=|<>|>|<|!=|\)|\(|\'.*?\'|\,)/</>
 function SQLEngine(database) {
   const keyWords = {
@@ -29,7 +29,7 @@ function SQLEngine(database) {
     ON: 'ON',
     WHERE: 'WHERE'
   }
-  const keywordNotBoundaries = [
+  const keywordBndries = [
     keyWords.JOIN, keyWords.WHERE
   ]
 
@@ -48,13 +48,13 @@ function SQLEngine(database) {
     'gi',
   )
   const onAsStrArgsRegex = new RegExp(
-    String.raw`(?<=\bon\s+(?:(?!join\b)(?!where\b)\S+\s+)*)(?:(?!join\b)(?!where\b)\S+|\s+)+`, 'gi'
+    String.raw`(?<=\b${keyWords.ON}\s+(?:(?!(?:${keywordBndries.join('|')})\b)\S+\s+)*)(?:(?!(?:${keywordBndries.join('|')})\b)\S+|\s+)+`, 'gi'
   )
-  // ON -> to next JOIN as sep chars
-  // follwing ON word != join
-  const onSepArgsRegex = new RegExp(
-    String.raw`(?<=\bon\s+(?:(?!join\b)\S+\s+)*)(?!join\b)\S+`, 'gi'
-  )          
+  // // ON -> to next JOIN as sep chars
+  // // follwing ON word != join
+  // const onSepArgsRegex = new RegExp(
+  //   String.raw`(?<=\b\s+(?:(?!join\b)\S+\s+)*)(?!join\b)\S+`, 'gi'
+  // )          
   // takes the args for a single ON and splits it
   const OnSplitRegex = new RegExp(String.raw`${wordAndParts}|(=|>=|<=|<>|>|<|!=|\)|\(|\'.*?\'|\,)`, 'gi')
 
@@ -65,12 +65,12 @@ function SQLEngine(database) {
     console.log('fronArgs', fronArgs)
     const joinArgs = query.match(joinOnRegex)
     console.log('joinArgs', joinArgs)
-    const onSepArgs = query.match(onSepArgsRegex)
-    console.log('onSepArgs', onSepArgs)
+    // const onSepArgs = query.match(onSepArgsRegex)
+    // console.log('onSepArgs', onSepArgs)
     const onStrArgs = query.match(onAsStrArgsRegex)
     console.log('onStrArgs', onStrArgs)
     // split each onArg into sep arr
-    const onSplitStrs = onFullStrArr?.map(onFullStr => {
+    const onSplitStrs = onStrArgs?.map(onFullStr => {
       return onFullStr?.match(OnSplitRegex)
     })
     console.log(onSplitStrs)
