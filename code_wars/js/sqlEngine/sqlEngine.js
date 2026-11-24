@@ -1,6 +1,6 @@
 // ?= lookahead - matches if followed by
-// ?! - negative lookahead - matches if not followed by
 // ?<= lookbehind - matches if preceded by
+// ?! - negative lookahead - matches if not followed by
 // ?: non-capturing group - match all instances
 
  // - any word if preceded by 'select' them 0+space word 0+space comma 0+space
@@ -16,11 +16,12 @@
 // ON -> as full string JOIN|WHERE
 // (?<=\bon\s+((?!join\b)\S+\s+))((?!join\b)\S+|\s+)*
 // ON -> JOIN|WHERE  
- // lookbehind - ON 0+space not join word+1 space+1
-  // match - not join word+1
+// match - not join word+1
+// lookbehind - ON 0+space not join word+1 space+1
 // - (?<=\bon\s+(?:(?!join\b)\S+\s+)*)(?!join\b)\S+
 // ON full str  - (?<=\bon\s+(?:(?!(?:join|where)\b)\S+\s+)*)(?:(?!(?:join|where)\b)\S+|\s+)+
-// ON split all chars /\w+(?:\.\w+)*|(=|>=|<=|<>|>|<|!=|\)|\(|\'.*?\'|\,)/</>
+// ON split all chars \w+(?:\.\w+)*|(=|>=|<=|<>|>|<|!=|\)|\(|\*|\\|\+|\-|\'.*?\'|\,)
+// const {parser} = require('./sqlEngine.utils.js')
 function SQLEngine(database) {
   const keyWords = {
     SELECT: 'SELECT', 
@@ -34,8 +35,8 @@ function SQLEngine(database) {
   ]
 
   // word 0+ word parts like
-  const wordAndParts = /\w+(?:\.\w+)*/.source
   // SElECT -> FROM args -  comma sep wordAndParts list, if preceded by 'select'
+  const wordAndParts = /\w+(?:\.\w+)*/.source
   const selectFromRegex = new RegExp(String.raw`(?<=\b${keyWords.SELECT}\s+(?:${wordAndParts}\s*,\s*)*)${wordAndParts}(?=\s*,|\s+${keyWords.SELECT}\b)`, 'gi')
   // FROM -> JOIN args - comma sep wordAndParts list, if preceded by 'from'
   const fromJoinRegex = new RegExp(
@@ -56,7 +57,7 @@ function SQLEngine(database) {
   //   String.raw`(?<=\b\s+(?:(?!join\b)\S+\s+)*)(?!join\b)\S+`, 'gi'
   // )          
   // takes the args for a single ON and splits it
-  const OnSplitRegex = new RegExp(String.raw`${wordAndParts}|(=|>=|<=|<>|>|<|!=|\)|\(|\'.*?\'|\,)`, 'gi')
+  const OnSplitRegex = new RegExp(String.raw`${wordAndParts}|(=|>=|<=|<>|>|<|!=|\)|\(|\*|\\|\+|\-|\'.*?\'|\,)`, 'gi')
 
   this.execute = function (query) {
     const selectArgs = query.match(selectFromRegex)
@@ -73,7 +74,8 @@ function SQLEngine(database) {
     const onSplitStrs = onStrArgs?.map(onFullStr => {
       return onFullStr?.match(OnSplitRegex)
     })
-    console.log(onSplitStrs)
+    parser(onSplitStrs[0])
+    // console.log(onSplitStrs)
   }
 } 
 const movieDatabase = {
@@ -110,5 +112,6 @@ const engine = new SQLEngine(movieDatabase)
 //   'SELECT Orders.OrderID, people, Customers.CustomerName, Orders.OrderDate FROM Orders, People.id JOIN Customers ON Orders.CustomerID=Customers.CustomerID JOIN Customers ON Orders.CustomerID=Customers.CustomerID',
 // )
 const test3 = engine.execute(
-  "SELECT Orders.OrderID, people, Customers.CustomerName, Orders.OrderDate FROM Orders, People.id JOIN Customers ON (a.id = b.id OR a.x<>b.x)AND c.y!=3 AND(c.a<1 OR c.b>2) AND c.c<=4 AND c.d>=5 AND NOT c.e BETWEEN 1 AND 10 AND c.f NOT IN(1,2, 3) AND c.g IS NOT NULL AND c.h IS NULL AND LOWER(c.i) NOT LIKE 'a b%' AND c.j LIKE'x' JOIN people ON people.stars WHERE 1=1"
 )
+
+"SELECT Orders.OrderID, people, Customers.CustomerName, Orders.OrderDate FROM Orders, People.id JOIN Customers ON (a.id = b.id OR (a.x<>b.x))AND c.y!=3 AND(c.a<1 OR c.b>2) AND c.c<=4 AND c.d>=5 AND NOT c.e BETWEEN 1 AND 10 AND c.f NOT IN(1,2, 3) AND c.g IS NOT NULL AND c.h IS NULL AND LOWER(c.i) NOT LIKE 'a b%' AND c.j LIKE'x' AND POWER(2,2) == -4 JOIN people ON people.stars WHERE 1=1"
